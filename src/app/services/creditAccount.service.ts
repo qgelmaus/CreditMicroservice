@@ -1,6 +1,6 @@
-import { prisma } from "../db/client";
-import { logger } from "../utils/logger/logger";
-import { CreditAccountType } from "../utils/types/creditaccount.types";
+import { prisma } from "../../infrastructure/db/client";
+import { logger } from "../../utils/logger/logger";
+import { CreditAccountType } from "../../utils/types/creditaccount.types";
 
 interface CreateCreditAccountInput {
 	email: string;

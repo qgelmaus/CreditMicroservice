@@ -2,7 +2,7 @@ import {
 	createCreditAccount,
 	deleteCreditAccount,
 	getCreditAccounts,
-} from "../../../services/creditAccount.service";
+} from "../../../../app/services/creditAccount.service";
 
 const resolvers = {
 	Query: {

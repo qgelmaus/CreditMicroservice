@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../src/app";
-import { resetDatabase } from "../src/db/reset";
+import { resetDatabase } from "../src/infrastructure/db/reset";
 
 describe("CreditAccount", () => {
 	beforeEach(async () => {

@@ -1,7 +1,7 @@
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { typeDefs, resolvers } from "./graphql/schema";
+import { typeDefs, resolvers } from "./api/graphql/schema";
 import cors from "cors";
 import { logger } from "./utils/logger/logger";
 
