@@ -11,6 +11,7 @@ type CreditAccount {
 	availableMoney: Int!
 	dateCreated: Date!
 	dateExpired: Date!
+	paymentMethod: String
 }
 
 extend type Query {
@@ -24,11 +25,7 @@ extend type Mutation {
 		type: CreditAccountType!
 		originalCredits: Float!
 		originalMoney: Float!
-		availableCredits: Float
-		availableMoney: Float
 	): CreditAccount
-
-	deleteCreditAccount(id: Int!): CreditAccount
 }
 
 enum CreditAccountType {

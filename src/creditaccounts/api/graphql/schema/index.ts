@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 
 import { mergeTypeDefs, mergeResolvers } from "@graphql-tools/merge";
 
-import * as accounts from "./accounts";
+import * as accounts from "../../../api/graphql/schema/accounts";
 
-import { DateScalar } from "../scalar/scalarResolver";
+import { DateScalar } from "../../../api/graphql/scalar/scalarResolver";
 
 const baseSchema = fs.readFileSync(
 	path.join(__dirname, "baseSchema.gql"),

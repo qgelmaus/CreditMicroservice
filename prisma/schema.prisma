@@ -26,6 +26,7 @@ model CreditAccounts {
   dateCreated DateTime @default(now())
   dateExpired DateTime @default(now())
   transaction CreditTransactions[]
+  paymentMethod String?
 }
 
 
@@ -51,3 +52,4 @@ model CreditTransfer {
   toCreditTransactionId Int @unique
 
 }
+
