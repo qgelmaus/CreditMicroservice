@@ -1,7 +1,6 @@
 import type {
 	CreditAccountDTO,
 	CreditAccountType,
-	PaymentMethod,
 } from "../../utils/types/creditaccount.types";
 
 export class CreditAccount {
@@ -15,7 +14,6 @@ export class CreditAccount {
 	public readonly email: string;
 	public readonly dateCreated: Date;
 	public readonly dateExpired: Date;
-	public readonly paymentMethod: PaymentMethod | null;
 
 	constructor(
 		type: CreditAccountType,
@@ -33,16 +31,18 @@ export class CreditAccount {
 		this.email = email;
 		this.dateCreated = new Date();
 		this.dateExpired = this.generateDateExpired(this.dateCreated);
-		this.paymentMethod = null;
 	}
 
 	private generateCreditCode(): string {
-		const randomDigits = Math.floor(1000000 * Math.random() * 90000);
+		const randomDigits = Math.floor(1000000 + Math.random() * 900000);
 		return `RR${randomDigits}`;
 	}
 
 	private generateDateExpired(dateCreated: Date): Date {
-		return new Date(dateCreated.setFullYear(dateCreated.getFullYear() + 3));
+		const dateCreatedHolder = new Date(dateCreated);
+		return new Date(
+			dateCreatedHolder.setFullYear(dateCreated.getFullYear() + 3),
+		);
 	}
 
 	public getDataToPersist(): CreditAccountDTO {
@@ -56,7 +56,6 @@ export class CreditAccount {
 			email: this.email,
 			dateCreated: this.dateCreated,
 			dateExpired: this.dateExpired,
-			paymentMethod: this.paymentMethod,
 		};
 	}
 }

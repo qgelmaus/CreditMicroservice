@@ -11,5 +11,4 @@ export interface CreditAccountDTO {
 	email: string;
 	dateCreated: Date;
 	dateExpired: Date;
-	paymentMethod: PaymentMethod | null;
 }

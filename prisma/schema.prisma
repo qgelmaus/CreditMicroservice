@@ -26,7 +26,7 @@ model CreditAccounts {
   dateCreated DateTime @default(now())
   dateExpired DateTime @default(now())
   transaction CreditTransactions[]
-  paymentMethod String?
+
 }
 
 

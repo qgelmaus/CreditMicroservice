@@ -1,4 +1,7 @@
-import type { CreditAccountType } from "../../../utils/types/creditaccount.types";
+import type {
+	CreditAccountDTO,
+	CreditAccountType,
+} from "../../../utils/types/creditaccount.types";
 import { CreditAccount } from "../../domain/CreditAccount";
 import type { CreditAccountRepository } from "../../infrastructure/repository/createCreditaccount.repository";
 
@@ -10,7 +13,7 @@ export class CreditAccountService {
 		type: CreditAccountType,
 		credits: number,
 		money: number,
-	): Promise<CreditAccount> {
+	): Promise<CreditAccountDTO> {
 		const account = new CreditAccount(type, credits, money, email);
 		return await this.repo.save(account);
 	}

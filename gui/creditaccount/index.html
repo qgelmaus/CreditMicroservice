@@ -34,10 +34,14 @@
 
       const query = `
         mutation CreateCreditAccount($email: String!, $type: CreditAccountType!, $originalCredits: Float!, $originalMoney: Float!) {
-          createCreditAccount(email: $email, type: $type, originalCredits: $originalCredits, originalMoney: $originalMoney) {
+        
+          createCreditAccount(email: $email, type: $type, originalCredits: $originalCredits, originalMoney: $originalMoney)
+          
+          
+          {
            
             email
-            
+
           }
         }
       `;

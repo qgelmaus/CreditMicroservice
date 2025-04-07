@@ -1,20 +1,18 @@
-import { PrismaClient } from "@prisma/client";
-import { CreditAccount } from "../../domain/CreditAccount";
-import type { CreditAccountType } from "../../../utils/types/creditaccount.types";
+import type { CreditAccount } from "../../domain/CreditAccount";
+import type {
+	CreditAccountDTO,
+	CreditAccountType,
+} from "../../../utils/types/creditaccount.types";
+import { prisma } from "../db/client";
 
-const prisma = new PrismaClient();
+const prismaInstance = prisma;
 
 export class CreditAccountRepository {
-	async save(account: CreditAccount): Promise<CreditAccount> {
-		const saved = await prisma.creditAccounts.create({
+	async save(account: CreditAccount): Promise<CreditAccountDTO> {
+		const saved = await prismaInstance.creditAccounts.create({
 			data: account.getDataToPersist(),
 		});
 
-		return new CreditAccount(
-			saved.type as CreditAccountType,
-			saved.originalCredits,
-			saved.originalMoney,
-			saved.email,
-		);
+		return saved as CreditAccountDTO;
 	}
 }

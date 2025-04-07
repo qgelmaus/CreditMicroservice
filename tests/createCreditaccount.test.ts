@@ -18,9 +18,7 @@ describe("Testing CreditAccount is created", () => {
           
         ) {
           id
-          email
-          type
-          creditCode
+          
         }
       }
     `;
@@ -28,7 +26,6 @@ describe("Testing CreditAccount is created", () => {
 		const response = await request(app)
 			.post("/graphql")
 			.send({ query: mutation });
-
 		expect(response.status).toBe(200);
 	});
 });
@@ -48,10 +45,9 @@ describe("Testing CreditAccount is created and email", () => {
           originalMoney: 1000
           
         ) {
-          id
+         
           email
-          type
-          creditCode
+         
         }
       }
     `;
@@ -65,7 +61,7 @@ describe("Testing CreditAccount is created and email", () => {
 	});
 });
 
-describe("Testing CreditAccount is created and type to be prepaid_card", () => {
+describe("Testing CreditAccount is created and type to be PREPAID_CARD", () => {
 	beforeEach(async () => {
 		await resetDatabase();
 	});
@@ -80,10 +76,9 @@ describe("Testing CreditAccount is created and type to be prepaid_card", () => {
           originalMoney: 1000
           
         ) {
-          id
-          email
-          type
-          creditCode
+          
+         type
+          
         }
       }
     `;
@@ -94,7 +89,7 @@ describe("Testing CreditAccount is created and type to be prepaid_card", () => {
 
 		expect(response.status).toBe(200);
 
-		expect(response.body.data.createCreditAccount.type).toBe("prepaid_card");
+		expect(response.body.data.createCreditAccount.type).toBe("PREPAID_CARD");
 	});
 });
 
@@ -113,43 +108,7 @@ describe("Testing CreditAccount is created and creditcode to match pattern of RR
           originalMoney: 1000
           
         ) {
-          id
-          email
-          type
-          creditCode
-        }
-      }
-    `;
-
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
-
-		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.creditCode).toMatch(
-			/^RR\d{7}$/,
-		);
-	});
-});
-
-describe("Testing CreditAccount is created and creditcode to match pattern of RR followed by 7 digits", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
-
-	it("creates a credit account", async () => {
-		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
           
-        ) {
-          id
-          email
-          type
           creditCode
         }
       }
@@ -177,14 +136,12 @@ describe("Testing CreditAccount is created and original money/credits is set cor
         createCreditAccount(
           email: "test@tdd.com"
           type: PREPAID_CARD
-          originalCredits: 800
-          originalMoney: 1000
+          originalCredits: 1000
+          originalMoney: 800
           
         ) {
-          id
-          email
-          type
-          creditCode
+          originalMoney
+          originalCredits
         }
       }
     `;
@@ -214,10 +171,10 @@ describe("Testing CreditAccount is created and available money/credits is set to
           originalMoney: 1000
           
         ) {
-          id
-          email
-          type
-          creditCode
+          availableCredits
+          availableMoney
+          originalCredits
+          originalMoney
         }
       }
     `;
@@ -251,10 +208,8 @@ describe("Testing CreditAccount is created and dateCreated is set to today and d
           originalMoney: 1000
           
         ) {
-          id
-          email
-          type
-          creditCode
+          dateCreated
+          dateExpired
         }
       }
     `;
@@ -262,17 +217,18 @@ describe("Testing CreditAccount is created and dateCreated is set to today and d
 		const response = await request(app)
 			.post("/graphql")
 			.send({ query: mutation });
+
+		console.log(response.body);
+
 		const now = new Date();
 		const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
 		const threeYearsAhead = new Date(today);
 		threeYearsAhead.setFullYear(threeYearsAhead.getFullYear() + 3);
 
 		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.dateCreated.getDate()).toBe(
-			today.getDate(),
+		expect(response.body.data.createCreditAccount.dateCreated.set).toBe(today);
+		expect(response.body.data.createCreditAccount.dateExpired).toBe(
+			threeYearsAhead,
 		);
-		expect(
-			response.body.data.createCreditAccount.dateExpiration.getDate(),
-		).toBe(threeYearsAhead.getDate());
 	});
 });
