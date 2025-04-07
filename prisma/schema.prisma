@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator testClient {
+  provider = "prisma-client-js"
+  output   = "./node_modules/.prisma/test-client"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model CreditAccounts {
+  id Int @id @default(autoincrement())
+  creditCode String @unique
+  email String @unique
+  type String
+  originalCredits Float
+  originalMoney Float
+  availableCredits Float
+  availableMoney Float
+  dateCreated DateTime @default(now())
+  dateExpired DateTime @default(now())
+  transaction CreditTransactions[]
+}
+
+
+model CreditTransactions {
+  id Int @id @default(autoincrement())
+  creditAccount CreditAccounts @relation(fields: [creditAccountId], references: [id], onDelete: Cascade)
+  creditAccountId Int
+  type String
+  note String?
+  credits Float
+  money Float
+  fromCreditTransfer CreditTransfer? @relation("fromCreditTransfer")
+  toCreditTransfer CreditTransfer? @relation("toCreditTransfer")
+
+
+}
+
+model CreditTransfer {
+  id Int @id @default(autoincrement())
+  fromCreditTransaction CreditTransactions @relation("fromCreditTransfer", fields: [fromCreditTransactionId], references: [id], onUpdate: NoAction, onDelete: Cascade)
+  fromCreditTransactionId Int @unique
+  toTransaction CreditTransactions @relation("toCreditTransfer", fields: [toCreditTransactionId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  toCreditTransactionId Int @unique
+
+}

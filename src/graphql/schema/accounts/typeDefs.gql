@@ -1,0 +1,37 @@
+scalar Date
+
+type CreditAccount {
+	id: Int!
+	creditCode: String!
+	email: String!
+	type: String!
+	originalCredits: Int!
+	originalMoney: Int!
+	availableCredits: Int!
+	availableMoney: Int!
+	dateCreated: Date!
+	dateExpired: Date!
+}
+
+extend type Query {
+	creditAccounts: [CreditAccount!]
+	creditAccount(id: Int!): CreditAccount
+}
+
+extend type Mutation {
+	createCreditAccount(
+		email: String!
+		type: CreditAccountType!
+		originalCredits: Float!
+		originalMoney: Float!
+		availableCredits: Float
+		availableMoney: Float
+	): CreditAccount
+
+	deleteCreditAccount(id: Int!): CreditAccount
+}
+
+enum CreditAccountType {
+	GIFT_CARD
+	PREPAID_CARD
+}
