@@ -9,7 +9,7 @@
 		"dev": "pnpm run generate && ts-node-dev --respawn src/index.ts",
 		"build": "tsc",
 		"start": "node dist/index.js",
-		"test:prepare": "prisma db push --schema=prisma/schema.prisma",
+		"test:prepare": "prisma db push --schema=prisma/test.prisma",
 		"test": "pnpm run test:prepare && jest"
 	},
 	"dependencies": {

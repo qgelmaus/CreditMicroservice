@@ -93,6 +93,38 @@ describe("Testing CreditAccount is created and type to be PREPAID_CARD", () => {
 	});
 });
 
+describe("Testing CreditAccount is created and type to be GIFT_CARD", () => {
+	beforeEach(async () => {
+		await resetDatabase();
+	});
+
+	it("creates a credit account", async () => {
+		const mutation = `
+      mutation {
+        createCreditAccount(
+          email: "test@tdd.com"
+          type: GIFT_CARD
+          originalCredits: 1000
+          originalMoney: 1000
+          
+        ) {
+          
+         type
+          
+        }
+      }
+    `;
+
+		const response = await request(app)
+			.post("/graphql")
+			.send({ query: mutation });
+
+		expect(response.status).toBe(200);
+
+		expect(response.body.data.createCreditAccount.type).toBe("GIFT_CARD");
+	});
+});
+
 describe("Testing CreditAccount is created and creditcode to match pattern of RR followed by 7 digits", () => {
 	beforeEach(async () => {
 		await resetDatabase();
