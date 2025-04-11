@@ -5,11 +5,12 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"generate": "prisma generate --schema=prisma/schema.prisma",
-		"generate:test": "prisma generate --schema=prisma/test.prisma",
+		"generate:test": "prisma generate --schema=prisma/schema.prisma",
 		"dev": "pnpm run generate && ts-node-dev --respawn src/index.ts",
+		"dev:studio": "pnpm prisma studio",
 		"build": "tsc",
 		"start": "node dist/index.js",
-		"test:prepare": "dotenv -e .env.test -- prisma db push --schema=prisma/test.prisma",
+		"test:prepare": "dotenv -e .env -- prisma db push --schema=prisma/schema.prisma",
 		"test": "pnpm run test:prepare && jest"
 	},
 	"dependencies": {

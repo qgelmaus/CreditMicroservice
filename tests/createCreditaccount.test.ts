@@ -7,21 +7,42 @@ describe("Testing CreditAccount is created", () => {
 		await resetDatabase();
 	});
 
-	it("creates a credit account", async () => {
+	it("creates a credit account of gift type", async () => {
 		const mutation = `
       mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-          id
-          
-        }
-      }
+  createGiftAccount(input: {
+    purchaseAmount: 300,
+    email: "modtager@eksempel.dk"
+  }) {
+    creditCode
+    originalCredits
+    availableCredits
+    type
+  }
+}
     `;
+
+		const response = await request(app)
+			.post("/graphql")
+			.send({ query: mutation });
+		expect(response.status).toBe(200);
+	});
+
+	it("creates a credit account of prepaid type", async () => {
+		const mutation = `
+		mutation {
+  createPrepaidAccount(input: {
+    treatmentCount: 10,
+    pricePerTreatment: 250,
+    email: "kunde@eksempel.dk"
+  }) {
+    creditCode
+    originalMoney
+    availableCredits
+    discountPercentage
+    type
+  }
+}`;
 
 		const response = await request(app)
 			.post("/graphql")
@@ -30,237 +51,111 @@ describe("Testing CreditAccount is created", () => {
 	});
 });
 
-describe("Testing CreditAccount is created and email", () => {
+describe("Testing accounts are created with the right values", () => {
 	beforeEach(async () => {
 		await resetDatabase();
 	});
 
-	it("creates a credit account", async () => {
+	it("creates a credit account of prepaid type with treatmentCount and pricePerTreatment", async () => {
+		const treatmentCount = 10;
+		const pricePerTreatment = 250;
+		const totalPrice = treatmentCount * pricePerTreatment;
 		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-         
-          email
-         
-        }
-      }
-    `;
+		mutation {
+  createPrepaidAccount(input: {
+    treatmentCount: ${treatmentCount},
+    pricePerTreatment: ${pricePerTreatment},
+    email: "kunde@eksempel.dk"
+  }) {
+    creditCode
+    originalMoney
+	originalCredits
+	availableMoney
+    availableCredits
+    discountPercentage
+    type
+  }
+}`;
 
 		const response = await request(app)
 			.post("/graphql")
 			.send({ query: mutation });
 
-		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.email).toBe("test@tdd.com");
-	});
-});
+		const responseBodyData = response.body.data.createPrepaidAccount;
 
-describe("Testing CreditAccount is created and type to be PREPAID_CARD", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
+		expect(responseBodyData.originalMoney).toBe(totalPrice * 0.84);
+		expect(responseBodyData.availableMoney).toBe(totalPrice * 0.84);
 
-	it("creates a credit account", async () => {
+		expect(responseBodyData.originalCredits).toBe(totalPrice);
+		expect(responseBodyData.availableCredits).toBe(totalPrice);
+	});
+	it("creates a credit account of giftcard type with the cost 500", async () => {
+		const cost = 500;
 		const mutation = `
+		
       mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-          
-         type
-          
-        }
-      }
-    `;
+  createGiftAccount(input: {
+    purchaseAmount: ${cost},
+    email: "modtager@eksempel.dk"
+  }) {
+    creditCode
+    originalCredits
+	originalMoney
+    availableCredits
+	availableMoney
+    type
+  }
+}`;
 
 		const response = await request(app)
 			.post("/graphql")
 			.send({ query: mutation });
 
-		expect(response.status).toBe(200);
+		const responseBodyData = response.body.data.createGiftAccount;
 
-		expect(response.body.data.createCreditAccount.type).toBe("PREPAID_CARD");
-	});
-});
+		expect(responseBodyData.originalMoney).toBe(cost);
+		expect(responseBodyData.availableMoney).toBe(cost);
 
-describe("Testing CreditAccount is created and type to be GIFT_CARD", () => {
-	beforeEach(async () => {
-		await resetDatabase();
+		expect(responseBodyData.originalCredits).toBe(cost);
+		expect(responseBodyData.availableCredits).toBe(cost);
 	});
 
-	it("creates a credit account", async () => {
-		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: GIFT_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-          
-         type
-          
-        }
+	it("uses one credit from an account", async () => {
+		const priceOfItem = 250;
+		const giftCardValue = 500;
+		const remainingValue = giftCardValue - priceOfItem;
+		const createMutation = `
+    mutation {
+      createGiftAccount(input: {
+        purchaseAmount: ${giftCardValue}
+      }) {
+        creditCode
+		availableCredits
       }
-    `;
+    }
+  `;
 
-		const response = await request(app)
+		const createResponse = await request(app)
 			.post("/graphql")
-			.send({ query: mutation });
+			.send({ query: createMutation });
 
-		expect(response.status).toBe(200);
+		const code = createResponse.body.data.createPrepaidAccount.creditCode;
 
-		expect(response.body.data.createCreditAccount.type).toBe("GIFT_CARD");
-	});
-});
-
-describe("Testing CreditAccount is created and creditcode to match pattern of RR followed by 7 digits", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
-
-	it("creates a credit account", async () => {
-		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-          
-          creditCode
-        }
+		const useCreditMutation = `
+    mutation {
+      useCredit(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+        availableCredits
       }
-    `;
+    }
+  `;
 
-		const response = await request(app)
+		const useResponse = await request(app)
 			.post("/graphql")
-			.send({ query: mutation });
+			.send({ query: useCreditMutation });
 
-		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.creditCode).toMatch(
-			/^RR\d{7}$/,
-		);
-	});
-});
-
-describe("Testing CreditAccount is created and original money/credits is set correct", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
-
-	it("creates a credit account", async () => {
-		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 800
-          
-        ) {
-          originalMoney
-          originalCredits
-        }
-      }
-    `;
-
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
-
-		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.originalMoney).toBe(800);
-		expect(response.body.data.createCreditAccount.originalCredits).toBe(1000);
-	});
-});
-
-describe("Testing CreditAccount is created and available money/credits is set to original money/credits", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
-
-	it("creates a credit account", async () => {
-		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-          availableCredits
-          availableMoney
-          originalCredits
-          originalMoney
-        }
-      }
-    `;
-
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
-
-		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.availableCredits).toBe(
-			response.body.data.createCreditAccount.originalCredits,
-		);
-		expect(response.body.data.createCreditAccount.availableMoney).toBe(
-			response.body.data.createCreditAccount.originalMoney,
-		);
-	});
-});
-
-describe("Testing CreditAccount is created and dateCreated is set to today and dateExpiration is set 3 years from today", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
-
-	it("creates a credit account", async () => {
-		const mutation = `
-      mutation {
-        createCreditAccount(
-          email: "test@tdd.com"
-          type: PREPAID_CARD
-          originalCredits: 1000
-          originalMoney: 1000
-          
-        ) {
-          dateCreated
-          dateExpired
-        }
-      }
-    `;
-
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
-
-		console.log(response.body);
-
-		const now = new Date();
-		const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
-		const threeYearsAhead = new Date(today);
-		threeYearsAhead.setFullYear(threeYearsAhead.getFullYear() + 3);
-
-		expect(response.status).toBe(200);
-		expect(response.body.data.createCreditAccount.dateCreated.set).toBe(today);
-		expect(response.body.data.createCreditAccount.dateExpired).toBe(
-			threeYearsAhead,
+		expect(useResponse.status).toBe(200);
+		expect(useResponse.body.data.useCredit.availableCredits).toBe(
+			remainingValue,
 		);
 	});
 });

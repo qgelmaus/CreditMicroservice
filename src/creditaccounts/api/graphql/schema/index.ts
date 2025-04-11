@@ -21,5 +21,5 @@ export const typeDefs = mergeTypeDefs([gql(baseSchema), gql(accountSchema)]);
 
 export const resolvers = mergeResolvers([
 	{ Date: DateScalar },
-	accounts.resolvers,
+	accounts.creditAccountResolver,
 ]);

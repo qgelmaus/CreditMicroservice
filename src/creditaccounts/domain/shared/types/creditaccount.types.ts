@@ -1,5 +1,4 @@
-export type CreditAccountType = "GIFT_CARD" | "PREPAID_CARD";
-export type PaymentMethod = "MobilePay" | "CreditCard";
+import type { CreditAccountType } from "@prisma/client";
 
 export interface CreditAccountDTO {
 	creditCode: string;
@@ -11,4 +10,6 @@ export interface CreditAccountDTO {
 	email: string;
 	dateCreated: Date;
 	dateExpired: Date;
+	treatmentCount?: number;
+	discountPercentage?: number;
 }

@@ -10,42 +10,25 @@ datasource db {
 
 
 
-model CreditAccounts {
-  id Int @id @default(autoincrement())
-  creditCode String @unique
-  email String @unique
-  type String
-  originalCredits Float
-  originalMoney Float
-  availableCredits Float
-  availableMoney Float
-  dateCreated DateTime @default(now())
-  dateExpired DateTime @default(now())
-  transaction CreditTransactions[]
-
+model CreditAccount {
+  id               Int                @id @default(autoincrement())
+  creditCode       String             @unique
+  type             CreditAccountType
+  originalCredits  Int
+  originalMoney    Float
+  availableCredits Int
+  availableMoney   Float
+  email            String
+  dateCreated      DateTime
+  dateExpired      DateTime
+  treatmentCount   Int?               // kun ved PREPAID_CARD
+  discountPercentage Float?           // kun ved PREPAID_CARD
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
-
-model CreditTransactions {
-  id Int @id @default(autoincrement())
-  creditAccount CreditAccounts @relation(fields: [creditAccountId], references: [id], onDelete: Cascade)
-  creditAccountId Int
-  type String
-  note String?
-  credits Float
-  money Float
-  fromCreditTransfer CreditTransfer? @relation("fromCreditTransfer")
-  toCreditTransfer CreditTransfer? @relation("toCreditTransfer")
-
-
-}
-
-model CreditTransfer {
-  id Int @id @default(autoincrement())
-  fromCreditTransaction CreditTransactions @relation("fromCreditTransfer", fields: [fromCreditTransactionId], references: [id], onUpdate: NoAction, onDelete: Cascade)
-  fromCreditTransactionId Int @unique
-  toTransaction CreditTransactions @relation("toCreditTransfer", fields: [toCreditTransactionId], references: [id], onUpdate: NoAction, onDelete: NoAction)
-  toCreditTransactionId Int @unique
-
+enum CreditAccountType {
+  GIFT_CARD
+  PREPAID_CARD
 }
 

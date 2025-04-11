@@ -1,114 +1,69 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, CreditAccountType } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 async function main() {
-	// Ryd databasen
-	await prisma.creditTransfer.deleteMany();
-	await prisma.creditTransactions.deleteMany();
-	await prisma.creditAccounts.deleteMany();
+	console.log("Seeding database...");
 
-	// Opret konti
-	const accounts = await prisma.creditAccounts.createMany({
-		data: [
-			{
-				email: "alice@example.com",
-				creditCode: "RR0000000",
-				type: "GIFT_CARD",
-				originalCredits: 100,
-				originalMoney: 1000,
-				availableCredits: 80,
-				availableMoney: 850,
-				dateCreated: new Date(),
-				dateExpired: new Date("2026-01-01"),
-			},
-			{
-				email: "bob@example.com",
-				creditCode: "RR0000001",
-				type: "GIFT_CARD",
-				originalCredits: 200,
-				originalMoney: 2000,
-				availableCredits: 150,
-				availableMoney: 1700,
-				dateCreated: new Date(),
-				dateExpired: new Date("2026-01-01"),
-			},
-			{
-				email: "carla@example.com",
-				creditCode: "RR0000002",
-				type: "PREPAID_CARD",
-				originalCredits: 500,
-				originalMoney: 5000,
-				availableCredits: 500,
-				availableMoney: 5000,
-				dateCreated: new Date(),
-				dateExpired: new Date("2026-01-01"),
-			},
-		],
-	});
+	const now = new Date();
+	const inThreeYears = new Date();
+	inThreeYears.setFullYear(now.getFullYear() + 3);
 
-	const [alice, bob, carla] = await prisma.creditAccounts.findMany({
-		orderBy: { id: "asc" },
-	});
-
-	await prisma.creditTransactions.createMany({
-		data: [
-			{
-				creditAccountId: alice.id,
-				type: "purchase",
-				credits: -10,
-				money: -100,
-				note: "Bought service A",
-			},
-			{
-				creditAccountId: bob.id,
-				type: "deposit",
-				credits: 50,
-				money: 500,
-				note: "Added funds",
-			},
-			{
-				creditAccountId: carla.id,
-				type: "bonus",
-				credits: 25,
-				money: 0,
-				note: "Welcome bonus",
-			},
-		],
-	});
-
-	const fromTx = await prisma.creditTransactions.create({
+	// 🎁 GiftAccount eksempel
+	await prisma.creditAccount.create({
 		data: {
-			creditAccountId: bob.id,
-			type: "transfer_out",
-			credits: -20,
-			money: -200,
-			note: "Transfer to Alice",
+			creditCode: "RR1000001",
+			type: CreditAccountType.GIFT_CARD,
+			originalCredits: 500,
+			originalMoney: 500,
+			availableCredits: 500,
+			availableMoney: 500,
+			email: "gavekort@kunde.dk",
+			dateCreated: now,
+			dateExpired: inThreeYears,
 		},
 	});
 
-	const toTx = await prisma.creditTransactions.create({
+	// 💳 PrepaidAccount eksempel (5 behandlinger, 10% rabat)
+	await prisma.creditAccount.create({
 		data: {
-			creditAccountId: alice.id,
-			type: "transfer_in",
-			credits: 20,
-			money: 200,
-			note: "Transfer from Bob",
+			creditCode: "RR2000001",
+			type: CreditAccountType.PREPAID_CARD,
+			originalCredits: 5,
+			originalMoney: 1125, // 5 * 250 * 0.9
+			availableCredits: 5,
+			availableMoney: 1125,
+			email: "prepaid5@kunde.dk",
+			treatmentCount: 5,
+			discountPercentage: 10,
+			dateCreated: now,
+			dateExpired: inThreeYears,
 		},
 	});
 
-	await prisma.creditTransfer.create({
+	// 💳 PrepaidAccount eksempel (10 behandlinger, 20% rabat)
+	await prisma.creditAccount.create({
 		data: {
-			fromCreditTransactionId: fromTx.id,
-			toCreditTransactionId: toTx.id,
+			creditCode: "RR2000002",
+			type: CreditAccountType.PREPAID_CARD,
+			originalCredits: 10,
+			originalMoney: 2000, // 10 * 250 * 0.8
+			availableCredits: 10,
+			availableMoney: 2000,
+			email: "prepaid10@kunde.dk",
+			treatmentCount: 10,
+			discountPercentage: 20,
+			dateCreated: now,
+			dateExpired: inThreeYears,
 		},
 	});
 
-	console.log("seed complete");
+	console.log("✅ Done seeding.");
 }
 
 main()
 	.catch((e) => {
-		console.error("Seed error:", e);
+		console.error("❌ Seeding failed", e);
 		process.exit(1);
 	})
 	.finally(async () => {
