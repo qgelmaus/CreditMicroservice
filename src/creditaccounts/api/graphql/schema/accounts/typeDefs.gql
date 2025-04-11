@@ -1,16 +1,64 @@
 scalar Date
 
-type CreditAccount {
-	id: Int!
+interface CreditAccount {
 	creditCode: String!
-	email: String!
-	type: String!
+	type: CreditAccountType!
 	originalCredits: Int!
-	originalMoney: Int!
+	originalMoney: Float!
 	availableCredits: Int!
-	availableMoney: Int!
+	availableMoney: Float!
+	email: String!
 	dateCreated: Date!
 	dateExpired: Date!
+}
+
+type GiftAccount implements CreditAccount {
+	creditCode: String!
+	type: CreditAccountType!
+	originalCredits: Int!
+	originalMoney: Float!
+	availableCredits: Int!
+	availableMoney: Float!
+	email: String!
+	dateCreated: Date!
+	dateExpired: Date!
+}
+
+type PrepaidAccount implements CreditAccount {
+	creditCode: String!
+	type: CreditAccountType!
+	originalCredits: Int!
+	originalMoney: Float!
+	availableCredits: Int!
+	availableMoney: Float!
+	email: String!
+	dateCreated: Date!
+	dateExpired: Date!
+	treatmentCount: Int!
+	discountPercentage: Float!
+}
+
+type Transaction {
+	creditCode: String!
+	creditsUsed: Int!
+	moneyUsed: Int!
+	transactionDate: Date!
+}
+
+input CreateGiftAccountInput {
+	purchaseAmount: Float!
+	email: String!
+}
+
+input CreatePrepaidAccountInput {
+	treatmentCount: Int!
+	pricePerTreatment: Float!
+	email: String!
+}
+
+input UseCreditsInput {
+	creditCode: String!
+	cost: Int!
 }
 
 extend type Query {
@@ -18,13 +66,10 @@ extend type Query {
 	creditAccount(id: Int!): CreditAccount
 }
 
-extend type Mutation {
-	createCreditAccount(
-		email: String!
-		type: CreditAccountType!
-		originalCredits: Float!
-		originalMoney: Float!
-	): CreditAccount
+type Mutation {
+	createGiftAccount(input: CreateGiftAccountInput!): GiftAccount!
+	createPrepaidAccount(input: CreatePrepaidAccountInput!): PrepaidAccount!
+	useCredits(input: UseCreditsInput!): Transaction!
 }
 
 enum CreditAccountType {
