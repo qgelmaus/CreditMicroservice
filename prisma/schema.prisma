@@ -21,8 +21,8 @@ model CreditAccount {
   email            String
   dateCreated      DateTime
   dateExpired      DateTime
-  treatmentCount   Int?               // kun ved PREPAID_CARD
-  discountPercentage Float?           // kun ved PREPAID_CARD
+  treatmentCount   Int?               
+  discountPercentage Float?           
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
 }
