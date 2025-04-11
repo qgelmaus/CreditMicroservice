@@ -2,10 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator testClient {
-  provider = "prisma-client-js"
-  output   = "./node_modules/.prisma/test-client"
-}
 
 datasource db {
   provider = "mysql"
