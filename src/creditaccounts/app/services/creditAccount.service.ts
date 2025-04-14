@@ -20,10 +20,10 @@ export class CreditAccountService {
 		return await this.repo.findAll();
 	}
 
-	async use(creditCode: string, cost: number) {
+	/*async use(creditCode: string, cost: number) {
 		const account = this.repo.findByCreditCode(creditCode);
 		if (!account) throw new Error("No account with requested code");
 
 		account.useCredits(cost);
-	}
+	} */
 }
