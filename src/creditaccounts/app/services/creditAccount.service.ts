@@ -3,6 +3,7 @@ import type { CreditAccount } from "../../domain/CreditAccount";
 import { CreditAccountDTO } from "../../domain/shared/types/creditaccount.types";
 import { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
 import { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
+import { empty } from "@prisma/client/runtime/library";
 
 export class CreditAccountService {
   private accountRepo = new CreditAccountRepository();
@@ -16,8 +17,7 @@ export class CreditAccountService {
     await this.transactionRepo.logPurchase(
       savedAccount.id,
       savedAccount.originalCredits,
-      savedAccount.availableMoney,
-      "CreditAccount purchased"
+      savedAccount.availableMoney
     );
 
     return savedAccount;
@@ -34,8 +34,9 @@ export class CreditAccountService {
   async useCredits(
     creditCode: string,
     credits: number,
-    money: number
-  ): Promise<CreditAccountDTO> {
+    money: number,
+    note?: string
+  ) {
     const account = await this.accountRepo.findByCreditCode(creditCode);
     if (!account) throw new Error("Account not found");
 
@@ -53,7 +54,36 @@ export class CreditAccountService {
       updated.id,
       credits,
       money,
-      "Used credits"
+      note ?? ""
+    );
+
+    return updated;
+  }
+
+  async refundToCreditAccount(
+    creditCode: string,
+    credits: number,
+    money: number,
+    note?: string
+  ) {
+    const account = await this.findByCode(creditCode);
+    if (!account) throw new Error("Account not found");
+
+    if (account.dateExpired < new Date()) {
+      throw new Error("Account is expired");
+    }
+
+    const updated = await this.accountRepo.updateAvailableCredits(
+      creditCode,
+      account.availableCredits + credits,
+      account.availableMoney + money
+    );
+
+    await this.transactionRepo.logCreditRefund(
+      updated.id,
+      credits,
+      money,
+      note ?? ""
     );
 
     return updated;

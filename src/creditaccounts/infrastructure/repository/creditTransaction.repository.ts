@@ -3,19 +3,13 @@ import { PrismaClient, TransactionType } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class CreditTransactionRepository {
-  async logPurchase(
-    creditAccountId: number,
-    credits: number,
-    money: number,
-    note?: string
-  ) {
+  async logPurchase(creditAccountId: number, credits: number, money: number) {
     return await prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.PURCHASE,
         credits: credits,
         money: money,
-        note: note ?? "CreditAccount created",
       },
     });
   }
@@ -24,7 +18,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note?: string
+    note: string
   ) {
     return await prisma.creditTransaction.create({
       data: {
@@ -37,13 +31,18 @@ export class CreditTransactionRepository {
     });
   }
 
-  async logRefund(creditAccountId: number, amount: number, note?: string) {
+  async logCreditRefund(
+    creditAccountId: number,
+    credits: number,
+    money: number,
+    note: string
+  ) {
     return await prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.REFUND,
-        credits: amount,
-        money: amount,
+        credits: credits,
+        money: money,
         note,
       },
     });
