@@ -35,12 +35,12 @@ export const creditAccountResolver = {
 			}
 		},
 
-		useCredits: async (_: any, { input }: any) => {
+		/*	useCredits: async (_: any, { input }: any) => {
 			const { creditCode, cost } = input;
 			const account = await service.use(creditCode, cost);
 			if (!account) throw new Error("No account connected to this creditcode");
 			return await service.use(account, cost);
-		},
+		}, */
 	},
 
 	Query: {
