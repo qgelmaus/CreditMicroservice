@@ -14,9 +14,9 @@ model CreditAccount {
   id               Int                @id @default(autoincrement())
   creditCode       String             @unique
   type             CreditAccountType
-  originalCredits  Int
+  originalCredits  Float
   originalMoney    Float
-  availableCredits Int
+  availableCredits Float
   availableMoney   Float
   email            String
   dateCreated      DateTime
@@ -25,10 +25,32 @@ model CreditAccount {
   discountPercentage Float?           
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
+  transactions CreditTransaction[]
+}
+
+model CreditTransaction {
+  id  Int @id @default(autoincrement())
+  creditAccount CreditAccount @relation(fields: [creditAccountId], references: [id])
+  creditAccountId Int
+  type TransactionType
+  credits Float
+  money Float
+  note String?
+  createdAt        DateTime           @default(now())
+  
 }
 
 enum CreditAccountType {
   GIFT_CARD
   PREPAID_CARD
+}
+
+enum TransactionType {
+  PURCHASE
+  USAGE
+  NULLIFICATION
+  TRANSFER_IN
+  TRANSFER_OUT
+  REFUND
 }
 

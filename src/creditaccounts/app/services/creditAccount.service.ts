@@ -1,29 +1,61 @@
+import { TransactionType } from "@prisma/client";
 import type { CreditAccount } from "../../domain/CreditAccount";
-import { CreditAccountRepository } from "../../infrastructure/repository/createCreditaccount.repository";
+import { CreditAccountDTO } from "../../domain/shared/types/creditaccount.types";
+import { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
+import { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
 
 export class CreditAccountService {
-	private repo = new CreditAccountRepository();
+  private accountRepo = new CreditAccountRepository();
+  private transactionRepo = new CreditTransactionRepository();
 
-	async create(account: CreditAccount) {
-		const dto = account.getDataToPersist();
+  async create(account: CreditAccount) {
+    const dto = account.getDataToPersist();
 
-		const saved = await this.repo.create(dto);
+    const savedAccount = await this.accountRepo.create(dto);
 
-		return saved;
-	}
+    await this.transactionRepo.logPurchase(
+      savedAccount.id,
+      savedAccount.originalCredits,
+      savedAccount.availableMoney,
+      "CreditAccount purchased"
+    );
 
-	async findByCode(code: string) {
-		return await this.repo.findByCreditCode(code);
-	}
+    return savedAccount;
+  }
 
-	async findAll() {
-		return await this.repo.findAll();
-	}
+  async findByCode(code: string) {
+    return await this.accountRepo.findByCreditCode(code);
+  }
 
-	/*async use(creditCode: string, cost: number) {
-		const account = this.repo.findByCreditCode(creditCode);
-		if (!account) throw new Error("No account with requested code");
+  async findAll() {
+    return await this.accountRepo.findAll();
+  }
 
-		account.useCredits(cost);
-	} */
+  async useCredits(
+    creditCode: string,
+    credits: number,
+    money: number
+  ): Promise<CreditAccountDTO> {
+    const account = await this.accountRepo.findByCreditCode(creditCode);
+    if (!account) throw new Error("Account not found");
+
+    if (account.availableCredits < credits) {
+      throw new Error("Not enough credits available.");
+    }
+
+    const updated = await this.accountRepo.updateAvailableCredits(
+      creditCode,
+      account.availableCredits - credits,
+      account.availableMoney - money
+    );
+
+    await this.transactionRepo.logCreditUsed(
+      updated.id,
+      credits,
+      money,
+      "Used credits"
+    );
+
+    return updated;
+  }
 }
