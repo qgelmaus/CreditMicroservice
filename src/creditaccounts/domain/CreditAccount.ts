@@ -1,117 +1,114 @@
-import type { CreditAccountDTO } from "./shared/types/creditaccount.types";
-import type { CreditAccountType } from "@prisma/client";
+import { CreditAccountType } from "@prisma/client";
+import { Money } from "./valueobjects/Money";
+import { Credits } from "./valueobjects/Credits";
 
 export abstract class CreditAccount {
-	public readonly id: number | null;
-	public readonly creditCode: string;
-	public readonly type: CreditAccountType;
-	public readonly originalCredits: number;
-	public readonly originalMoney: number;
-	public availableCredits: number;
-	public availableMoney: number;
-	public readonly email: string;
-	public readonly dateCreated: Date;
-	public readonly dateExpired: Date;
+  constructor(
+    public readonly id: number,
+    public readonly creditCode: string,
+    public readonly type: CreditAccountType,
+    public readonly originalCredits: Credits,
+    public readonly originalMoney: Money,
+    protected _availableCredits: Credits,
+    protected _availableMoney: Money,
+    public readonly email: string,
+    public readonly dateCreated: Date,
+    public readonly dateExpired: Date
+  ) {}
 
-	constructor(
-		type: CreditAccountType,
-		originalCredits: number,
-		originalMoney: number,
-		email: string,
-	) {
-		this.id = null;
-		this.creditCode = this.generateCreditCode();
-		this.type = type;
-		this.originalCredits = originalCredits;
-		this.originalMoney = originalMoney;
-		this.availableCredits = originalCredits;
-		this.availableMoney = originalMoney;
-		this.email = email;
-		this.dateCreated = new Date();
-		this.dateExpired = this.generateDateExpired(this.dateCreated);
-	}
+  useCredits(credits: number, money: number) {
+    this._availableCredits = this._availableCredits.subtract(credits);
+    this._availableMoney = this._availableMoney.subtract(money);
+  }
 
-	private generateCreditCode(): string {
-		const randomDigits = Math.floor(1000000 + Math.random() * 900000);
-		return `RR${randomDigits}`;
-	}
+  refundCredits(credits: number, money: number) {
+    this._availableCredits = this._availableCredits.add(credits);
+    this._availableMoney = this._availableMoney.add(money);
+  }
 
-	private generateDateExpired(dateCreated: Date): Date {
-		const date = new Date(dateCreated);
-		date.setFullYear(date.getFullYear() + 3);
-		return date;
-	}
+  refundMoneyOnly(money: number) {
+    this._availableMoney = this._availableMoney.subtract(money);
+  }
 
-	public abstract getDataToPersist(): CreditAccountDTO;
-	public abstract useCredits(cost: number): void;
+  get availableCredits(): number {
+    return this._availableCredits.value;
+  }
+
+  get availableMoney(): number {
+    return this._availableMoney.amount;
+  }
+
+  getDataToPersist() {
+    return {
+      creditCode: this.creditCode,
+      type: this.type,
+      originalCredits: this.originalCredits.value,
+      originalMoney: this.originalMoney.amount,
+      availableCredits: this._availableCredits.value,
+      availableMoney: this._availableMoney.amount,
+      email: this.email,
+      dateCreated: this.dateCreated,
+      dateExpired: this.dateExpired,
+    };
+  }
+
+  equals(other: CreditAccount): boolean {
+    return this.creditCode === other.creditCode;
+  }
 }
 
 export class GiftAccount extends CreditAccount {
-	constructor(purchaseAmount: number, recipientEmail: string) {
-		super("GIFT_CARD", purchaseAmount, purchaseAmount, recipientEmail);
-	}
-
-	public useCredits(cost: number): void {
-		if (this.availableCredits <= 0 || this.availableCredits - cost < 0)
-			throw new Error("Not enough credits available");
-		this.availableCredits -= cost;
-		this.availableMoney -= cost;
-	}
-
-	public override getDataToPersist(): CreditAccountDTO {
-		return {
-			creditCode: this.creditCode,
-			type: this.type,
-			originalCredits: this.originalCredits,
-			originalMoney: this.originalMoney,
-			availableCredits: this.availableCredits,
-			availableMoney: this.availableMoney,
-			email: this.email,
-			dateCreated: this.dateCreated,
-			dateExpired: this.dateExpired,
-		};
-	}
+  constructor(
+    id: number,
+    creditCode: string,
+    originalCredits: Credits,
+    originalMoney: Money,
+    availableCredits: Credits,
+    availableMoney: Money,
+    email: string,
+    dateCreated: Date,
+    dateExpired: Date
+  ) {
+    super(
+      id,
+      creditCode,
+      CreditAccountType.GIFT_CARD,
+      originalCredits,
+      originalMoney,
+      availableCredits,
+      availableMoney,
+      email,
+      dateCreated,
+      dateExpired
+    );
+  }
 }
 
 export class PrepaidAccount extends CreditAccount {
-	public readonly treatmentCount: number;
-	public readonly discountPercentage: number;
-
-	constructor(
-		treatmentCount: 5 | 10,
-		pricePerTreatment: number,
-		email: string,
-	) {
-		const discount = treatmentCount === 5 ? 0.12 : 0.16; // 12% for 5, 16% for 10
-		const totalPrice = treatmentCount * pricePerTreatment * (1 - discount);
-		const totalCredits = treatmentCount * pricePerTreatment;
-
-		super("PREPAID_CARD", totalCredits, totalPrice, email);
-		this.treatmentCount = treatmentCount;
-		this.discountPercentage = discount * 100;
-	}
-
-	public useCredits(cost: number): void {
-		const discountedCost = (cost / 100) * this.discountPercentage;
-		if (this.availableCredits <= 0 || this.availableCredits - cost < 0)
-			throw new Error("Not enough credits available");
-		this.availableCredits -= cost;
-		this.availableMoney -= discountedCost;
-	}
-
-	public override getDataToPersist(): CreditAccountDTO {
-		return {
-			creditCode: this.creditCode,
-			type: this.type,
-			originalCredits: this.originalCredits,
-			originalMoney: this.originalMoney,
-			availableCredits: this.availableCredits,
-			availableMoney: this.availableMoney,
-			email: this.email,
-			dateCreated: this.dateCreated,
-			dateExpired: this.dateExpired,
-			treatmentCount: this.treatmentCount,
-			discountPercentage: this.discountPercentage,
-		};
-	}
+  constructor(
+    id: number,
+    creditCode: string,
+    originalCredits: Credits,
+    originalMoney: Money,
+    availableCredits: Credits,
+    availableMoney: Money,
+    email: string,
+    dateCreated: Date,
+    dateExpired: Date,
+    public readonly treatmentCount: number,
+    public readonly discountPercentage: number
+  ) {
+    super(
+      id,
+      creditCode,
+      CreditAccountType.PREPAID_CARD,
+      originalCredits,
+      originalMoney,
+      availableCredits,
+      availableMoney,
+      email,
+      dateCreated,
+      dateExpired
+    );
+  }
 }
