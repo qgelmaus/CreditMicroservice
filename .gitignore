@@ -3,3 +3,5 @@ dist
 .env
 .env.test
 .env.prod
+settings.json
+
