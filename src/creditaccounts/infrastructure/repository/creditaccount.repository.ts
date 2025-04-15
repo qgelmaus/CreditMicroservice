@@ -10,11 +10,9 @@ export class CreditAccountRepository {
   }
 
   async findByCreditCode(code: string) {
-    const account = await prisma.creditAccount.findUnique({
+    return await prisma.creditAccount.findUnique({
       where: { creditCode: code },
     });
-
-    return account ? this.toCreditAccountDTO(account) : null;
   }
 
   async findAll() {
