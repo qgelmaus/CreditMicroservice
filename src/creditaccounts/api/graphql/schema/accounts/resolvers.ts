@@ -1,55 +1,46 @@
-import { GiftAccount } from "../../../../domain/CreditAccount";
-import { PrepaidAccount } from "../../../../domain/CreditAccount";
 import { CreditAccountService } from "../../../../app/services/creditAccount.service";
 
 const service = new CreditAccountService();
 
 export const creditAccountResolver = {
-	Mutation: {
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		createGiftAccount: async (_: any, { input }: any) => {
-			const account = new GiftAccount(input.purchaseAmount, input.email);
-			return await service.create(account);
-		},
+  Mutation: {
+    useCredits: async (_: any, { input }: any) => {
+      const { creditCode, credits, money, note } = input;
+      return await service.useCredits(creditCode, credits, money, note);
+    },
 
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		createPrepaidAccount: async (_: any, { input }: any) => {
-			try {
-				const { treatmentCount, pricePerTreatment, email } = input;
+    refundCredits: async (_: any, { input }: any) => {
+      const { creditCode, credits, money, note } = input;
+      return await service.refundCredits(creditCode, credits, money, note);
+    },
 
-				if (![5, 10].includes(treatmentCount)) {
-					throw new Error(
-						"PrepaidAccount can only be created for 5 or 10 treatments.",
-					);
-				}
+    refundMoney: async (_: any, { input }: any) => {
+      const { creditCode, money, note } = input;
+      return await service.refundMoney(creditCode, money, note);
+    },
 
-				const account = new PrepaidAccount(
-					treatmentCount,
-					pricePerTreatment,
-					email,
-				);
-				return await service.create(account);
-			} catch (err) {
-				console.error("ERROR", err);
-				throw err;
-			}
-		},
+    createGiftAccount: async (_: any, { input }: any) => {
+      const { purchaseAmount, email } = input;
+      return await service.createGiftAccount(purchaseAmount, email);
+    },
 
-		/*	useCredits: async (_: any, { input }: any) => {
-			const { creditCode, cost } = input;
-			const account = await service.use(creditCode, cost);
-			if (!account) throw new Error("No account connected to this creditcode");
-			return await service.use(account, cost);
-		}, */
-	},
+    createPrepaidAccount: async (_: any, { input }: any) => {
+      const { treatmentCount, pricePerTreatment, email } = input;
+      return await service.createPrepaidAccount(
+        treatmentCount,
+        pricePerTreatment,
+        email
+      );
+    },
+  },
 
-	Query: {
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		creditAccount: async (_: any, { code }: any) => {
-			return await service.findByCode(code);
-		},
-		creditAccounts: async () => {
-			return await service.findAll();
-		},
-	},
+  Query: {
+    creditAccountByCode: async (_: any, { code }: any) => {
+      return await service.findByCode(code);
+    },
+
+    allCreditAccounts: async () => {
+      return await service.findAll();
+    },
+  },
 };

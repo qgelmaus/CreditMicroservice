@@ -6,16 +6,16 @@ import { typeDefs, resolvers } from "./creditaccounts/api/graphql/schema";
 const app = express();
 
 const schema = makeExecutableSchema({
-	typeDefs,
-	resolvers,
+  typeDefs,
+  resolvers,
 });
 
 app.use(
-	"/graphql",
-	graphqlHTTP({
-		schema,
-		graphiql: process.env.NODE_ENV !== "test",
-	}),
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: process.env.NODE_ENV !== "test",
+  })
 );
 
 export { app };
