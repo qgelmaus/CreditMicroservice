@@ -34,7 +34,7 @@ export class CreditAccountService {
       saved.originalMoney
     );
 
-    return saved;
+    return toDTO(toDomain(saved));
   }
 
   async createPrepaidAccount(
@@ -132,6 +132,7 @@ export class CreditAccountService {
 
   async refundMoney(
     creditCode: string,
+    credits: number,
     money: number,
     note?: string
   ): Promise<CreditAccountDTO> {
@@ -147,7 +148,12 @@ export class CreditAccountService {
       account.availableMoney
     );
 
-    await this.transactionRepo.logMoneyRefund(updated.id, money, note ?? "");
+    await this.transactionRepo.logMoneyRefund(
+      updated.id,
+      credits,
+      money,
+      note ?? ""
+    );
 
     return toDTO(toDomain(updated));
   }
