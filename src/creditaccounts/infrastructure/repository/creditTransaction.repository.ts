@@ -48,6 +48,23 @@ export class CreditTransactionRepository {
     });
   }
 
+  async logMoneyRefund(
+    creditAccountId: number,
+    credits: number,
+    money: number,
+    note: string
+  ) {
+    return await prisma.creditTransaction.create({
+      data: {
+        creditAccountId,
+        type: TransactionType.REFUND,
+        credits: credits,
+        money: money,
+        note,
+      },
+    });
+  }
+
   async getTransactionsForAccount(creditAccountId: number) {
     return await prisma.creditTransaction.findMany({
       where: { creditAccountId },
