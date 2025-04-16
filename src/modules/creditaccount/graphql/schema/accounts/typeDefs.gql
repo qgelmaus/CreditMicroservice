@@ -14,8 +14,6 @@ interface CreditAccount {
   transactions: [Transaction]!
 }
 
-union CreditAccount = GiftAccount | PrepaidAccount
-
 type GiftAccount implements CreditAccount {
   creditCode: String!
   type: CreditAccountType!
