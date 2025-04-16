@@ -1,18 +1,18 @@
 #//src/modules/creditaccount/graphql/schema/accounts/typeDefs.gql
 scalar Date
 
-#interface CreditAccount {
-#  creditCode: String!
-#  type: CreditAccountType!
-#  originalCredits: Int!
-#  originalMoney: Float!
-#  availableCredits: Int!
-#  availableMoney: Float!
-#  email: String!
-#  dateCreated: Date!
-#  dateExpired: Date!
-#  transactions: [Transaction]!
-#}
+interface CreditAccount {
+  creditCode: String!
+  type: CreditAccountType!
+  originalCredits: Int!
+  originalMoney: Float!
+  availableCredits: Int!
+  availableMoney: Float!
+  email: String!
+  dateCreated: Date!
+  dateExpired: Date!
+  transactions: [Transaction]!
+}
 
 union CreditAccount = GiftAccount | PrepaidAccount
 
