@@ -1,4 +1,4 @@
-import { CreditAccountService } from "../../../../app/services/creditAccount.service";
+import { CreditAccountService } from "../../../app/services/creditAccount.service";
 
 const service = new CreditAccountService();
 
