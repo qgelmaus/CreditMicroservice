@@ -1,14 +1,14 @@
 import request from "supertest";
 import { app } from "../src/app";
-import { resetDatabase } from "../src/creditaccounts/infrastructure/db/reset";
+import { resetDatabase } from "../src/shared/infrastructure/db/reset";
 
 describe("Testing CreditAccount is created", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
+  beforeEach(async () => {
+    await resetDatabase();
+  });
 
-	it("creates a credit account of gift type", async () => {
-		const mutation = `
+  it("creates a credit account of gift type", async () => {
+    const mutation = `
       mutation {
   createGiftAccount(input: {
     purchaseAmount: 300,
@@ -22,14 +22,14 @@ describe("Testing CreditAccount is created", () => {
 }
     `;
 
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
-		expect(response.status).toBe(200);
-	});
+    const response = await request(app)
+      .post("/graphql")
+      .send({ query: mutation });
+    expect(response.status).toBe(200);
+  });
 
-	it("creates a credit account of prepaid type", async () => {
-		const mutation = `
+  it("creates a credit account of prepaid type", async () => {
+    const mutation = `
 		mutation {
   createPrepaidAccount(input: {
     treatmentCount: 10,
@@ -44,23 +44,23 @@ describe("Testing CreditAccount is created", () => {
   }
 }`;
 
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
-		expect(response.status).toBe(200);
-	});
+    const response = await request(app)
+      .post("/graphql")
+      .send({ query: mutation });
+    expect(response.status).toBe(200);
+  });
 });
 
 describe("Testing accounts are created with the right values", () => {
-	beforeEach(async () => {
-		await resetDatabase();
-	});
+  beforeEach(async () => {
+    await resetDatabase();
+  });
 
-	it("creates a credit account of prepaid type with treatmentCount and pricePerTreatment", async () => {
-		const treatmentCount = 10;
-		const pricePerTreatment = 250;
-		const totalPrice = treatmentCount * pricePerTreatment;
-		const mutation = `
+  it("creates a credit account of prepaid type with treatmentCount and pricePerTreatment", async () => {
+    const treatmentCount = 10;
+    const pricePerTreatment = 250;
+    const totalPrice = treatmentCount * pricePerTreatment;
+    const mutation = `
 		mutation {
   createPrepaidAccount(input: {
     treatmentCount: ${treatmentCount},
@@ -77,21 +77,21 @@ describe("Testing accounts are created with the right values", () => {
   }
 }`;
 
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
+    const response = await request(app)
+      .post("/graphql")
+      .send({ query: mutation });
 
-		const responseBodyData = response.body.data.createPrepaidAccount;
+    const responseBodyData = response.body.data.createPrepaidAccount;
 
-		expect(responseBodyData.originalMoney).toBe(totalPrice * 0.84);
-		expect(responseBodyData.availableMoney).toBe(totalPrice * 0.84);
+    expect(responseBodyData.originalMoney).toBe(totalPrice * 0.84);
+    expect(responseBodyData.availableMoney).toBe(totalPrice * 0.84);
 
-		expect(responseBodyData.originalCredits).toBe(totalPrice);
-		expect(responseBodyData.availableCredits).toBe(totalPrice);
-	});
-	it("creates a credit account of giftcard type with the cost 500", async () => {
-		const cost = 500;
-		const mutation = `
+    expect(responseBodyData.originalCredits).toBe(totalPrice);
+    expect(responseBodyData.availableCredits).toBe(totalPrice);
+  });
+  it("creates a credit account of giftcard type with the cost 500", async () => {
+    const cost = 500;
+    const mutation = `
 		
       mutation {
   createGiftAccount(input: {
@@ -107,24 +107,24 @@ describe("Testing accounts are created with the right values", () => {
   }
 }`;
 
-		const response = await request(app)
-			.post("/graphql")
-			.send({ query: mutation });
+    const response = await request(app)
+      .post("/graphql")
+      .send({ query: mutation });
 
-		const responseBodyData = response.body.data.createGiftAccount;
+    const responseBodyData = response.body.data.createGiftAccount;
 
-		expect(responseBodyData.originalMoney).toBe(cost);
-		expect(responseBodyData.availableMoney).toBe(cost);
+    expect(responseBodyData.originalMoney).toBe(cost);
+    expect(responseBodyData.availableMoney).toBe(cost);
 
-		expect(responseBodyData.originalCredits).toBe(cost);
-		expect(responseBodyData.availableCredits).toBe(cost);
-	});
+    expect(responseBodyData.originalCredits).toBe(cost);
+    expect(responseBodyData.availableCredits).toBe(cost);
+  });
 
-	it("uses one credit from an account", async () => {
-		const priceOfItem = 250;
-		const giftCardValue = 500;
-		const remainingValue = giftCardValue - priceOfItem;
-		const createMutation = `
+  it("uses one credit from an account", async () => {
+    const priceOfItem = 250;
+    const giftCardValue = 500;
+    const remainingValue = giftCardValue - priceOfItem;
+    const createMutation = `
     mutation {
       createGiftAccount(input: {
         purchaseAmount: ${giftCardValue}
@@ -135,13 +135,13 @@ describe("Testing accounts are created with the right values", () => {
     }
   `;
 
-		const createResponse = await request(app)
-			.post("/graphql")
-			.send({ query: createMutation });
+    const createResponse = await request(app)
+      .post("/graphql")
+      .send({ query: createMutation });
 
-		const code = createResponse.body.data.createPrepaidAccount.creditCode;
+    const code = createResponse.body.data.createPrepaidAccount.creditCode;
 
-		const useCreditMutation = `
+    const useCreditMutation = `
     mutation {
       useCredit(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
         availableCredits
@@ -149,13 +149,13 @@ describe("Testing accounts are created with the right values", () => {
     }
   `;
 
-		const useResponse = await request(app)
-			.post("/graphql")
-			.send({ query: useCreditMutation });
+    const useResponse = await request(app)
+      .post("/graphql")
+      .send({ query: useCreditMutation });
 
-		expect(useResponse.status).toBe(200);
-		expect(useResponse.body.data.useCredit.availableCredits).toBe(
-			remainingValue,
-		);
-	});
+    expect(useResponse.status).toBe(200);
+    expect(useResponse.body.data.useCredit.availableCredits).toBe(
+      remainingValue
+    );
+  });
 });
