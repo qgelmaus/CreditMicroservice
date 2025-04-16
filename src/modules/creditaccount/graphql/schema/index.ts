@@ -1,3 +1,4 @@
+//src/modules/creditaccount/graphql/schema/index.ts
 import fs from "node:fs";
 import path from "node:path";
 import gql from "graphql-tag";

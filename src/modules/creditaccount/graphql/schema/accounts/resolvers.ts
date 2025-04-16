@@ -1,3 +1,4 @@
+//src/modules/creditaccount/graphql/schema/accounts/resolvers.ts
 import { CreditAccountService } from "../../../app/services/creditAccount.service";
 
 const service = new CreditAccountService();

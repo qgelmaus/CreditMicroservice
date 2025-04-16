@@ -1,2 +1,3 @@
+#//src/modules/creditaccount/graphql/schema/baseSchema.gql
 type Query
 type Mutation
