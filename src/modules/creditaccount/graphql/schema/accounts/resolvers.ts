@@ -4,6 +4,13 @@ import { CreditAccountService } from "../../../app/services/creditAccount.servic
 const service = new CreditAccountService();
 
 export const creditAccountResolver = {
+  CreditAccount: {
+    __resolveType(obj: any) {
+      if (obj.type === "GIFT_CARD") return "GiftAccount";
+      if (obj.type === "PREPAID_CARD") return "PrepaidAccount";
+      return null;
+    },
+  },
   Mutation: {
     useCredits: async (_: any, { input }: any) => {
       const { creditCode, credits, money, note } = input;
