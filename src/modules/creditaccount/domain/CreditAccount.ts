@@ -18,6 +18,8 @@ export abstract class CreditAccount {
 
 	useCredits(cost: number) {}
 	refundCredits(cost: number) {}
+	transferCreditsToAccount(amount: number) {}
+	transferCreditsFromAccount(amount: number) {}
 
 	refundMoneyOnly(money: number) {
 		this._availableMoney = this._availableMoney.subtract(money);
@@ -85,6 +87,16 @@ export class GiftAccount extends CreditAccount {
 		this._availableCredits = this._availableCredits.add(cost);
 		this._availableMoney = this._availableMoney.add(cost);
 	}
+
+	transferCreditsFromAccount(amount: number) {
+		this._availableCredits = this._availableCredits.subtract(amount);
+		this._availableMoney = this._availableMoney.subtract(amount);
+	}
+
+	transferCreditsToAccount(amount: number) {
+		this._availableCredits = this._availableCredits.add(amount);
+		this._availableMoney = this._availableMoney.add(amount);
+	}
 }
 
 export class PrepaidAccount extends CreditAccount {
@@ -128,6 +140,19 @@ export class PrepaidAccount extends CreditAccount {
 		this._availableMoney = this._availableMoney.add(discountedAmount);
 		this.treatmentCount += 1;
 	}
+
+	transferCreditsFromAccount(amount: number) {
+		this._availableCredits = this._availableCredits.subtract(amount);
+		const discountedAmount = amount * (1 - this.discountPercentage / 100);
+		this._availableMoney = this._availableMoney.subtract(discountedAmount);
+	}
+
+	transferCreditsToAccount(amount: number) {
+		this._availableCredits = this._availableCredits.add(amount);
+		const discountedAmount = amount * (1 - this.discountPercentage / 100);
+		this._availableMoney = this._availableMoney.add(discountedAmount);
+	}
+
 	getDataToPersist() {
 		return {
 			...super.getDataToPersist(),

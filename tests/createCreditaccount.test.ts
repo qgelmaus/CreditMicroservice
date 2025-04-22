@@ -365,7 +365,7 @@ describe("Testing editing and movement of values", () => {
 
 		const transferCreditMutation = `
     mutation {
-      transferCredit(input: { fromCreditCode: "${fromCode}", toCreditCode: "${toCode}", amount: ${transferValue}}) {
+      transferCredits(input: { fromCreditCode: "${fromCode}", toCreditCode: "${toCode}", amount: ${transferValue}}) {
         
       }
     }

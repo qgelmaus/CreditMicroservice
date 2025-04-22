@@ -77,6 +77,13 @@ input RefundMoneyInput {
 	note: String
 }
 
+input TransferCreditsInput {
+	fromCreditCode: String!
+	toCreditCode: String!
+	amount: Float!
+	note: String
+}
+
 extend type Query {
 	creditAccountByCode(code: String!): CreditAccount
 	allCreditAccounts: [CreditAccount!]!
@@ -85,6 +92,7 @@ extend type Query {
 type Mutation {
 	refundCredits(input: RefundCreditsInput!): CreditAccount!
 	refundMoney(input: RefundMoneyInput!): CreditAccount!
+	transferCredits(input: TransferCreditsInput!): Transaction
 	useCredits(input: UseCreditsInput!): CreditAccount!
 	createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
 	createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!

@@ -9,10 +9,12 @@ import {
 	toDomain,
 	toDTO,
 } from "../../infrastructure/mappers/creditaccount.mapper";
+import { CreditTransferRepository } from "../../domain/creditTransfer.repository";
 
 export class CreditAccountService {
 	private accountRepo = new CreditAccountRepository();
 	private transactionRepo = new CreditTransactionRepository();
+	private transferRepo = new CreditTransferRepository();
 
 	async createGiftAccount(purchaseAmount: number, email: string) {
 		const credits = new Credits(purchaseAmount);
@@ -121,6 +123,49 @@ export class CreditAccountService {
 		);
 
 		return toDTO(toDomain(updated));
+	}
+
+	async transferCredits(
+		fromCode: string,
+		toCode: string,
+		amount: number,
+		note?: string,
+	): Promise<CreditTransferDTO> {
+		const dbFromAccount = await this.accountRepo.findByCreditCode(fromCode);
+		const dbToAccount = await this.accountRepo.findByCreditCode(toCode);
+		if (!dbFromAccount || !dbToAccount) throw new Error("Account not found");
+
+		const fromAccount = toDomain(dbFromAccount);
+		const toAccount = toDomain(dbToAccount);
+
+		if (fromAccount.type !== toAccount.type)
+			throw new Error("Accounts are not of the same type");
+
+		fromAccount.transferCreditsFromAccount(amount);
+		toAccount.transferCreditsToAccount(amount);
+
+		const updatedFromAccount = await this.accountRepo.updateState(fromAccount);
+		const updatedToAccount = await this.accountRepo.updateState(toAccount);
+
+		const fromTransaction = await this.transactionRepo.logCreditTransferOut(
+			updatedFromAccount.id,
+			amount,
+			amount,
+			note ?? "",
+		);
+
+		const toTransaction = await this.transactionRepo.logCreditTransferIn(
+			updatedToAccount.id,
+			amount,
+			amount,
+			note ?? "",
+		);
+
+		return await this.transferRepo.saveCreditTransfer(
+			fromTransaction.id,
+			toTransaction.id,
+			amount,
+		);
 	}
 
 	async refundMoney(
