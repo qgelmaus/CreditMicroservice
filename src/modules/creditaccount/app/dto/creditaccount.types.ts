@@ -1,4 +1,6 @@
 import type { CreditAccountType } from "@prisma/client";
+import type { Credits } from "../../domain/valueobjects/Credits";
+import type { Money } from "../../domain/valueobjects/Money";
 
 export interface CreditAccountDTO {
 	creditCode: string;
@@ -12,4 +14,9 @@ export interface CreditAccountDTO {
 	dateExpired: Date;
 	treatmentCount?: number;
 	discountPercentage?: number;
+}
+
+export interface IUpdateAccount {
+	credits: Credits;
+	money: Money;
 }

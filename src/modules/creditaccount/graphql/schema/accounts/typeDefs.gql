@@ -2,96 +2,95 @@
 scalar Date
 
 interface CreditAccount {
-  creditCode: String!
-  type: CreditAccountType!
-  originalCredits: Int!
-  originalMoney: Float!
-  availableCredits: Int!
-  availableMoney: Float!
-  email: String!
-  dateCreated: Date!
-  dateExpired: Date!
-  transactions: [Transaction]!
+	creditCode: String!
+	type: CreditAccountType!
+	originalCredits: Int!
+	originalMoney: Float!
+	availableCredits: Int!
+	availableMoney: Float!
+	email: String!
+	dateCreated: Date!
+	dateExpired: Date!
+	transactions: [Transaction]!
 }
 
 type GiftAccount implements CreditAccount {
-  creditCode: String!
-  type: CreditAccountType!
-  originalCredits: Int!
-  originalMoney: Float!
-  availableCredits: Int!
-  availableMoney: Float!
-  email: String!
-  dateCreated: Date!
-  dateExpired: Date!
-  transactions: [Transaction]!
+	creditCode: String!
+	type: CreditAccountType!
+	originalCredits: Int!
+	originalMoney: Float!
+	availableCredits: Int!
+	availableMoney: Float!
+	email: String!
+	dateCreated: Date!
+	dateExpired: Date!
+	transactions: [Transaction]!
 }
 
 type PrepaidAccount implements CreditAccount {
-  creditCode: String!
-  type: CreditAccountType!
-  originalCredits: Int!
-  originalMoney: Float!
-  availableCredits: Int!
-  availableMoney: Float!
-  email: String!
-  dateCreated: Date!
-  dateExpired: Date!
-  treatmentCount: Int!
-  discountPercentage: Float!
-  transactions: [Transaction]!
+	creditCode: String!
+	type: CreditAccountType!
+	originalCredits: Int!
+	originalMoney: Float!
+	availableCredits: Int!
+	availableMoney: Float!
+	email: String!
+	dateCreated: Date!
+	dateExpired: Date!
+	treatmentCount: Int
+	discountPercentage: Float
+	transactions: [Transaction]!
 }
 
 type Transaction {
-  creditCode: String!
-  creditsUsed: Int!
-  moneyUsed: Int!
-  transactionDate: Date!
+	creditCode: String!
+	creditsUsed: Int!
+	moneyUsed: Int!
+	transactionDate: Date!
 }
 
 input CreateGiftAccountInput {
-  purchaseAmount: Float!
-  email: String!
+	purchaseAmount: Float!
+	email: String!
 }
 
 input CreatePrepaidAccountInput {
-  treatmentCount: Int!
-  pricePerTreatment: Float!
-  email: String!
+	treatmentCount: Int!
+	pricePerTreatment: Float!
+	email: String!
 }
 
 input UseCreditsInput {
-  creditCode: String!
-  cost: Int!
+	creditCode: String!
+	cost: Float!
 }
 
 input RefundCreditsInput {
-  creditCode: String!
-  credits: Int!
-  money: Float!
-  note: String
+	creditCode: String!
+	cost: Float!
+	note: String
 }
 
 input RefundMoneyInput {
-  creditCode: String!
-  money: Float!
-  note: String
+	creditCode: String!
+	money: Float!
+	note: String
 }
 
 extend type Query {
-  creditAccountByCode(code: String!): CreditAccount
-  allCreditAccounts: [CreditAccount!]!
+	creditAccountByCode(code: String!): CreditAccount
+	allCreditAccounts: [CreditAccount!]!
 }
 
 type Mutation {
-  refundCredits(input: RefundCreditsInput!): CreditAccount!
-  refundMoney(input: RefundMoneyInput!): CreditAccount!
-  useCredits(input: UseCreditsInput!): CreditAccount!
-  createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
-  createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
+	refundCredits(input: RefundCreditsInput!): CreditAccount!
+	refundMoney(input: RefundMoneyInput!): CreditAccount!
+	useCredits(input: UseCreditsInput!): CreditAccount!
+	createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
+	createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
 }
 
 enum CreditAccountType {
-  GIFT_CARD
-  PREPAID_CARD
+	GIFT_CARD
+	PREPAID_CARD
 }

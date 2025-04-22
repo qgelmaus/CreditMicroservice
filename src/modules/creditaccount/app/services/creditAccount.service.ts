@@ -1,5 +1,5 @@
 import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
-import { CreditAccountDTO } from "../dto/creditaccount.types";
+import type { CreditAccountDTO } from "../dto/creditaccount.types";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 
@@ -46,11 +46,11 @@ export class CreditAccountService {
 		pricePerTreatment: number,
 		email: string,
 	): Promise<CreditAccountDTO> {
-		const discount = treatmentCount === 5 ? 0.1 : 0.2;
+		const discount = treatmentCount === 5 ? 0.12 : 0.16;
 		const fullPrice = treatmentCount * pricePerTreatment;
 		const discountedPrice = fullPrice * (1 - discount);
 
-		const credits = new Credits(treatmentCount);
+		const credits = new Credits(fullPrice);
 		const money = new Money(discountedPrice);
 
 		const account = new PrepaidAccount(
@@ -80,26 +80,20 @@ export class CreditAccountService {
 
 	async useCredits(
 		creditCode: string,
-		credits: number,
-		money: number,
+		cost: number,
 		note?: string,
 	): Promise<CreditAccountDTO> {
 		const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
 		if (!dbAccount) throw new Error("Account not found");
 
 		const account = toDomain(dbAccount);
-		account.useCredits(credits, money);
-
-		const updated = await this.accountRepo.updateAvailableCredits(
-			creditCode,
-			account.availableCredits,
-			account.availableMoney,
-		);
+		account.useCredits(cost);
+		const updated = await this.accountRepo.updateState(account);
 
 		await this.transactionRepo.logCreditUsed(
 			updated.id,
-			credits,
-			money,
+			cost,
+			cost,
 			note ?? "",
 		);
 
@@ -108,26 +102,21 @@ export class CreditAccountService {
 
 	async refundCredits(
 		creditCode: string,
-		credits: number,
-		money: number,
+		cost: number,
 		note?: string,
 	): Promise<CreditAccountDTO> {
 		const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
 		if (!dbAccount) throw new Error("Account not found");
 
 		const account = toDomain(dbAccount);
-		account.refundCredits(credits, money);
+		account.refundCredits(cost);
 
-		const updated = await this.accountRepo.updateAvailableCredits(
-			creditCode,
-			account.availableCredits,
-			account.availableMoney,
-		);
+		const updated = await this.accountRepo.updateState(account);
 
 		await this.transactionRepo.logCreditRefund(
 			updated.id,
-			credits,
-			money,
+			cost,
+			cost,
 			note ?? "",
 		);
 
@@ -146,11 +135,7 @@ export class CreditAccountService {
 		const account = toDomain(dbAccount);
 		account.refundMoneyOnly(money);
 
-		const updated = await this.accountRepo.updateAvailableCredits(
-			creditCode,
-			account.availableCredits,
-			account.availableMoney,
-		);
+		const updated = await this.accountRepo.updateState(account);
 
 		await this.transactionRepo.logMoneyRefund(
 			updated.id,

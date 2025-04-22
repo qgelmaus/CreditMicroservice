@@ -1,12 +1,12 @@
-import { CreditAccount as PrismaAccount } from "@prisma/client";
+import type { CreditAccount as PrismaAccount } from "@prisma/client";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 import {
-	CreditAccount,
+	type CreditAccount,
 	GiftAccount,
 	PrepaidAccount,
 } from "../../domain/CreditAccount";
-import { CreditAccountDTO } from "../../app/dto/creditaccount.types";
+import type { CreditAccountDTO } from "../../app/dto/creditaccount.types";
 
 export function toDomain(account: PrismaAccount) {
 	const originalCredits = new Credits(account.originalCredits);
@@ -39,8 +39,8 @@ export function toDomain(account: PrismaAccount) {
 			account.email,
 			account.dateCreated,
 			account.dateExpired,
-			account.treatmentCount!,
-			account.discountPercentage!,
+			account.treatmentCount ?? 0,
+			account.discountPercentage ?? 0,
 		);
 	}
 
@@ -48,7 +48,7 @@ export function toDomain(account: PrismaAccount) {
 }
 
 export function toDTO(account: CreditAccount): CreditAccountDTO {
-	return {
+	const base: CreditAccountDTO = {
 		creditCode: account.creditCode,
 		type: account.type,
 		originalCredits: account.originalCredits.value,
@@ -59,4 +59,14 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
 		dateCreated: account.dateCreated,
 		dateExpired: account.dateExpired,
 	};
+
+	if (account instanceof PrepaidAccount) {
+		return {
+			...base,
+			treatmentCount: account.treatmentCount,
+			discountPercentage: account.discountPercentage,
+		};
+	}
+
+	return base;
 }
