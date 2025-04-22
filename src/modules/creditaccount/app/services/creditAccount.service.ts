@@ -1,5 +1,8 @@
 import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
-import type { CreditAccountDTO } from "../dto/creditaccount.types";
+import type {
+	CreditAccountDTO,
+	CreditTransferDTO,
+} from "../dto/creditaccount.types";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 
@@ -164,7 +167,6 @@ export class CreditAccountService {
 		return await this.transferRepo.saveCreditTransfer(
 			fromTransaction.id,
 			toTransaction.id,
-			amount,
 		);
 	}
 

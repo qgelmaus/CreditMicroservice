@@ -20,3 +20,8 @@ export interface IUpdateAccount {
 	credits: Credits;
 	money: Money;
 }
+
+export interface CreditTransferDTO {
+	fromTransactionId: number;
+	toTransactionId: number;
+}

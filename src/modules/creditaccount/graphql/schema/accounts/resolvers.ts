@@ -25,7 +25,8 @@ export const creditAccountResolver = {
 			return await service.refundCredits(creditCode, cost, note);
 		},
 
-		transferCredit: async (_: any, { input }: any) => {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		transferCredits: async (_: any, { input }: any) => {
 			const { fromCode, toCode, amount, note } = input;
 			return await service.transferCredits(fromCode, toCode, amount, note);
 		},

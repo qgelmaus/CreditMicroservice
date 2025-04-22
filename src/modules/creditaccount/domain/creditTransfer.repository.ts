@@ -14,16 +14,15 @@ export class CreditTransferRepository {
 		});
 	}
 
-	async saveCreditTransfer(
-		fromAccountId: number,
-		toAccountId: number,
-		amount: number,
-	) {
+	async saveCreditTransfer(transactionOutId: number, tranasctionInId: number) {
 		return await prisma.creditTransfer.create({
 			data: {
-				fromAccountId,
-				toAccountId,
-				amount: amount,
+				fromTransaction: {
+					connect: { id: transactionOutId },
+				},
+				toTransaction: {
+					connect: { id: tranasctionInId },
+				},
 			},
 		});
 	}

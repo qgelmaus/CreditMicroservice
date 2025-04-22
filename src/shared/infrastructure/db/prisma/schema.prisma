@@ -38,6 +38,18 @@ model CreditTransaction {
   note String?
   createdAt        DateTime           @default(now())
   
+
+  fromTransfer CreditTransfer[] @relation("FromTransaction")
+  toTransfer CreditTransfer[] @relation("ToTransaction")
+}
+
+model CreditTransfer {
+  id Int @id @default (autoincrement())
+  fromTransaction CreditTransaction @relation("FromTransaction", fields: [fromTransactionId], references: [id], onDelete: Cascade)
+  fromTransactionId Int
+  toTransaction CreditTransaction @relation("ToTransaction", fields: [toTransactionId], references: [id], onDelete: Cascade)
+  toTransactionId Int
+  createdAt DateTime @default(now())
 }
 
 enum CreditAccountType {
