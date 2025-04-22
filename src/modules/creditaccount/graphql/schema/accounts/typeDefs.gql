@@ -1,3 +1,4 @@
+#//src/modules/creditaccount/graphql/schema/accounts/typeDefs.gql
 scalar Date
 
 interface CreditAccount {
@@ -78,14 +79,16 @@ input RefundMoneyInput {
 }
 
 extend type Query {
-  creditAccounts: [CreditAccount!]
-  creditAccount(id: Int!): CreditAccount
+  creditAccountByCode(code: String!): CreditAccount
+  allCreditAccounts: [CreditAccount!]!
 }
 
 type Mutation {
-  createGiftAccount(input: CreateGiftAccountInput!): GiftAccount!
-  createPrepaidAccount(input: CreatePrepaidAccountInput!): PrepaidAccount!
-  useCredits(input: UseCreditsInput!): Transaction!
+  refundCredits(input: RefundCreditsInput!): CreditAccount!
+  refundMoney(input: RefundMoneyInput!): CreditAccount!
+  useCredits(input: UseCreditsInput!): CreditAccount!
+  createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
+  createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
 }
 
 enum CreditAccountType {

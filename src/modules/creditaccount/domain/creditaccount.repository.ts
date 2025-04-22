@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import type { CreditAccount as PrismaAccount } from "@prisma/client";
-import type { CreditAccountDTO } from "../../domain/shared/types/creditaccount.types";
+import type { CreditAccountDTO } from "../app/dto/creditaccount.types";
 
 const prisma = new PrismaClient();
 

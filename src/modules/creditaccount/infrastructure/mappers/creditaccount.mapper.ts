@@ -1,12 +1,12 @@
-import type { CreditAccount as PrismaAccount } from "@prisma/client";
+import { CreditAccount as PrismaAccount } from "@prisma/client";
+import { Credits } from "../../domain/valueobjects/Credits";
+import { Money } from "../../domain/valueobjects/Money";
 import {
-	type CreditAccount,
+	CreditAccount,
 	GiftAccount,
 	PrepaidAccount,
-} from "../creditaccounts/domain/CreditAccount";
-import type { CreditAccountDTO } from "../creditaccounts/domain/shared/types/creditaccount.types";
-import { Credits } from "../creditaccounts/domain/valueobjects/Credits";
-import { Money } from "../creditaccounts/domain/valueobjects/Money";
+} from "../../domain/CreditAccount";
+import { CreditAccountDTO } from "../../app/dto/creditaccount.types";
 
 export function toDomain(account: PrismaAccount) {
 	const originalCredits = new Credits(account.originalCredits);

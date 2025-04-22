@@ -1,10 +1,14 @@
-import { toDomain, toDTO } from "../../../mappers/creditaccount.mapper";
 import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
-import type { CreditAccountDTO } from "../../domain/shared/types/creditaccount.types";
+import { CreditAccountDTO } from "../dto/creditaccount.types";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
-import { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
-import { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
+
+import { CreditTransactionRepository } from "../../domain/creditTransaction.repository";
+import { CreditAccountRepository } from "../../domain/creditaccount.repository";
+import {
+	toDomain,
+	toDTO,
+} from "../../infrastructure/mappers/creditaccount.mapper";
 
 export class CreditAccountService {
 	private accountRepo = new CreditAccountRepository();

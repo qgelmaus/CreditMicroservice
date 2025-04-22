@@ -30,7 +30,7 @@ model CreditAccount {
 
 model CreditTransaction {
   id  Int @id @default(autoincrement())
-  creditAccount CreditAccount @relation(fields: [creditAccountId], references: [id])
+  creditAccount CreditAccount @relation(fields: [creditAccountId], references: [id], onDelete: Cascade)
   creditAccountId Int
   type TransactionType
   credits Float
