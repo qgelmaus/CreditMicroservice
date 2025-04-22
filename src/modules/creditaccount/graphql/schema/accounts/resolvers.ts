@@ -4,51 +4,58 @@ import { CreditAccountService } from "../../../app/services/creditAccount.servic
 const service = new CreditAccountService();
 
 export const creditAccountResolver = {
-  CreditAccount: {
-    __resolveType(obj: any) {
-      if (obj.type === "GIFT_CARD") return "GiftAccount";
-      if (obj.type === "PREPAID_CARD") return "PrepaidAccount";
-      return null;
-    },
-  },
-  Mutation: {
-    useCredits: async (_: any, { input }: any) => {
-      const { creditCode, credits, money, note } = input;
-      return await service.useCredits(creditCode, credits, money, note);
-    },
+	CreditAccount: {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		__resolveType(obj: any) {
+			if (obj.type === "GIFT_CARD") return "GiftAccount";
+			if (obj.type === "PREPAID_CARD") return "PrepaidAccount";
+			return null;
+		},
+	},
+	Mutation: {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		useCredits: async (_: any, { input }: any) => {
+			const { creditCode, cost, note } = input;
+			return await service.useCredits(creditCode, cost, note);
+		},
 
-    refundCredits: async (_: any, { input }: any) => {
-      const { creditCode, credits, money, note } = input;
-      return await service.refundCredits(creditCode, credits, money, note);
-    },
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		refundCredits: async (_: any, { input }: any) => {
+			const { creditCode, cost, note } = input;
+			return await service.refundCredits(creditCode, cost, note);
+		},
 
-    refundMoney: async (_: any, { input }: any) => {
-      const { creditCode, money, note } = input;
-      return await service.refundMoney(creditCode, money, note);
-    },
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		refundMoney: async (_: any, { input }: any) => {
+			const { creditCode, money, note } = input;
+			return await service.refundMoney(creditCode, money, note);
+		},
 
-    createGiftAccount: async (_: any, { input }: any) => {
-      const { purchaseAmount, email } = input;
-      return await service.createGiftAccount(purchaseAmount, email);
-    },
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		createGiftAccount: async (_: any, { input }: any) => {
+			const { purchaseAmount, email } = input;
+			return await service.createGiftAccount(purchaseAmount, email);
+		},
 
-    createPrepaidAccount: async (_: any, { input }: any) => {
-      const { treatmentCount, pricePerTreatment, email } = input;
-      return await service.createPrepaidAccount(
-        treatmentCount,
-        pricePerTreatment,
-        email
-      );
-    },
-  },
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		createPrepaidAccount: async (_: any, { input }: any) => {
+			const { treatmentCount, pricePerTreatment, email } = input;
+			return await service.createPrepaidAccount(
+				treatmentCount,
+				pricePerTreatment,
+				email,
+			);
+		},
+	},
 
-  Query: {
-    creditAccountByCode: async (_: any, { code }: any) => {
-      return await service.findByCode(code);
-    },
+	Query: {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		creditAccountByCode: async (_: any, { code }: any) => {
+			return await service.findByCode(code);
+		},
 
-    allCreditAccounts: async () => {
-      return await service.findAll();
-    },
-  },
+		allCreditAccounts: async () => {
+			return await service.findAll();
+		},
+	},
 };

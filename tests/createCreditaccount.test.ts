@@ -3,12 +3,12 @@ import { app } from "../src/app";
 import { resetDatabase } from "../src/shared/infrastructure/db/reset";
 
 describe("Testing CreditAccount is created", () => {
-  beforeEach(async () => {
-    await resetDatabase();
-  });
+	beforeEach(async () => {
+		await resetDatabase();
+	});
 
-  it("creates a credit account of gift type", async () => {
-    const mutation = `
+	it("creates a credit account of gift type", async () => {
+		const mutation = `
       mutation {
   createGiftAccount(input: {
     purchaseAmount: 300,
@@ -22,14 +22,14 @@ describe("Testing CreditAccount is created", () => {
 }
     `;
 
-    const response = await request(app)
-      .post("/graphql")
-      .send({ query: mutation });
-    expect(response.status).toBe(200);
-  });
+		const response = await request(app)
+			.post("/graphql")
+			.send({ query: mutation });
+		expect(response.status).toBe(200);
+	});
 
-  it("creates a credit account of prepaid type", async () => {
-    const mutation = `
+	it("creates a credit account of prepaid type", async () => {
+		const mutation = `
 		mutation {
   createPrepaidAccount(input: {
     treatmentCount: 10,
@@ -39,28 +39,27 @@ describe("Testing CreditAccount is created", () => {
     creditCode
     originalMoney
     availableCredits
-    discountPercentage
     type
   }
 }`;
 
-    const response = await request(app)
-      .post("/graphql")
-      .send({ query: mutation });
-    expect(response.status).toBe(200);
-  });
+		const response = await request(app)
+			.post("/graphql")
+			.send({ query: mutation });
+		expect(response.status).toBe(200);
+	});
 });
 
 describe("Testing accounts are created with the right values", () => {
-  beforeEach(async () => {
-    await resetDatabase();
-  });
+	beforeEach(async () => {
+		await resetDatabase();
+	});
 
-  it("creates a credit account of prepaid type with treatmentCount and pricePerTreatment", async () => {
-    const treatmentCount = 10;
-    const pricePerTreatment = 250;
-    const totalPrice = treatmentCount * pricePerTreatment;
-    const mutation = `
+	it("creates a credit account of prepaid type with treatmentCount and pricePerTreatment", async () => {
+		const treatmentCount = 10;
+		const pricePerTreatment = 250;
+		const totalPrice = treatmentCount * pricePerTreatment;
+		const mutation = `
 		mutation {
   createPrepaidAccount(input: {
     treatmentCount: ${treatmentCount},
@@ -69,29 +68,28 @@ describe("Testing accounts are created with the right values", () => {
   }) {
     creditCode
     originalMoney
-	originalCredits
-	availableMoney
+	  originalCredits
+	  availableMoney
     availableCredits
-    discountPercentage
     type
   }
 }`;
 
-    const response = await request(app)
-      .post("/graphql")
-      .send({ query: mutation });
+		const response = await request(app)
+			.post("/graphql")
+			.send({ query: mutation });
 
-    const responseBodyData = response.body.data.createPrepaidAccount;
+		const responseBodyData = response.body.data.createPrepaidAccount;
 
-    expect(responseBodyData.originalMoney).toBe(totalPrice * 0.84);
-    expect(responseBodyData.availableMoney).toBe(totalPrice * 0.84);
+		expect(responseBodyData.originalMoney).toBe(totalPrice * 0.84);
+		expect(responseBodyData.availableMoney).toBe(totalPrice * 0.84);
 
-    expect(responseBodyData.originalCredits).toBe(totalPrice);
-    expect(responseBodyData.availableCredits).toBe(totalPrice);
-  });
-  it("creates a credit account of giftcard type with the cost 500", async () => {
-    const cost = 500;
-    const mutation = `
+		expect(responseBodyData.originalCredits).toBe(totalPrice);
+		expect(responseBodyData.availableCredits).toBe(totalPrice);
+	});
+	it("creates a credit account of giftcard type with the cost 500", async () => {
+		const cost = 500;
+		const mutation = `
 		
       mutation {
   createGiftAccount(input: {
@@ -100,48 +98,287 @@ describe("Testing accounts are created with the right values", () => {
   }) {
     creditCode
     originalCredits
-	originalMoney
+	  originalMoney
     availableCredits
-	availableMoney
+	  availableMoney
     type
   }
 }`;
 
-    const response = await request(app)
-      .post("/graphql")
-      .send({ query: mutation });
+		const response = await request(app)
+			.post("/graphql")
+			.send({ query: mutation });
 
-    const responseBodyData = response.body.data.createGiftAccount;
+		const responseBodyData = response.body.data.createGiftAccount;
 
-    expect(responseBodyData.originalMoney).toBe(cost);
-    expect(responseBodyData.availableMoney).toBe(cost);
+		expect(responseBodyData.originalMoney).toBe(cost);
+		expect(responseBodyData.availableMoney).toBe(cost);
 
-    expect(responseBodyData.originalCredits).toBe(cost);
-    expect(responseBodyData.availableCredits).toBe(cost);
-  });
+		expect(responseBodyData.originalCredits).toBe(cost);
+		expect(responseBodyData.availableCredits).toBe(cost);
+	});
 
-  it("uses one credit from an account", async () => {
-    const priceOfItem = 250;
-    const giftCardValue = 500;
-    const remainingValue = giftCardValue - priceOfItem;
-    const createMutation = `
+	it("uses credit from a giftaccount", async () => {
+		const priceOfItem = 250;
+		const giftCardValue = 500;
+		const remainingValue = giftCardValue - priceOfItem;
+		const createMutation = `
+   mutation{
+  createGiftAccount(input:{
+    purchaseAmount: ${giftCardValue},
+    email:"testjest@kundeeksempel.dk"
+  }){
+    creditCode
+  }
+}
+  `;
+
+		const createResponse = await request(app)
+			.post("/graphql")
+			.send({ query: createMutation });
+
+		const code = createResponse.body.data.createGiftAccount.creditCode;
+
+		const useCreditMutation = `
     mutation {
-      createGiftAccount(input: {
-        purchaseAmount: ${giftCardValue}
-      }) {
-        creditCode
-		availableCredits
+      useCredits(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+        availableCredits
+        availableMoney
       }
     }
   `;
 
-    const createResponse = await request(app)
-      .post("/graphql")
-      .send({ query: createMutation });
+		const useResponse = await request(app)
+			.post("/graphql")
+			.send({ query: useCreditMutation });
 
-    const code = createResponse.body.data.createPrepaidAccount.creditCode;
+		expect(useResponse.status).toBe(200);
+		expect(useResponse.body.data.useCredits.availableCredits).toBe(
+			remainingValue,
+		);
+		expect(useResponse.body.data.useCredits.availableMoney).toBe(
+			remainingValue,
+		);
+	});
 
-    const useCreditMutation = `
+	it("uses credit and one treatmentcount from a prepaidaccount", async () => {
+		const priceOfItem = 200;
+		const amountOfTreatments = 10;
+		const totalMoney = 10 * 200 * 0.84;
+		const createMutation = `
+   mutation{
+  createPrepaidAccount(input:{
+    treatmentCount: ${amountOfTreatments},
+    pricePerTreatment: ${priceOfItem}
+    email:"testjest@kundeeksempel.dk"
+  }){
+    creditCode
+    originalMoney
+    originalCredits
+  }
+}
+  `;
+
+		const createResponse = await request(app)
+			.post("/graphql")
+			.send({ query: createMutation });
+
+		expect(createResponse.body.data.createPrepaidAccount.originalMoney).toBe(
+			totalMoney,
+		);
+		const code = createResponse.body.data.createPrepaidAccount.creditCode;
+
+		const useCreditMutation = `
+    mutation {
+      useCredits(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+        availableCredits
+        availableMoney
+        originalMoney
+        ... on PrepaidAccount {
+      treatmentCount
+       }
+      }
+    }
+  `;
+
+		const useResponse = await request(app)
+			.post("/graphql")
+			.send({ query: useCreditMutation });
+
+		expect(useResponse.status).toBe(200);
+		expect(useResponse.body.data.useCredits.availableCredits).toBe(
+			priceOfItem * amountOfTreatments - priceOfItem,
+		);
+		expect(useResponse.body.data.useCredits.availableMoney).toBe(
+			totalMoney - priceOfItem * 0.84,
+		);
+		expect(useResponse.body.data.useCredits.treatmentCount).toBe(
+			amountOfTreatments - 1,
+		);
+		expect(useResponse.body.data.useCredits.originalMoney).toBe(totalMoney);
+	});
+
+	it("refunds credit to a gift account", async () => {
+		const priceOfItem = 250;
+		const giftCardValue = 500;
+		const remainingValue = giftCardValue - priceOfItem;
+		const createMutation = `
+   mutation{
+  createGiftAccount(input:{
+    purchaseAmount: ${giftCardValue},
+    email:"testjest@kundeeksempel.dk"
+  }){
+    creditCode
+  }
+}
+  `;
+
+		const createResponse = await request(app)
+			.post("/graphql")
+			.send({ query: createMutation });
+
+		const code = createResponse.body.data.createGiftAccount.creditCode;
+
+		const useCreditMutation = `
+    mutation {
+      useCredits(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+        availableCredits
+      }
+    }
+  `;
+
+		const useResponse = await request(app)
+			.post("/graphql")
+			.send({ query: useCreditMutation });
+
+		expect(useResponse.status).toBe(200);
+		expect(useResponse.body.data.useCredits.availableCredits).toBe(
+			remainingValue,
+		);
+
+		const refundMutation = `
+    mutation {
+    refundCredits(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+     availableCredits
+      }
+    }
+   `;
+
+		const refundResponse = await request(app)
+			.post("/graphql")
+			.send({ query: refundMutation });
+
+		expect(refundResponse.status).toBe(200);
+		expect(refundResponse.body.data.refundCredits.availableCredits).toBe(
+			giftCardValue,
+		);
+	});
+
+	it("refunds credit, money and treatmentcount to a prepaid account", async () => {
+		const priceOfItem = 200;
+		const amountOfTreatments = 10;
+		const totalMoney = 10 * 200 * 0.84;
+		const createMutation = `
+   mutation{
+  createPrepaidAccount(input:{
+    treatmentCount: ${amountOfTreatments},
+    pricePerTreatment: ${priceOfItem}
+    email:"testjest@kundeeksempel.dk"
+  }){
+    creditCode
+    originalMoney
+  }
+}
+  `;
+
+		const createResponse = await request(app)
+			.post("/graphql")
+			.send({ query: createMutation });
+
+		expect(createResponse.body.data.createPrepaidAccount.originalMoney).toBe(
+			totalMoney,
+		);
+		const code = createResponse.body.data.createPrepaidAccount.creditCode;
+
+		const useCreditMutation = `
+    mutation {
+      useCredits(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+        availableCredits
+        availableMoney
+        originalMoney
+        ... on PrepaidAccount {
+        treatmentCount
+       }
+      }
+    }
+  `;
+
+		const useResponse = await request(app)
+			.post("/graphql")
+			.send({ query: useCreditMutation });
+
+		expect(useResponse.status).toBe(200);
+		expect(useResponse.body.data.useCredits.availableCredits).toBe(
+			priceOfItem * amountOfTreatments - priceOfItem,
+		);
+		expect(useResponse.body.data.useCredits.availableMoney).toBe(
+			totalMoney - priceOfItem * 0.84,
+		);
+		expect(useResponse.body.data.useCredits.treatmentCount).toBe(
+			amountOfTreatments - 1,
+		);
+		expect(useResponse.body.data.useCredits.originalMoney).toBe(totalMoney);
+
+		const refundMutation = `
+    mutation {
+    refundCredits(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
+     availableCredits
+     availableMoney
+     ... on PrepaidAccount {
+        treatmentCount
+       }
+      }
+    }
+   `;
+
+		const refundResponse = await request(app)
+			.post("/graphql")
+			.send({ query: refundMutation });
+
+		expect(refundResponse.status).toBe(200);
+		expect(refundResponse.body.data.refundCredits.availableCredits).toBe(
+			amountOfTreatments * priceOfItem,
+		);
+		expect(refundResponse.body.data.refundCredits.availableMoney).toBe(
+			totalMoney,
+		);
+		expect(refundResponse.body.data.refundCredits.treatmentCount).toBe(
+			amountOfTreatments,
+		);
+	});
+
+	it("transfers credit from one account to another", async () => {
+		const priceOfItem = 250;
+		const giftCardValue = 500;
+		const remainingValue = giftCardValue - priceOfItem;
+		const createMutation = `
+   mutation{
+  createGiftAccount(input:{
+    purchaseAmount: ${giftCardValue},
+    email:"testjest@kundeeksempel.dk"
+  }){
+    creditCode
+  }
+}
+  `;
+
+		const createResponse = await request(app)
+			.post("/graphql")
+			.send({ query: createMutation });
+
+		const code = createResponse.body.data.createGiftAccount.creditCode;
+
+		const useCreditMutation = `
     mutation {
       useCredit(input: { creditCode: "${code}", cost: ${priceOfItem} }) {
         availableCredits
@@ -149,13 +386,13 @@ describe("Testing accounts are created with the right values", () => {
     }
   `;
 
-    const useResponse = await request(app)
-      .post("/graphql")
-      .send({ query: useCreditMutation });
+		const useResponse = await request(app)
+			.post("/graphql")
+			.send({ query: useCreditMutation });
 
-    expect(useResponse.status).toBe(200);
-    expect(useResponse.body.data.useCredit.availableCredits).toBe(
-      remainingValue
-    );
-  });
+		expect(useResponse.status).toBe(200);
+		expect(useResponse.body.data.useCredit.availableCredits).toBe(
+			remainingValue,
+		);
+	});
 });
