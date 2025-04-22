@@ -1,182 +1,182 @@
 import { toDomain, toDTO } from "../../../mappers/creditaccount.mapper";
 import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
-import { CreditAccountDTO } from "../../domain/shared/types/creditaccount.types";
+import type { CreditAccountDTO } from "../../domain/shared/types/creditaccount.types";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 import { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
 import { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
 
 export class CreditAccountService {
-  private accountRepo = new CreditAccountRepository();
-  private transactionRepo = new CreditTransactionRepository();
+	private accountRepo = new CreditAccountRepository();
+	private transactionRepo = new CreditTransactionRepository();
 
-  async createGiftAccount(purchaseAmount: number, email: string) {
-    const credits = new Credits(purchaseAmount);
-    const money = new Money(purchaseAmount);
+	async createGiftAccount(purchaseAmount: number, email: string) {
+		const credits = new Credits(purchaseAmount);
+		const money = new Money(purchaseAmount);
 
-    const account = new GiftAccount(
-      0,
-      this.generateCreditCode(),
-      credits,
-      money,
-      credits,
-      money,
-      email,
-      new Date(),
-      this.generateDateExpired()
-    );
+		const account = new GiftAccount(
+			0,
+			this.generateCreditCode(),
+			credits,
+			money,
+			credits,
+			money,
+			email,
+			new Date(),
+			this.generateDateExpired(),
+		);
 
-    const saved = await this.accountRepo.create(account.getDataToPersist());
+		const saved = await this.accountRepo.create(account.getDataToPersist());
 
-    await this.transactionRepo.logPurchase(
-      saved.id,
-      saved.originalCredits,
-      saved.originalMoney
-    );
+		await this.transactionRepo.logPurchase(
+			saved.id,
+			saved.originalCredits,
+			saved.originalMoney,
+		);
 
-    return toDTO(toDomain(saved));
-  }
+		return toDTO(toDomain(saved));
+	}
 
-  async createPrepaidAccount(
-    treatmentCount: number,
-    pricePerTreatment: number,
-    email: string
-  ): Promise<CreditAccountDTO> {
-    const discount = treatmentCount === 5 ? 0.1 : 0.2;
-    const fullPrice = treatmentCount * pricePerTreatment;
-    const discountedPrice = fullPrice * (1 - discount);
+	async createPrepaidAccount(
+		treatmentCount: number,
+		pricePerTreatment: number,
+		email: string,
+	): Promise<CreditAccountDTO> {
+		const discount = treatmentCount === 5 ? 0.1 : 0.2;
+		const fullPrice = treatmentCount * pricePerTreatment;
+		const discountedPrice = fullPrice * (1 - discount);
 
-    const credits = new Credits(treatmentCount);
-    const money = new Money(discountedPrice);
+		const credits = new Credits(treatmentCount);
+		const money = new Money(discountedPrice);
 
-    const account = new PrepaidAccount(
-      0,
-      this.generateCreditCode(),
-      credits,
-      money,
-      credits,
-      money,
-      email,
-      new Date(),
-      this.generateDateExpired(),
-      treatmentCount,
-      discount * 100
-    );
+		const account = new PrepaidAccount(
+			0,
+			this.generateCreditCode(),
+			credits,
+			money,
+			credits,
+			money,
+			email,
+			new Date(),
+			this.generateDateExpired(),
+			treatmentCount,
+			discount * 100,
+		);
 
-    const saved = await this.accountRepo.create(account.getDataToPersist());
+		const saved = await this.accountRepo.create(account.getDataToPersist());
 
-    await this.transactionRepo.logPurchase(
-      saved.id,
-      saved.originalCredits,
-      saved.originalMoney
-    );
+		await this.transactionRepo.logPurchase(
+			saved.id,
+			saved.originalCredits,
+			saved.originalMoney,
+		);
 
-    return toDTO(toDomain(saved));
-  }
+		return toDTO(toDomain(saved));
+	}
 
-  async useCredits(
-    creditCode: string,
-    credits: number,
-    money: number,
-    note?: string
-  ): Promise<CreditAccountDTO> {
-    const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
-    if (!dbAccount) throw new Error("Account not found");
+	async useCredits(
+		creditCode: string,
+		credits: number,
+		money: number,
+		note?: string,
+	): Promise<CreditAccountDTO> {
+		const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
+		if (!dbAccount) throw new Error("Account not found");
 
-    const account = toDomain(dbAccount);
-    account.useCredits(credits, money);
+		const account = toDomain(dbAccount);
+		account.useCredits(credits, money);
 
-    const updated = await this.accountRepo.updateAvailableCredits(
-      creditCode,
-      account.availableCredits,
-      account.availableMoney
-    );
+		const updated = await this.accountRepo.updateAvailableCredits(
+			creditCode,
+			account.availableCredits,
+			account.availableMoney,
+		);
 
-    await this.transactionRepo.logCreditUsed(
-      updated.id,
-      credits,
-      money,
-      note ?? ""
-    );
+		await this.transactionRepo.logCreditUsed(
+			updated.id,
+			credits,
+			money,
+			note ?? "",
+		);
 
-    return toDTO(toDomain(updated));
-  }
+		return toDTO(toDomain(updated));
+	}
 
-  async refundCredits(
-    creditCode: string,
-    credits: number,
-    money: number,
-    note?: string
-  ): Promise<CreditAccountDTO> {
-    const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
-    if (!dbAccount) throw new Error("Account not found");
+	async refundCredits(
+		creditCode: string,
+		credits: number,
+		money: number,
+		note?: string,
+	): Promise<CreditAccountDTO> {
+		const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
+		if (!dbAccount) throw new Error("Account not found");
 
-    const account = toDomain(dbAccount);
-    account.refundCredits(credits, money);
+		const account = toDomain(dbAccount);
+		account.refundCredits(credits, money);
 
-    const updated = await this.accountRepo.updateAvailableCredits(
-      creditCode,
-      account.availableCredits,
-      account.availableMoney
-    );
+		const updated = await this.accountRepo.updateAvailableCredits(
+			creditCode,
+			account.availableCredits,
+			account.availableMoney,
+		);
 
-    await this.transactionRepo.logCreditRefund(
-      updated.id,
-      credits,
-      money,
-      note ?? ""
-    );
+		await this.transactionRepo.logCreditRefund(
+			updated.id,
+			credits,
+			money,
+			note ?? "",
+		);
 
-    return toDTO(toDomain(updated));
-  }
+		return toDTO(toDomain(updated));
+	}
 
-  async refundMoney(
-    creditCode: string,
-    credits: number,
-    money: number,
-    note?: string
-  ): Promise<CreditAccountDTO> {
-    const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
-    if (!dbAccount) throw new Error("Account not found");
+	async refundMoney(
+		creditCode: string,
+		credits: number,
+		money: number,
+		note?: string,
+	): Promise<CreditAccountDTO> {
+		const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
+		if (!dbAccount) throw new Error("Account not found");
 
-    const account = toDomain(dbAccount);
-    account.refundMoneyOnly(money);
+		const account = toDomain(dbAccount);
+		account.refundMoneyOnly(money);
 
-    const updated = await this.accountRepo.updateAvailableCredits(
-      creditCode,
-      account.availableCredits,
-      account.availableMoney
-    );
+		const updated = await this.accountRepo.updateAvailableCredits(
+			creditCode,
+			account.availableCredits,
+			account.availableMoney,
+		);
 
-    await this.transactionRepo.logMoneyRefund(
-      updated.id,
-      credits,
-      money,
-      note ?? ""
-    );
+		await this.transactionRepo.logMoneyRefund(
+			updated.id,
+			credits,
+			money,
+			note ?? "",
+		);
 
-    return toDTO(toDomain(updated));
-  }
+		return toDTO(toDomain(updated));
+	}
 
-  async findByCode(creditCode: string): Promise<CreditAccountDTO> {
-    const account = await this.accountRepo.findByCreditCode(creditCode);
-    if (!account) throw new Error("Account not found");
-    return toDTO(toDomain(account));
-  }
+	async findByCode(creditCode: string): Promise<CreditAccountDTO> {
+		const account = await this.accountRepo.findByCreditCode(creditCode);
+		if (!account) throw new Error("Account not found");
+		return toDTO(toDomain(account));
+	}
 
-  async findAll(): Promise<CreditAccountDTO[]> {
-    const accounts = await this.accountRepo.findAll();
-    return accounts.map((a) => toDTO(toDomain(a)));
-  }
+	async findAll(): Promise<CreditAccountDTO[]> {
+		const accounts = await this.accountRepo.findAll();
+		return accounts.map((a) => toDTO(toDomain(a)));
+	}
 
-  private generateCreditCode(): string {
-    const randomDigits = Math.floor(1000000 + Math.random() * 900000);
-    return `RR${randomDigits}`;
-  }
+	private generateCreditCode(): string {
+		const randomDigits = Math.floor(1000000 + Math.random() * 900000);
+		return `RR${randomDigits}`;
+	}
 
-  private generateDateExpired(): Date {
-    const now = new Date();
-    now.setFullYear(now.getFullYear() + 3);
-    return now;
-  }
+	private generateDateExpired(): Date {
+		const now = new Date();
+		now.setFullYear(now.getFullYear() + 3);
+		return now;
+	}
 }
