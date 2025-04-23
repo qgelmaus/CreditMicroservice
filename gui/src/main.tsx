@@ -7,16 +7,17 @@ import { client } from "./lib/apolloClient";
 import AccountPage from "./pages/AccountPage";
 import LandingPage from "./pages/LandingPage";
 
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/account/:code" element={<AccountPage />} />
-          <Route path="*" element={<p>404 - Not Found</p>} />
-        </Routes>
-      </BrowserRouter>
-    </ApolloProvider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<ApolloProvider client={client}>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<LandingPage />} />
+					<Route path="/account/:code" element={<AccountPage />} />
+					<Route path="*" element={<p>404 - Not Found</p>} />
+				</Routes>
+			</BrowserRouter>
+		</ApolloProvider>
+	</React.StrictMode>,
 );
