@@ -97,7 +97,7 @@ input TransferCreditsInput {
 extend type Query {
 	creditAccountByCode(code: String!): CreditAccount
 	allCreditAccounts: [CreditAccount!]!
-	transactionsForAccountByCode(code: String!): [Transaction!]!
+	transactionsForAccountByCode(code: String!): [Transaction!]
 }
 
 type Mutation {

@@ -15,12 +15,16 @@ import type {
 	CreditTransferDTO,
 	TransactionDTO,
 } from "../../app/dto/creditaccount.types";
+import { toTransactionDTO } from "./transaction.mapper";
 
-export function toDomain(account: PrismaAccount) {
+export function toDomain(
+	account: PrismaAccount & { transactions?: CreditTransaction[] },
+) {
 	const originalCredits = new Credits(account.originalCredits);
 	const originalMoney = new Money(account.originalMoney);
 	const availableCredits = new Credits(account.availableCredits);
 	const availableMoney = new Money(account.availableMoney);
+	const transactions = account.transactions ?? [];
 
 	if (account.type === "GIFT_CARD") {
 		return new GiftAccount(
@@ -33,6 +37,7 @@ export function toDomain(account: PrismaAccount) {
 			account.email,
 			account.createdAt,
 			account.expiresAt,
+			transactions,
 		);
 	}
 
@@ -49,6 +54,7 @@ export function toDomain(account: PrismaAccount) {
 			account.expiresAt,
 			account.treatmentCount ?? 0,
 			account.discountPercentage ?? 0,
+			transactions,
 		);
 	}
 
@@ -66,6 +72,7 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
 		email: account.email,
 		createdAt: account.createdAt,
 		expiresAt: account.expiresAt,
+		transactions: account.transactions.map(toTransactionDTO) ?? [],
 	};
 
 	if (account instanceof PrepaidAccount) {

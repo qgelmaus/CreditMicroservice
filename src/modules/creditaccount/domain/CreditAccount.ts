@@ -1,4 +1,4 @@
-import { CreditAccountType } from "@prisma/client";
+import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
 
@@ -14,6 +14,7 @@ export abstract class CreditAccount {
 		public readonly email: string,
 		public readonly createdAt: Date,
 		public readonly expiresAt: Date,
+		public readonly transactions: CreditTransaction[] = [],
 	) {}
 
 	useCredits(cost: number) {}
@@ -63,6 +64,7 @@ export class GiftAccount extends CreditAccount {
 		email: string,
 		createdAt: Date,
 		expiresAt: Date,
+		transactions: CreditTransaction[] = [],
 	) {
 		super(
 			id,
@@ -75,6 +77,7 @@ export class GiftAccount extends CreditAccount {
 			email,
 			createdAt,
 			expiresAt,
+			transactions,
 		);
 	}
 
@@ -112,6 +115,7 @@ export class PrepaidAccount extends CreditAccount {
 		expiresAt: Date,
 		public treatmentCount: number,
 		public readonly discountPercentage: number,
+		transactions: CreditTransaction[] = [],
 	) {
 		super(
 			id,
@@ -124,6 +128,7 @@ export class PrepaidAccount extends CreditAccount {
 			email,
 			createdAt,
 			expiresAt,
+			transactions,
 		);
 	}
 
