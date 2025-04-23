@@ -23,8 +23,8 @@ async function main() {
 			availableCredits: 500,
 			availableMoney: 500,
 			email: "gavekort@kunde.dk",
-			dateCreated: now,
-			dateExpired: inThreeYears,
+			createdAt: now,
+			expiresAt: inThreeYears,
 		},
 	});
 
@@ -50,8 +50,8 @@ async function main() {
 			email: "prepaid5@kunde.dk",
 			treatmentCount: 5,
 			discountPercentage: 10,
-			dateCreated: now,
-			dateExpired: inThreeYears,
+			createdAt: now,
+			expiresAt: inThreeYears,
 		},
 	});
 
@@ -77,8 +77,8 @@ async function main() {
 			email: "prepaid10@kunde.dk",
 			treatmentCount: 10,
 			discountPercentage: 20,
-			dateCreated: now,
-			dateExpired: inThreeYears,
+			createdAt: now,
+			expiresAt: inThreeYears,
 		},
 	});
 

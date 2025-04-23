@@ -19,12 +19,11 @@ model CreditAccount {
   availableCredits Float
   availableMoney   Float
   email            String
-  dateCreated      DateTime
-  dateExpired      DateTime
   treatmentCount   Int?               
   discountPercentage Float?           
-  createdAt        DateTime           @default(now())
+  createdAt        DateTime           
   updatedAt        DateTime           @updatedAt
+  expiresAt        DateTime
   transactions CreditTransaction[]
 }
 

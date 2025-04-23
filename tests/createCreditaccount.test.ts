@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../src/app";
 import { resetDatabase } from "../src/shared/infrastructure/db/reset";
-import { TransactionDTO } from "../src/modules/creditaccount/app/dto/creditaccount.types";
+import type { TransactionDTO } from "../src/modules/creditaccount/app/dto/creditaccount.types";
 
 describe("Testing CreditAccount is created", () => {
 	beforeEach(async () => {

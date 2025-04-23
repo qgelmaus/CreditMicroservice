@@ -12,10 +12,10 @@ import { CreditAccountRepository } from "../../domain/creditaccount.repository";
 import {
 	toDomain,
 	toDTO,
-	toTransactionDTO,
 	toTransferDTO,
 } from "../../infrastructure/mappers/creditaccount.mapper";
 import { CreditTransferRepository } from "../../domain/creditTransfer.repository";
+import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mapper";
 
 export class CreditAccountService {
 	private accountRepo = new CreditAccountRepository();
@@ -23,6 +23,9 @@ export class CreditAccountService {
 	private transferRepo = new CreditTransferRepository();
 
 	async createGiftAccount(purchaseAmount: number, email: string) {
+		const now = new Date();
+		const expiresAt = new Date();
+		expiresAt.setFullYear(now.getFullYear() + 3);
 		const credits = new Credits(purchaseAmount);
 		const money = new Money(purchaseAmount);
 
@@ -34,8 +37,8 @@ export class CreditAccountService {
 			credits,
 			money,
 			email,
-			new Date(),
-			this.generateDateExpired(),
+			now,
+			expiresAt,
 		);
 
 		const saved = await this.accountRepo.create(account.getDataToPersist());

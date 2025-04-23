@@ -12,8 +12,8 @@ export abstract class CreditAccount {
 		protected _availableCredits: Credits,
 		protected _availableMoney: Money,
 		public readonly email: string,
-		public readonly dateCreated: Date,
-		public readonly dateExpired: Date,
+		public readonly createdAt: Date,
+		public readonly expiresAt: Date,
 	) {}
 
 	useCredits(cost: number) {}
@@ -42,8 +42,8 @@ export abstract class CreditAccount {
 			availableCredits: this._availableCredits.value,
 			availableMoney: this._availableMoney.amount,
 			email: this.email,
-			dateCreated: this.dateCreated,
-			dateExpired: this.dateExpired,
+			createdAt: this.createdAt,
+			expiresAt: this.expiresAt,
 		};
 	}
 
@@ -61,8 +61,8 @@ export class GiftAccount extends CreditAccount {
 		availableCredits: Credits,
 		availableMoney: Money,
 		email: string,
-		dateCreated: Date,
-		dateExpired: Date,
+		createdAt: Date,
+		expiresAt: Date,
 	) {
 		super(
 			id,
@@ -73,8 +73,8 @@ export class GiftAccount extends CreditAccount {
 			availableCredits,
 			availableMoney,
 			email,
-			dateCreated,
-			dateExpired,
+			createdAt,
+			expiresAt,
 		);
 	}
 
@@ -108,8 +108,8 @@ export class PrepaidAccount extends CreditAccount {
 		availableCredits: Credits,
 		availableMoney: Money,
 		email: string,
-		dateCreated: Date,
-		dateExpired: Date,
+		createdAt: Date,
+		expiresAt: Date,
 		public treatmentCount: number,
 		public readonly discountPercentage: number,
 	) {
@@ -122,8 +122,8 @@ export class PrepaidAccount extends CreditAccount {
 			availableCredits,
 			availableMoney,
 			email,
-			dateCreated,
-			dateExpired,
+			createdAt,
+			expiresAt,
 		);
 	}
 

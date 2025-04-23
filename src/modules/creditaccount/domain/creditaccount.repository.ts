@@ -18,7 +18,7 @@ export class CreditAccountRepository {
 
 	async findAll() {
 		return await prisma.creditAccount.findMany({
-			orderBy: { dateCreated: "desc" },
+			orderBy: { createdAt: "desc" },
 		});
 	}
 
@@ -69,8 +69,8 @@ export class CreditAccountRepository {
 			availableCredits: account.availableCredits,
 			availableMoney: account.availableMoney,
 			email: account.email,
-			dateCreated: account.dateCreated,
-			dateExpired: account.dateExpired,
+			createdAt: account.createdAt,
+			expiresAt: account.expiresAt,
 			treatmentCount: account.treatmentCount ?? undefined,
 			discountPercentage: account.discountPercentage ?? undefined,
 		};

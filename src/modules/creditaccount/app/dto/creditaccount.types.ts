@@ -10,8 +10,8 @@ export interface CreditAccountDTO {
 	availableCredits: number;
 	availableMoney: number;
 	email: string;
-	dateCreated: Date;
-	dateExpired: Date;
+	createdAt: Date;
+	expiresAt: Date;
 	treatmentCount?: number;
 	discountPercentage?: number;
 }

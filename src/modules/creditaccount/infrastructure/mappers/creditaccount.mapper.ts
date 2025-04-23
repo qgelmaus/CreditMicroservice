@@ -31,8 +31,8 @@ export function toDomain(account: PrismaAccount) {
 			availableCredits,
 			availableMoney,
 			account.email,
-			account.dateCreated,
-			account.dateExpired,
+			account.createdAt,
+			account.expiresAt,
 		);
 	}
 
@@ -45,8 +45,8 @@ export function toDomain(account: PrismaAccount) {
 			availableCredits,
 			availableMoney,
 			account.email,
-			account.dateCreated,
-			account.dateExpired,
+			account.createdAt,
+			account.expiresAt,
 			account.treatmentCount ?? 0,
 			account.discountPercentage ?? 0,
 		);
@@ -64,8 +64,8 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
 		availableCredits: account.availableCredits,
 		availableMoney: account.availableMoney,
 		email: account.email,
-		dateCreated: account.dateCreated,
-		dateExpired: account.dateExpired,
+		createdAt: account.createdAt,
+		expiresAt: account.expiresAt,
 	};
 
 	if (account instanceof PrepaidAccount) {
@@ -85,19 +85,5 @@ export function toTransferDTO(entity: CreditTransfer): CreditTransferDTO {
 		toTransactionId: entity.toTransactionId,
 		amount: entity.amount,
 		createdAt: entity.createdAt,
-	};
-}
-
-export function toTransactionDTO(
-	tx: CreditTransaction & { creditAccount: CreditAccount },
-): TransactionDTO {
-	return {
-		id: tx.id,
-		type: tx.type,
-		credits: tx.credits,
-		money: tx.money,
-		note: tx.note ?? "",
-		createdAt: tx.createdAt,
-		creditCode: tx.creditAccount.creditCode,
 	};
 }
