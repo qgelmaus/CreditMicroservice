@@ -140,7 +140,7 @@ export default function LandingPage() {
               disabled={creatingGift}
               style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
             >
-              Opret GiftAccount
+              Opret Gavekort
             </button>
             {giftError && (
               <p style={{ color: "red" }}>Fejl: {giftError.message}</p>
@@ -186,25 +186,35 @@ export default function LandingPage() {
             </label>
             <br />
             {pricePerTreatment && (
-              <p style={{ marginTop: "1rem" }}>
-                Du betaler:{" "}
-                <strong>
-                  {(() => {
-                    const raw = treatmentCount * parseFloat(pricePerTreatment);
-                    const discount = treatmentCount === 10 ? 0.16 : 0.12;
-                    const total = raw * (1 - discount);
-                    return total.toFixed(2) + " kr.";
-                  })()}
-                </strong>{" "}
-                efter rabat ({treatmentCount === 10 ? "16%" : "12%"}).
-              </p>
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const raw = treatmentCount * parseFloat(pricePerTreatment);
+                  const discountRate = treatmentCount === 10 ? 0.16 : 0.12;
+                  const discounted = raw * (1 - discountRate);
+
+                  return (
+                    <div>
+                      <p>
+                        Normalpris: <strong>{raw.toFixed(2)} kr.</strong>
+                      </p>
+                      <p>
+                        Rabat: <strong>{discountRate * 100}%</strong>
+                      </p>
+                      <p>
+                        Pris efter rabat:{" "}
+                        <strong>{discounted.toFixed(2)} kr.</strong>
+                      </p>
+                    </div>
+                  );
+                })()}
+              </div>
             )}
             <button
               onClick={handleCreatePrepaid}
               disabled={creatingPrepaid}
               style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
             >
-              Opret PrepaidAccount
+              Opret Klippekort
             </button>
             <div style={{ marginTop: "2rem" }}>
               <h4>Oversigt over rabat</h4>
