@@ -1,4 +1,4 @@
-import { CreditAccountType } from "@prisma/client";
+import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
 
@@ -12,12 +12,15 @@ export abstract class CreditAccount {
 		protected _availableCredits: Credits,
 		protected _availableMoney: Money,
 		public readonly email: string,
-		public readonly dateCreated: Date,
-		public readonly dateExpired: Date,
+		public readonly createdAt: Date,
+		public readonly expiresAt: Date,
+		public readonly transactions: CreditTransaction[] = [],
 	) {}
 
 	useCredits(cost: number) {}
 	refundCredits(cost: number) {}
+	transferCreditsToAccount(amount: number) {}
+	transferCreditsFromAccount(amount: number) {}
 
 	refundMoneyOnly(money: number) {
 		this._availableMoney = this._availableMoney.subtract(money);
@@ -40,8 +43,8 @@ export abstract class CreditAccount {
 			availableCredits: this._availableCredits.value,
 			availableMoney: this._availableMoney.amount,
 			email: this.email,
-			dateCreated: this.dateCreated,
-			dateExpired: this.dateExpired,
+			createdAt: this.createdAt,
+			expiresAt: this.expiresAt,
 		};
 	}
 
@@ -59,8 +62,9 @@ export class GiftAccount extends CreditAccount {
 		availableCredits: Credits,
 		availableMoney: Money,
 		email: string,
-		dateCreated: Date,
-		dateExpired: Date,
+		createdAt: Date,
+		expiresAt: Date,
+		transactions: CreditTransaction[] = [],
 	) {
 		super(
 			id,
@@ -71,8 +75,9 @@ export class GiftAccount extends CreditAccount {
 			availableCredits,
 			availableMoney,
 			email,
-			dateCreated,
-			dateExpired,
+			createdAt,
+			expiresAt,
+			transactions,
 		);
 	}
 
@@ -85,6 +90,16 @@ export class GiftAccount extends CreditAccount {
 		this._availableCredits = this._availableCredits.add(cost);
 		this._availableMoney = this._availableMoney.add(cost);
 	}
+
+	transferCreditsFromAccount(amount: number) {
+		this._availableCredits = this._availableCredits.subtract(amount);
+		this._availableMoney = this._availableMoney.subtract(amount);
+	}
+
+	transferCreditsToAccount(amount: number) {
+		this._availableCredits = this._availableCredits.add(amount);
+		this._availableMoney = this._availableMoney.add(amount);
+	}
 }
 
 export class PrepaidAccount extends CreditAccount {
@@ -96,10 +111,11 @@ export class PrepaidAccount extends CreditAccount {
 		availableCredits: Credits,
 		availableMoney: Money,
 		email: string,
-		dateCreated: Date,
-		dateExpired: Date,
+		createdAt: Date,
+		expiresAt: Date,
 		public treatmentCount: number,
 		public readonly discountPercentage: number,
+		transactions: CreditTransaction[] = [],
 	) {
 		super(
 			id,
@@ -110,8 +126,9 @@ export class PrepaidAccount extends CreditAccount {
 			availableCredits,
 			availableMoney,
 			email,
-			dateCreated,
-			dateExpired,
+			createdAt,
+			expiresAt,
+			transactions,
 		);
 	}
 
@@ -128,6 +145,19 @@ export class PrepaidAccount extends CreditAccount {
 		this._availableMoney = this._availableMoney.add(discountedAmount);
 		this.treatmentCount += 1;
 	}
+
+	transferCreditsFromAccount(amount: number) {
+		this._availableCredits = this._availableCredits.subtract(amount);
+		const discountedAmount = amount * (1 - this.discountPercentage / 100);
+		this._availableMoney = this._availableMoney.subtract(discountedAmount);
+	}
+
+	transferCreditsToAccount(amount: number) {
+		this._availableCredits = this._availableCredits.add(amount);
+		const discountedAmount = amount * (1 - this.discountPercentage / 100);
+		this._availableMoney = this._availableMoney.add(discountedAmount);
+	}
+
 	getDataToPersist() {
 		return {
 			...super.getDataToPersist(),

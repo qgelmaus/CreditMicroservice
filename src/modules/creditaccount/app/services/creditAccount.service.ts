@@ -1,5 +1,9 @@
 import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
-import type { CreditAccountDTO } from "../dto/creditaccount.types";
+import type {
+	CreditAccountDTO,
+	CreditTransferDTO,
+	TransactionDTO,
+} from "../dto/creditaccount.types";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 
@@ -8,13 +12,20 @@ import { CreditAccountRepository } from "../../domain/creditaccount.repository";
 import {
 	toDomain,
 	toDTO,
+	toTransferDTO,
 } from "../../infrastructure/mappers/creditaccount.mapper";
+import { CreditTransferRepository } from "../../domain/creditTransfer.repository";
+import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mapper";
 
 export class CreditAccountService {
 	private accountRepo = new CreditAccountRepository();
 	private transactionRepo = new CreditTransactionRepository();
+	private transferRepo = new CreditTransferRepository();
 
 	async createGiftAccount(purchaseAmount: number, email: string) {
+		const now = new Date();
+		const expiresAt = new Date();
+		expiresAt.setFullYear(now.getFullYear() + 3);
 		const credits = new Credits(purchaseAmount);
 		const money = new Money(purchaseAmount);
 
@@ -26,8 +37,8 @@ export class CreditAccountService {
 			credits,
 			money,
 			email,
-			new Date(),
-			this.generateDateExpired(),
+			now,
+			expiresAt,
 		);
 
 		const saved = await this.accountRepo.create(account.getDataToPersist());
@@ -123,6 +134,50 @@ export class CreditAccountService {
 		return toDTO(toDomain(updated));
 	}
 
+	async transferCredits(
+		fromCode: string,
+		toCode: string,
+		amount: number,
+		note?: string,
+	): Promise<CreditTransferDTO> {
+		const dbFromAccount = await this.accountRepo.findByCreditCode(fromCode);
+		const dbToAccount = await this.accountRepo.findByCreditCode(toCode);
+		if (!dbFromAccount || !dbToAccount) throw new Error("Account not found");
+
+		const fromAccount = toDomain(dbFromAccount);
+		const toAccount = toDomain(dbToAccount);
+
+		if (fromAccount.type !== toAccount.type)
+			throw new Error("Accounts are not of the same type");
+
+		fromAccount.transferCreditsFromAccount(amount);
+		toAccount.transferCreditsToAccount(amount);
+
+		const updatedFromAccount = await this.accountRepo.updateState(fromAccount);
+		const updatedToAccount = await this.accountRepo.updateState(toAccount);
+
+		const fromTransaction = await this.transactionRepo.logCreditTransferOut(
+			updatedFromAccount.id,
+			amount,
+			amount,
+			note ?? "",
+		);
+
+		const toTransaction = await this.transactionRepo.logCreditTransferIn(
+			updatedToAccount.id,
+			amount,
+			amount,
+			note ?? "",
+		);
+		const transfer = await this.transferRepo.saveCreditTransfer(
+			fromTransaction.id,
+			toTransaction.id,
+			amount,
+		);
+
+		return toTransferDTO(transfer);
+	}
+
 	async refundMoney(
 		creditCode: string,
 		credits: number,
@@ -156,6 +211,16 @@ export class CreditAccountService {
 	async findAll(): Promise<CreditAccountDTO[]> {
 		const accounts = await this.accountRepo.findAll();
 		return accounts.map((a) => toDTO(toDomain(a)));
+	}
+
+	async findTransactions(creditCode: string): Promise<TransactionDTO[]> {
+		const account = await this.accountRepo.findByCreditCode(creditCode);
+		if (!account) throw new Error("Account not found");
+		const transactions = await this.transactionRepo.getTransactionsForAccount(
+			account.id,
+		);
+
+		return transactions.map(toTransactionDTO);
 	}
 
 	private generateCreditCode(): string {

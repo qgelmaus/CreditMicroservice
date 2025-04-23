@@ -1,24 +1,25 @@
 import { PrismaClient } from "@prisma/client";
-import type { CreditAccount as PrismaAccount } from "@prisma/client";
+import type { Prisma, CreditAccount as PrismaAccount } from "@prisma/client";
 import type { CreditAccountDTO } from "../app/dto/creditaccount.types";
 import { type CreditAccount, PrepaidAccount } from "./CreditAccount";
 
 const prisma = new PrismaClient();
 
 export class CreditAccountRepository {
-	async create(data: CreditAccountDTO) {
+	async create(data: Prisma.CreditAccountCreateInput) {
 		return await prisma.creditAccount.create({ data });
 	}
 
 	async findByCreditCode(code: string) {
 		return await prisma.creditAccount.findUnique({
 			where: { creditCode: code },
+			include: { transactions: true },
 		});
 	}
 
 	async findAll() {
 		return await prisma.creditAccount.findMany({
-			orderBy: { dateCreated: "desc" },
+			orderBy: { createdAt: "desc" },
 		});
 	}
 
@@ -69,8 +70,8 @@ export class CreditAccountRepository {
 			availableCredits: account.availableCredits,
 			availableMoney: account.availableMoney,
 			email: account.email,
-			dateCreated: account.dateCreated,
-			dateExpired: account.dateExpired,
+			createdAt: account.createdAt,
+			expiresAt: account.expiresAt,
 			treatmentCount: account.treatmentCount ?? undefined,
 			discountPercentage: account.discountPercentage ?? undefined,
 		};
