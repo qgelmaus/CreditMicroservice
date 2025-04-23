@@ -37,7 +37,7 @@ export const creditAccountResolver = {
 					note,
 				);
 			} catch (err) {
-				console.error("Tranfer credit failed", err);
+				console.error("Transfer credit failed", err);
 				throw err;
 			}
 		},
