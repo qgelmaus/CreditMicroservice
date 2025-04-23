@@ -99,10 +99,11 @@ export class CreditTransactionRepository {
 		});
 	}
 
-	async getTransactionsForAccount(creditAccountId: number) {
+	async getTransactionsForAccount(accountId: number) {
 		return await prisma.creditTransaction.findMany({
-			where: { creditAccountId },
+			where: { creditAccountId: accountId },
 			orderBy: { createdAt: "desc" },
+			include: { creditAccount: true },
 		});
 	}
 }

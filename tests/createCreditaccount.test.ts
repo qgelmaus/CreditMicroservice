@@ -1,6 +1,7 @@
 import request from "supertest";
 import { app } from "../src/app";
 import { resetDatabase } from "../src/shared/infrastructure/db/reset";
+import { TransactionDTO } from "../src/modules/creditaccount/app/dto/creditaccount.types";
 
 describe("Testing CreditAccount is created", () => {
 	beforeEach(async () => {
@@ -334,6 +335,7 @@ describe("Testing editing and movement of values", () => {
     email:"from@account.dk"
   }){
     creditCode
+    availableCredits
   }
 }
   `;
@@ -344,6 +346,7 @@ describe("Testing editing and movement of values", () => {
     email:"to@account.dk"
   }){
     creditCode
+    availableCredits
   }
 }
   `;
@@ -356,25 +359,165 @@ describe("Testing editing and movement of values", () => {
 		const fromCode =
 			createFromAccountResponse.body.data.createGiftAccount.creditCode;
 
-		const createToAccountRespose = await request(app)
+		const createToAccountResponse = await request(app)
 			.post("/graphql")
 			.send({ query: createToAccountMutation });
 
 		const toCode =
-			createToAccountRespose.body.data.createGiftAccount.creditCode;
+			createToAccountResponse.body.data.createGiftAccount.creditCode;
+
+		//kontrollér værdier før transfer:
+		expect(
+			createFromAccountResponse.body.data.createGiftAccount.availableCredits,
+		).toBe(initialValue);
+		expect(
+			createToAccountResponse.body.data.createGiftAccount.availableCredits,
+		).toBe(initialValue);
 
 		const transferCreditMutation = `
     mutation {
       transferCredits(input: { fromCreditCode: "${fromCode}", toCreditCode: "${toCode}", amount: ${transferValue}}) {
-        
+        createdAt
       }
     }
   `;
 
-		const useResponse = await request(app)
+		const transferResponse = await request(app)
 			.post("/graphql")
 			.send({ query: transferCreditMutation });
 
-		expect(useResponse.status).toBe(200);
+		const postTransferFrom = await request(app)
+			.post("/graphql")
+			.send({
+				query: `query { creditAccountByCode(code: "${fromCode}") { availableCredits } }`,
+			});
+
+		const postTransferTo = await request(app)
+			.post("/graphql")
+			.send({
+				query: `query { creditAccountByCode(code: "${toCode}") { availableCredits } }`,
+			});
+
+		expect(
+			postTransferFrom.body.data.creditAccountByCode.availableCredits,
+		).toBe(initialValue - transferValue);
+		expect(postTransferTo.body.data.creditAccountByCode.availableCredits).toBe(
+			initialValue + transferValue,
+		);
+		expect(transferResponse.status).toBe(200);
+	});
+});
+
+describe("Testing the right values are saved in transactions and transfer records", () => {
+	beforeEach(async () => {
+		await resetDatabase();
+	});
+	it("creates transfer transactions on both accounts", async () => {
+		const amount = 200;
+
+		//Opret FROM-konto
+		const fromRes = await request(app)
+			.post("/graphql")
+			.send({
+				query: `
+      mutation {
+        createGiftAccount(input: {
+          purchaseAmount: 500,
+          email: "from@transfer.dk"
+        }) {
+          creditCode
+        }
+      }
+    `,
+			});
+		const fromCode = fromRes.body.data.createGiftAccount.creditCode;
+
+		//Opret TO-konto
+		const toRes = await request(app)
+			.post("/graphql")
+			.send({
+				query: `
+      mutation {
+        createGiftAccount(input: {
+          purchaseAmount: 500,
+          email: "to@transfer.dk"
+        }) {
+          creditCode
+        }
+      }
+    `,
+			});
+		const toCode = toRes.body.data.createGiftAccount.creditCode;
+
+		//transfer
+		const transferRes = await request(app)
+			.post("/graphql")
+			.send({
+				query: `
+      mutation {
+        transferCredits(input: {
+          fromCreditCode: "${fromCode}",
+          toCreditCode: "${toCode}",
+          amount: ${amount},
+          note: "Test transfer"
+        }) {
+          fromTransactionId
+          toTransactionId
+        }
+      }
+    `,
+			});
+
+		expect(transferRes.status).toBe(200);
+
+		const { fromTransactionId, toTransactionId } =
+			transferRes.body.data.transferCredits;
+
+		//Hent transaktioner
+		const fromTxQuery = `
+    query {
+      creditAccountByCode(code: "${fromCode}") {
+        transactions {
+          id
+          type
+        }
+      }
+    }
+  `;
+
+		const toTxQuery = `
+    query {
+      creditAccountByCode(code: "${toCode}") {
+        transactions {
+          id
+          type
+        }
+      }
+    }
+  `;
+
+		const fromTxRes = await request(app)
+			.post("/graphql")
+			.send({ query: fromTxQuery });
+		const toTxRes = await request(app)
+			.post("/graphql")
+			.send({ query: toTxQuery });
+
+		const fromTransactions =
+			fromTxRes.body.data.creditAccountByCode.transactions;
+		const toTransactions = toTxRes.body.data.creditAccountByCode.transactions;
+
+		//Find forventede transaktioner
+		const fromMatch = fromTransactions.find(
+			(tx: TransactionDTO) =>
+				tx.id === fromTransactionId && tx.type === "TRANSFER_OUT",
+		);
+		const toMatch = toTransactions.find(
+			(tx: TransactionDTO) =>
+				tx.id === toTransactionId && tx.type === "TRANSFER_IN",
+		);
+
+		expect(fromMatch).toBeDefined();
+		expect(toMatch).toBeDefined();
 	});
 });

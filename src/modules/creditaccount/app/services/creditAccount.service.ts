@@ -2,6 +2,7 @@ import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
 import type {
 	CreditAccountDTO,
 	CreditTransferDTO,
+	TransactionDTO,
 } from "../dto/creditaccount.types";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
@@ -11,6 +12,8 @@ import { CreditAccountRepository } from "../../domain/creditaccount.repository";
 import {
 	toDomain,
 	toDTO,
+	toTransactionDTO,
+	toTransferDTO,
 } from "../../infrastructure/mappers/creditaccount.mapper";
 import { CreditTransferRepository } from "../../domain/creditTransfer.repository";
 
@@ -163,11 +166,13 @@ export class CreditAccountService {
 			amount,
 			note ?? "",
 		);
-
-		return await this.transferRepo.saveCreditTransfer(
+		const transfer = await this.transferRepo.saveCreditTransfer(
 			fromTransaction.id,
 			toTransaction.id,
+			amount,
 		);
+
+		return toTransferDTO(transfer);
 	}
 
 	async refundMoney(
@@ -203,6 +208,16 @@ export class CreditAccountService {
 	async findAll(): Promise<CreditAccountDTO[]> {
 		const accounts = await this.accountRepo.findAll();
 		return accounts.map((a) => toDTO(toDomain(a)));
+	}
+
+	async findTransactions(creditCode: string): Promise<TransactionDTO[]> {
+		const account = await this.accountRepo.findByCreditCode(creditCode);
+		if (!account) throw new Error("Account not found");
+		const transactions = await this.transactionRepo.getTransactionsForAccount(
+			account.id,
+		);
+
+		return transactions.map(toTransactionDTO);
 	}
 
 	private generateCreditCode(): string {

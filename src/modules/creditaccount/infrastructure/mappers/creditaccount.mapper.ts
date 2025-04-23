@@ -1,4 +1,8 @@
-import type { CreditAccount as PrismaAccount } from "@prisma/client";
+import type {
+	CreditTransaction,
+	CreditTransfer,
+	CreditAccount as PrismaAccount,
+} from "@prisma/client";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 import {
@@ -6,7 +10,11 @@ import {
 	GiftAccount,
 	PrepaidAccount,
 } from "../../domain/CreditAccount";
-import type { CreditAccountDTO } from "../../app/dto/creditaccount.types";
+import type {
+	CreditAccountDTO,
+	CreditTransferDTO,
+	TransactionDTO,
+} from "../../app/dto/creditaccount.types";
 
 export function toDomain(account: PrismaAccount) {
 	const originalCredits = new Credits(account.originalCredits);
@@ -69,4 +77,27 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
 	}
 
 	return base;
+}
+
+export function toTransferDTO(entity: CreditTransfer): CreditTransferDTO {
+	return {
+		fromTransactionId: entity.fromTransactionId,
+		toTransactionId: entity.toTransactionId,
+		amount: entity.amount,
+		createdAt: entity.createdAt,
+	};
+}
+
+export function toTransactionDTO(
+	tx: CreditTransaction & { creditAccount: CreditAccount },
+): TransactionDTO {
+	return {
+		id: tx.id,
+		type: tx.type,
+		credits: tx.credits,
+		money: tx.money,
+		note: tx.note ?? "",
+		createdAt: tx.createdAt,
+		creditCode: tx.creditAccount.creditCode,
+	};
 }

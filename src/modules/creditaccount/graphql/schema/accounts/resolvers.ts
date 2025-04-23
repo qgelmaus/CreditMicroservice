@@ -27,8 +27,19 @@ export const creditAccountResolver = {
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		transferCredits: async (_: any, { input }: any) => {
-			const { fromCode, toCode, amount, note } = input;
-			return await service.transferCredits(fromCode, toCode, amount, note);
+			try {
+				const { fromCreditCode, toCreditCode, amount, note } = input;
+
+				return await service.transferCredits(
+					fromCreditCode,
+					toCreditCode,
+					amount,
+					note,
+				);
+			} catch (err) {
+				console.error("Tranfer credit failed", err);
+				throw err;
+			}
 		},
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -62,6 +73,11 @@ export const creditAccountResolver = {
 
 		allCreditAccounts: async () => {
 			return await service.findAll();
+		},
+
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		transactionsForAccountByCode: async (_: any, { code }: any) => {
+			return await service.findTransactions(code);
 		},
 	},
 };

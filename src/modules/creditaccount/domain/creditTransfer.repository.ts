@@ -14,7 +14,11 @@ export class CreditTransferRepository {
 		});
 	}
 
-	async saveCreditTransfer(transactionOutId: number, tranasctionInId: number) {
+	async saveCreditTransfer(
+		transactionOutId: number,
+		tranasctionInId: number,
+		amount: number,
+	) {
 		return await prisma.creditTransfer.create({
 			data: {
 				fromTransaction: {
@@ -23,6 +27,7 @@ export class CreditTransferRepository {
 				toTransaction: {
 					connect: { id: tranasctionInId },
 				},
+				amount,
 			},
 		});
 	}

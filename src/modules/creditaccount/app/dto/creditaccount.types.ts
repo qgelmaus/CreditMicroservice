@@ -1,4 +1,4 @@
-import type { CreditAccountType } from "@prisma/client";
+import type { CreditAccountType, TransactionType } from "@prisma/client";
 import type { Credits } from "../../domain/valueobjects/Credits";
 import type { Money } from "../../domain/valueobjects/Money";
 
@@ -24,4 +24,16 @@ export interface IUpdateAccount {
 export interface CreditTransferDTO {
 	fromTransactionId: number;
 	toTransactionId: number;
+	amount: number;
+	createdAt: Date;
+}
+
+export interface TransactionDTO {
+	id: number;
+	type: TransactionType;
+	credits: number;
+	money: number;
+	note?: string;
+	createdAt: Date;
+	creditCode: string;
 }

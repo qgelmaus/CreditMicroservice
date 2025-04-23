@@ -49,6 +49,7 @@ model CreditTransfer {
   fromTransactionId Int
   toTransaction CreditTransaction @relation("ToTransaction", fields: [toTransactionId], references: [id], onDelete: Cascade)
   toTransactionId Int
+  amount Float
   createdAt DateTime @default(now())
 }
 
