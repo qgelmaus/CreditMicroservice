@@ -70,6 +70,12 @@ input CreatePrepaidAccountInput {
   email: String!
 }
 
+input CreditAccountDetailsInput {
+  amount: Float
+  treatmentCount: Int
+  pricePerTreatment: Float
+}
+
 input UseCreditsInput {
   creditCode: String!
   cost: Float!
@@ -108,6 +114,10 @@ extend type Query {
 type Mutation {
   #flow mutations
   selectCreditAccountType(type: CreditAccountType!): Boolean!
+  setCreditAccountEmail(email: String!): Boolean!
+  submitCreditAccountDetails(details: CreditAccountDetailsInput!): Boolean!
+  validateCreditAccount: Boolean!
+  finalizeCreditAccount: CreditAccount!
 
   #modify credits or money on an account
   refundCredits(input: RefundCreditsInput!): CreditAccount!
