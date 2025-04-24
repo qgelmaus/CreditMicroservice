@@ -15,6 +15,11 @@ app.use(
   graphqlHTTP({
     schema,
     graphiql: process.env.NODE_ENV !== "test",
+    context: {
+      user: {
+        id: "test-user-id",
+      },
+    },
   })
 );
 
