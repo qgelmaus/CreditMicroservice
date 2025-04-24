@@ -5,16 +5,15 @@ import gql from "graphql-tag";
 
 import { mergeTypeDefs, mergeResolvers } from "@graphql-tools/merge";
 
-import * as accounts from "./accounts";
-
 import { DateScalar } from "../scalar/scalarResolver";
+import { creditAccountResolver, flowResolvers } from "../../app/resolvers";
 
 const baseSchema = fs.readFileSync(
   path.join(__dirname, "baseSchema.gql"),
   "utf8"
 );
 const accountSchema = fs.readFileSync(
-  path.join(__dirname, "./accounts/typeDefs.gql"),
+  path.join(__dirname, "./account/typeDefs.gql"),
   "utf8"
 );
 
@@ -22,5 +21,6 @@ export const typeDefs = mergeTypeDefs([gql(baseSchema), gql(accountSchema)]);
 
 export const resolvers = mergeResolvers([
   { Date: DateScalar },
-  accounts.creditAccountResolver,
+  creditAccountResolver,
+  flowResolvers,
 ]);

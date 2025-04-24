@@ -1,0 +1,135 @@
+#//src/modules/creditaccount/graphql/schema/accounts/typeDefs.gql
+scalar Date
+
+interface CreditAccount {
+  creditCode: String!
+  type: CreditAccountType!
+  originalCredits: Int!
+  originalMoney: Float!
+  availableCredits: Int!
+  availableMoney: Float!
+  email: String!
+  dateCreated: Date!
+  dateExpired: Date!
+  transactions: [Transaction]!
+}
+
+type GiftAccount implements CreditAccount {
+  creditCode: String!
+  type: CreditAccountType!
+  originalCredits: Int!
+  originalMoney: Float!
+  availableCredits: Int!
+  availableMoney: Float!
+  email: String!
+  dateCreated: Date!
+  dateExpired: Date!
+  transactions: [Transaction]!
+}
+
+type PrepaidAccount implements CreditAccount {
+  creditCode: String!
+  type: CreditAccountType!
+  originalCredits: Int!
+  originalMoney: Float!
+  availableCredits: Int!
+  availableMoney: Float!
+  email: String!
+  dateCreated: Date!
+  dateExpired: Date!
+  treatmentCount: Int
+  discountPercentage: Float
+  transactions: [Transaction]!
+}
+
+type Transaction {
+  id: Int!
+  type: TransactionType!
+  credits: Float!
+  money: Float!
+  note: String
+  createdAt: Date!
+  creditCode: String!
+}
+
+type Transfer {
+  fromTransactionId: Int!
+  toTransactionId: Int!
+  amount: Float!
+  createdAt: Date!
+}
+
+input CreateGiftAccountInput {
+  purchaseAmount: Float!
+  email: String!
+}
+
+input CreatePrepaidAccountInput {
+  treatmentCount: Int!
+  pricePerTreatment: Float!
+  email: String!
+}
+
+input UseCreditsInput {
+  creditCode: String!
+  cost: Float!
+}
+
+input RefundCreditsInput {
+  creditCode: String!
+  cost: Float!
+  note: String
+}
+
+input RefundMoneyInput {
+  creditCode: String!
+  money: Float!
+  note: String
+}
+
+input TransferCreditsInput {
+  fromCreditCode: String!
+  toCreditCode: String!
+  amount: Float!
+  note: String
+}
+
+extend type Query {
+  #Creditaccounts
+  creditAccountByCode(code: String!): CreditAccount
+  allCreditAccounts: [CreditAccount!]!
+
+  #transactions
+  transactionsForAccountByCode(code: String!): [Transaction!]
+
+  #transfers
+}
+
+type Mutation {
+  #flow mutations
+  selectCreditAccountType(type: CreditAccountType!): Boolean!
+
+  #modify credits or money on an account
+  refundCredits(input: RefundCreditsInput!): CreditAccount!
+  refundMoney(input: RefundMoneyInput!): CreditAccount!
+  transferCredits(input: TransferCreditsInput!): Transfer!
+  useCredits(input: UseCreditsInput!): CreditAccount!
+
+  #create accounts
+  createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
+  createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
+}
+
+enum CreditAccountType {
+  GIFT_CARD
+  PREPAID_CARD
+}
+
+enum TransactionType {
+  PURCHASE
+  USAGE
+  NULLIFICATION
+  TRANSFER_IN
+  TRANSFER_OUT
+  REFUND
+}
