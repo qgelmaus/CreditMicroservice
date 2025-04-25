@@ -366,7 +366,7 @@ describe("Testing editing and movement of values", () => {
     const nullificationResponse = await request(app)
       .post("/graphql")
       .send({ query: nullifyAccountMutation });
-    console.log(nullificationResponse.body.data);
+
     expect(nullificationResponse.status).toBe(200);
 
     expect(nullificationResponse.body.data.nullifyAccount.isActive).toBe(false);
