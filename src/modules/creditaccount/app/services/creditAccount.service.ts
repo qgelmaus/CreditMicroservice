@@ -214,7 +214,7 @@ export class CreditAccountService {
     account.nullifyAccount();
 
     const updated = await this.accountRepo.updateState(account)
-    console.log(updated)
+    
     await this.transactionRepo.logNullification(
       updated.id,
       removedCredits,
