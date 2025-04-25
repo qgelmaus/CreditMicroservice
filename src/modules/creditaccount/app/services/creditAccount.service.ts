@@ -183,7 +183,6 @@ export class CreditAccountService {
 
   async refundMoney(
     creditCode: string,
-    credits: number,
     money: number,
     note?: string
   ): Promise<CreditAccountDTO> {
@@ -197,7 +196,7 @@ export class CreditAccountService {
 
     await this.transactionRepo.logMoneyRefund(
       updated.id,
-      credits,
+      0,
       money,
       note ?? ""
     );

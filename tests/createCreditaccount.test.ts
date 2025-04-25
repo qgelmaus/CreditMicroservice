@@ -376,6 +376,50 @@ describe("Testing editing and movement of values", () => {
 
 	})
 
+	it("tests refundMoney, should remove money from account to be refunded to a customer", async () => {
+		const initialValue = 5000
+		const refundValue = 2500
+
+		const createAccountToRefundMutation = `
+		mutation{
+		createGiftAccount(input: {
+		purchaseAmount: ${initialValue}
+		email: "refund@account.dk"
+		})
+		{
+		creditCode
+		availableCredits
+		availableMoney
+		}
+		}
+		`
+
+		const accountResponse = await request(app).post("/graphql").send({query: createAccountToRefundMutation})
+		expect(accountResponse.status).toBe(200)
+		expect(accountResponse.body.data.createGiftAccount.availableCredits).toBe(initialValue)
+		expect(accountResponse.body.data.createGiftAccount.availableMoney).toBe(initialValue)
+		const code = accountResponse.body.data.createGiftAccount.creditCode
+
+		const refundMoneyMutation = `
+		mutation{
+		refundMoney(input: {
+		creditCode: "${code}"
+		money: ${refundValue}
+		}){
+		availableMoney
+	}
+		}
+		`
+
+		const refundResponse = await request(app).post("/graphql").send({query: refundMoneyMutation})
+		expect(refundResponse.status).toBe(200)
+		expect(refundResponse.body.data.refundMoney.availableMoney).toBe(initialValue - refundValue)
+
+
+
+
+	})
+
 	it("transfers credit from one giftaccount to another", async () => {
 		const initialValue = 500;
 		const transferValue = 500;

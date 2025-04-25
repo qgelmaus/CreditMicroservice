@@ -22,6 +22,7 @@ export abstract class CreditAccount {
 	refundCredits(cost: number) {}
 	transferCreditsToAccount(amount: number) {}
 	transferCreditsFromAccount(amount: number) {}
+	
 	nullifyAccount() {
 		this.isActive = false
 		this._availableCredits = this._availableCredits.nullify()
