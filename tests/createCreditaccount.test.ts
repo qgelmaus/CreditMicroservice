@@ -321,6 +321,61 @@ describe("Testing editing and movement of values", () => {
 		);
 	});
 
+	it("nullifies a creditaccount, setting available values to 0 and isActive to false", async () => {
+		const initialValue = 5000
+		const createAccountToNullifyMutation = `
+		mutation{
+		createGiftAccount(input:{
+		purchaseAmount: ${initialValue},
+		email: "nullify@account.me"})
+		{
+		creditCode
+		availableCredits
+		isActive
+		}
+		}
+		`;
+
+		const response = await request(app).post("/graphql").send({query: createAccountToNullifyMutation})
+		expect(response.status).toBe(200)
+		
+
+		const data = response.body.data
+		
+		expect(data.createGiftAccount.isActive).toBe(true)
+		expect(data.createGiftAccount.availableCredits).toBe(initialValue)
+
+		const codeToNullify = data.createGiftAccount.creditCode
+
+		const nullifyAccountMutation = `
+		mutation{
+		nullifyAccount(input: {
+		creditCode: "${codeToNullify}"
+		})
+		{
+		creditCode
+		availableCredits
+		availableMoney
+		originalCredits
+		originalMoney
+		isActive
+		}
+		}
+		`
+		const nullificationResponse = await request(app).post("/graphql").send({query: nullifyAccountMutation})
+		console.log(nullificationResponse.body.data);
+		expect(nullificationResponse.status).toBe(200)
+		
+		
+		expect(nullificationResponse.body.data.nullifyAccount.isActive).toBe(false)
+		expect(nullificationResponse.body.data.nullifyAccount.availableCredits).toBe(0)
+		expect(nullificationResponse.body.data.nullifyAccount.availableMoney).toBe(0)
+		expect(nullificationResponse.body.data.nullifyAccount.originalCredits).toBe(initialValue)
+		expect(nullificationResponse.body.data.nullifyAccount.originalMoney).toBe(initialValue)
+
+
+	})
+
 	it("transfers credit from one giftaccount to another", async () => {
 		const initialValue = 500;
 		const transferValue = 500;

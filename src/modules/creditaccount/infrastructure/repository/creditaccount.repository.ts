@@ -44,6 +44,7 @@ export class CreditAccountRepository {
     const baseUpdate = {
       availableCredits: account.availableCredits,
       availableMoney: account.availableMoney,
+      isActive: account.isActive
     };
 
     if (account instanceof PrepaidAccount) {
@@ -55,7 +56,6 @@ export class CreditAccountRepository {
         },
       });
     }
-
     return await prisma.creditAccount.update({
       where: { creditCode: account.creditCode },
       data: baseUpdate,
@@ -71,6 +71,7 @@ export class CreditAccountRepository {
       availableCredits: account.availableCredits,
       availableMoney: account.availableMoney,
       email: account.email,
+      isActive: account.isActive,
       createdAt: account.createdAt,
       expiresAt: account.expiresAt,
       treatmentCount: account.treatmentCount ?? undefined,

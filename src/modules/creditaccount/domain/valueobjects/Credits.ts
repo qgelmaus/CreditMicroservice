@@ -19,4 +19,8 @@ export class Credits {
   equals(other: Credits): boolean {
     return this.value === other.value;
   }
+
+  nullify(): Credits{
+    return new Credits(0)
+  }
 }

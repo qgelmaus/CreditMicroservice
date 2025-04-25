@@ -21,7 +21,7 @@ model CreditAccount {
   email            String
   treatmentCount   Int?               
   discountPercentage Float?
-  isActive         Boolean            @default(true)
+  isActive         Boolean            
   createdAt        DateTime           
   updatedAt        DateTime           @updatedAt
   expiresAt        DateTime

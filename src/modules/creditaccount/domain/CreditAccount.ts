@@ -12,7 +12,7 @@ export abstract class CreditAccount {
 		protected _availableCredits: Credits,
 		protected _availableMoney: Money,
 		public readonly email: string,
-		public isActive: boolean,
+		public isActive: boolean = true,
 		public readonly createdAt: Date,
 		public readonly expiresAt: Date,
 		public readonly transactions: CreditTransaction[] = [],
@@ -24,6 +24,8 @@ export abstract class CreditAccount {
 	transferCreditsFromAccount(amount: number) {}
 	nullifyAccount() {
 		this.isActive = false
+		this._availableCredits = this._availableCredits.nullify()
+		this._availableMoney = this._availableMoney.nullify()
 	}
 
 	refundMoneyOnly(money: number) {
@@ -107,6 +109,8 @@ export class GiftAccount extends CreditAccount {
 		this._availableCredits = this._availableCredits.add(amount);
 		this._availableMoney = this._availableMoney.add(amount);
 	}
+
+	
 }
 
 export class PrepaidAccount extends CreditAccount {
@@ -167,6 +171,8 @@ export class PrepaidAccount extends CreditAccount {
 		this._availableMoney = this._availableMoney.add(discountedAmount);
 	}
 
+	
+
 	getDataToPersist() {
 		return {
 			...super.getDataToPersist(),
@@ -174,4 +180,5 @@ export class PrepaidAccount extends CreditAccount {
 			discountPercentage: this.discountPercentage,
 		};
 	}
+
 }

@@ -38,6 +38,7 @@ export class CreditAccountService {
       credits,
       money,
       email,
+      true,
       now,
       expiresAt
     );
@@ -73,6 +74,7 @@ export class CreditAccountService {
       credits,
       money,
       email,
+      true,
       new Date(),
       this.generateDateExpired(),
       treatmentCount,
@@ -201,6 +203,28 @@ export class CreditAccountService {
     );
 
     return toDTO(toDomain(updated));
+  }
+
+  async nullifyAccount(creditCode: string, note?: string): Promise<CreditAccountDTO>{
+    const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
+    if(!dbAccount) throw new Error("Account not found");
+
+    const account = toDomain(dbAccount)
+    const removedCredits = account.availableCredits;
+    const removedMoney = account.availableMoney;
+    account.nullifyAccount();
+
+    const updated = await this.accountRepo.updateState(account)
+    console.log(updated)
+    await this.transactionRepo.logNullification(
+      updated.id,
+      removedCredits,
+      removedMoney,
+      note ?? ""
+      
+    )
+
+    return toDTO(toDomain(updated))
   }
 
   async findByCode(creditCode: string): Promise<CreditAccountDTO> {
