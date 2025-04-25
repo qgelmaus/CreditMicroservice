@@ -38,6 +38,9 @@ interface CreditAccountByCodeVars {
   code: string;
 }
 
+
+
+
 const GET_ACCOUNT = gql`
   query CreditAccountByCode($code: String!) {
     creditAccountByCode(code: $code) {
