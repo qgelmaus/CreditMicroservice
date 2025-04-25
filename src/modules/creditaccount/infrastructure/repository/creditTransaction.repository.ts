@@ -99,6 +99,23 @@ export class CreditTransactionRepository {
 		});
 	}
 
+	async logNullification(
+		creditAccountId: number,
+		credits: number,
+		money: number,
+		note: string,
+	) {
+		return await prisma.creditTransaction.create({
+			data: {
+				creditAccountId,
+				type: TransactionType.NULLIFICATION,
+				credits: credits,
+				money: money,
+				note,
+			}
+		})
+	}
+
 	async getTransactionsForAccount(accountId: number) {
 		return await prisma.creditTransaction.findMany({
 			where: { creditAccountId: accountId },

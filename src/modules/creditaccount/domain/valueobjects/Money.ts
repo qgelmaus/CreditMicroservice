@@ -22,4 +22,8 @@ export class Money {
   equals(other: Money): boolean {
     return this.amount === other.amount && this.currency === other.currency;
   }
+
+  nullify(): Money{
+    return new Money(0, this.currency)
+  }
 }
