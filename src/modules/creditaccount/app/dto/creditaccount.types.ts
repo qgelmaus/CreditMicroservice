@@ -14,6 +14,7 @@ export interface CreditAccountDTO {
 	availableCredits: number;
 	availableMoney: number;
 	email: string;
+	isActive: boolean;
 	createdAt: Date;
 	expiresAt: Date;
 	treatmentCount?: number;

@@ -4,6 +4,7 @@ const CREATE_GIFT_ACCOUNT = gql`
   mutation CreateGiftAccount($input: CreateGiftAccountInput!) {
     createGiftAccount(input: $input) {
       creditCode
+      
     }
   }
 `;
@@ -12,6 +13,7 @@ const CREATE_PREPAID_ACCOUNT = gql`
   mutation CreatePrepaidAccount($input: CreatePrepaidAccountInput!) {
     createPrepaidAccount(input: $input) {
       creditCode
+      
     }
   }
 `;

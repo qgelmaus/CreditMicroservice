@@ -3,10 +3,13 @@
 	"version": "1.0.0",
 	"type": "commonjs",
 	"main": "dist/index.js",
+	"workspaces": ["src", "gui"],
 	"scripts": {
 		"generate": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
 		"generate:test": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
 		"dev": "pnpm run generate && ts-node-dev --respawn src/index.ts",
+		"dev:frontend": "pnpm --filter gui dev",
+		"dev:backend": "pnpm --filter src dev",
 		"dev:studio": "pnpm prisma studio",
 		"build": "tsc",
 		"start": "node dist/index.js",
