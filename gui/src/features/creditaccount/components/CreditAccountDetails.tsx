@@ -145,7 +145,7 @@ export default function CreditAccountDetails({ code }: Props) {
         Konto: {account.creditCode} - {account.__typename}
       </h2>
       <p>Tilgængelige credits: {account.availableCredits}</p>
-      <p>Oprindelig beløb: {account.originalMoney}</p>
+      <p>Oprindelig beløb: {account.originalMoney} DKK</p>
 
       <h3 style={{ marginTop: "1rem", fontWeight: "bold" }}>Transaktioner:</h3>
       <ul>
