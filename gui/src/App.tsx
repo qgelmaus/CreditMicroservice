@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import CreditHomePage from "./pages/CreditAccount/CreditHomePage";
+import AccountPage from "./pages/CreditAccount/AccountPage";
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/account" element {...(<CreditHomePage />)} />
+          <Route path="/account/:creditCode" element={<AccountPage />} />
+          <Route path="/account" element={<CreditHomePage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

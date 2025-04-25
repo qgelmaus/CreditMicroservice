@@ -1,7 +1,8 @@
 // src/components/Layout.tsx
-import { ReactNode } from "react";
+
 import { LayoutProps } from "./props/LayoutProps";
-import { Navbar } from "./Navbar";
+
+import { TopBar } from "./Topbar";
 
 export function Layout({ children }: LayoutProps) {
   return (
@@ -11,12 +12,10 @@ export function Layout({ children }: LayoutProps) {
       <header
         style={{ backgroundColor: "#319795", color: "white", padding: "1rem" }}
       >
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h1>CreditAccount Demo</h1>
-        </div>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}></div>
       </header>
+      <TopBar />
 
-      <Navbar />
       <main
         style={{
           flex: 1,
@@ -27,12 +26,6 @@ export function Layout({ children }: LayoutProps) {
       >
         {children}
       </main>
-
-      <footer style={{ backgroundColor: "#f7fafc", padding: "1rem" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", color: "#4a5568" }}>
-          <h2>© 2025 RaskRask Demo</h2>
-        </div>
-      </footer>
     </div>
   );
 }

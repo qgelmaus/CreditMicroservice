@@ -10,8 +10,8 @@ interface CreditAccount {
   availableMoney: Float!
   email: String!
   isActive: Boolean!
-  dateCreated: Date!
-  dateExpired: Date!
+  createdAt: Date!
+  expiresAt: Date!
   transactions: [Transaction]!
 }
 
@@ -24,8 +24,8 @@ type GiftAccount implements CreditAccount {
   availableMoney: Float!
   email: String!
   isActive: Boolean!
-  dateCreated: Date!
-  dateExpired: Date!
+  createdAt: Date!
+  expiresAt: Date!
   transactions: [Transaction]!
 }
 
@@ -38,8 +38,8 @@ type PrepaidAccount implements CreditAccount {
   availableMoney: Float!
   email: String!
   isActive: Boolean!
-  dateCreated: Date!
-  dateExpired: Date!
+  createdAt: Date!
+  expiresAt: Date!
   treatmentCount: Int
   discountPercentage: Float
   transactions: [Transaction]!
