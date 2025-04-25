@@ -48,6 +48,11 @@ export const creditAccountResolver = {
 			return await service.refundMoney(creditCode, money, note);
 		},
 
+		nullifyAccount: async (_: any, {input}: any) => {
+			const {creditCode, note} = input;
+			return await service.nullifyAccount(creditCode, note);
+		},
+
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		createGiftAccount: async (_: any, { input }: any) => {
 			const { purchaseAmount, email } = input;

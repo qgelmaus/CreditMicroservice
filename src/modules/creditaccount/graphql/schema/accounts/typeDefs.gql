@@ -9,6 +9,7 @@ interface CreditAccount {
 	availableCredits: Int!
 	availableMoney: Float!
 	email: String!
+	isActive: Boolean!
 	dateCreated: Date!
 	dateExpired: Date!
 	transactions: [Transaction]!
@@ -22,6 +23,7 @@ type GiftAccount implements CreditAccount {
 	availableCredits: Int!
 	availableMoney: Float!
 	email: String!
+	isActive: Boolean!
 	dateCreated: Date!
 	dateExpired: Date!
 	transactions: [Transaction]!
@@ -35,6 +37,7 @@ type PrepaidAccount implements CreditAccount {
 	availableCredits: Int!
 	availableMoney: Float!
 	email: String!
+	isActive: Boolean!
 	dateCreated: Date!
 	dateExpired: Date!
 	treatmentCount: Int
@@ -94,6 +97,11 @@ input TransferCreditsInput {
 	note: String
 }
 
+input NullifyAccountInput {
+	creditCode: String!
+	note: String
+}
+
 extend type Query {
 	creditAccountByCode(code: String!): CreditAccount
 	allCreditAccounts: [CreditAccount!]!
@@ -104,6 +112,7 @@ type Mutation {
 	refundCredits(input: RefundCreditsInput!): CreditAccount!
 	refundMoney(input: RefundMoneyInput!): CreditAccount!
 	transferCredits(input: TransferCreditsInput!): Transfer!
+	nullifyAccount(input: NullifyAccountInput!): CreditAccount!
 	useCredits(input: UseCreditsInput!): CreditAccount!
 	createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
 	createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
