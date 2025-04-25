@@ -8,12 +8,27 @@ export interface Transaction {
   createdAt: string;
 }
 
-export interface CreditAccount {
+interface BaseAccount {
   creditCode: string;
   availableCredits: number;
   originalMoney: number;
   transactions: Transaction[];
+  __typename: "GiftAccount" | "PrepaidAccount";
 }
+
+export interface GiftAccount extends BaseAccount {
+  __typename: "GiftAccount";
+  type: "GIFT_CARD";
+}
+
+export interface PrepaidAccount extends BaseAccount {
+  __typename: "PrepaidAccount";
+  type: "PREPAID_CARD";
+  treatmentCount: number;
+  discountPercentage: number;
+}
+
+export type CreditAccount = GiftAccount | PrepaidAccount;
 
 interface CreditAccountByCodeData {
   creditAccountByCode: CreditAccount;
@@ -22,6 +37,9 @@ interface CreditAccountByCodeData {
 interface CreditAccountByCodeVars {
   code: string;
 }
+
+
+
 
 const GET_ACCOUNT = gql`
   query CreditAccountByCode($code: String!) {
@@ -36,13 +54,28 @@ const GET_ACCOUNT = gql`
         money
         createdAt
       }
+
+      __typename
+
+      ... on GiftAccount {
+        type
+      }
+
+      ... on PrepaidAccount {
+        type
+        treatmentCount
+        discountPercentage
+      }
     }
   }
 `;
 
 export function useCreditAccountByCode(code: string) {
-  return useQuery<CreditAccountByCodeData, CreditAccountByCodeVars>(GET_ACCOUNT, {
-    variables: { code },
-    skip: !code,
-  });
+  return useQuery<CreditAccountByCodeData, CreditAccountByCodeVars>(
+    GET_ACCOUNT,
+    {
+      variables: { code },
+      skip: !code,
+    }
+  );
 }
