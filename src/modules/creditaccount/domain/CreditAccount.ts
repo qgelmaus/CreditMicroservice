@@ -12,6 +12,7 @@ export abstract class CreditAccount {
 		protected _availableCredits: Credits,
 		protected _availableMoney: Money,
 		public readonly email: string,
+		public isActive: boolean,
 		public readonly createdAt: Date,
 		public readonly expiresAt: Date,
 		public readonly transactions: CreditTransaction[] = [],
@@ -21,6 +22,9 @@ export abstract class CreditAccount {
 	refundCredits(cost: number) {}
 	transferCreditsToAccount(amount: number) {}
 	transferCreditsFromAccount(amount: number) {}
+	nullifyAccount() {
+		this.isActive = false
+	}
 
 	refundMoneyOnly(money: number) {
 		this._availableMoney = this._availableMoney.subtract(money);
@@ -43,6 +47,7 @@ export abstract class CreditAccount {
 			availableCredits: this._availableCredits.value,
 			availableMoney: this._availableMoney.amount,
 			email: this.email,
+			isActive: this.isActive,
 			createdAt: this.createdAt,
 			expiresAt: this.expiresAt,
 		};
@@ -62,6 +67,7 @@ export class GiftAccount extends CreditAccount {
 		availableCredits: Credits,
 		availableMoney: Money,
 		email: string,
+		isActive: boolean,
 		createdAt: Date,
 		expiresAt: Date,
 		transactions: CreditTransaction[] = [],
@@ -75,6 +81,7 @@ export class GiftAccount extends CreditAccount {
 			availableCredits,
 			availableMoney,
 			email,
+			isActive,
 			createdAt,
 			expiresAt,
 			transactions,
@@ -111,6 +118,7 @@ export class PrepaidAccount extends CreditAccount {
 		availableCredits: Credits,
 		availableMoney: Money,
 		email: string,
+		isActive: boolean,
 		createdAt: Date,
 		expiresAt: Date,
 		public treatmentCount: number,
@@ -126,6 +134,7 @@ export class PrepaidAccount extends CreditAccount {
 			availableCredits,
 			availableMoney,
 			email,
+			isActive,
 			createdAt,
 			expiresAt,
 			transactions,

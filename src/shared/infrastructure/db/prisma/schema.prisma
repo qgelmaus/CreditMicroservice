@@ -20,7 +20,8 @@ model CreditAccount {
   availableMoney   Float
   email            String
   treatmentCount   Int?               
-  discountPercentage Float?           
+  discountPercentage Float?
+  isActive         Boolean            @default(true)
   createdAt        DateTime           
   updatedAt        DateTime           @updatedAt
   expiresAt        DateTime
