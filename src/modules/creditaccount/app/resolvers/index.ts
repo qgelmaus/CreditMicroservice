@@ -2,6 +2,7 @@ import {
   createGiftAccount,
   createPrepaidAccount,
 } from "../commands/CreditAccount/Account/createCreditAccount";
+import { nullifyAccount } from "../commands/CreditAccount/Account/nullifyAccount";
 import { refundCredits } from "../commands/CreditAccount/Account/refundCredits";
 import { refundMoney } from "../commands/CreditAccount/Account/refundMoney";
 import { transferCredits } from "../commands/CreditAccount/Account/transferCredits";
@@ -31,6 +32,7 @@ export const creditAccountResolver = {
     refundCredits,
     refundMoney,
     transferCredits,
+    nullifyAccount,
   },
 
   Query: {
