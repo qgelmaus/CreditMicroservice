@@ -1,3 +1,5 @@
+import type { ICreditAccountFlowDetails } from "../../../app/dto/creditaccount.types";
+
 type CreditAccountType = "GIFT_CARD" | "PREPAID_CARD";
 
 type FlowState =
@@ -10,7 +12,7 @@ type FlowState =
 interface FlowContext {
   type?: CreditAccountType;
   email?: string;
-  details?: Record<string, any>;
+  details?: Record<string, ICreditAccountFlowDetails>;
 }
 
 export class CustomerCreditAccountFlow {
@@ -47,7 +49,7 @@ export class CustomerCreditAccountFlow {
     this.state = "emailSet";
   }
 
-  setDetails(details: Record<string, any>) {
+  setDetails(details: Record<string, ICreditAccountFlowDetails>) {
     if (this.state !== "emailSet") {
       throw new Error("Details must be set after email");
     }
