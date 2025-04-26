@@ -1,5 +1,4 @@
 import { CustomerCreditAccountFlow } from "../../domain/flows/creditaccount/customerFlow";
-import type { ICreditAccountFlowDetails } from "../dto/creditaccount.types";
 
 import { CreditAccountService } from "./creditAccount.service";
 
@@ -36,7 +35,7 @@ export async function setCreditAccountEmail(userId: string, email: string) {
 
 export async function submitCreditAccountDetails(
   userId: string,
-  details: Record<string, ICreditAccountFlowDetails>
+  details: Record<string, any>
 ) {
   const flow = getOrCreateFlow(userId);
   flow.setDetails(details);
@@ -52,12 +51,10 @@ export async function validateCreditAccount(userId: string) {
 export async function finalizeCreditAccount(userId: string) {
   const flow = getOrCreateFlow(userId);
   const { type, email, details } = flow.finalize();
+  if (!details || !email) throw new Error("Details or email is undefined");
 
   if (type === "GIFT_CARD") {
-    return await accountService.createGiftAccount(
-      details.purchaseAmount!,
-      email
-    );
+    return await accountService.createGiftAccount(details.amount, email);
   }
 
   if (type === "PREPAID_CARD") {

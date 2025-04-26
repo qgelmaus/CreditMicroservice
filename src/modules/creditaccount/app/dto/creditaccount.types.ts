@@ -43,9 +43,3 @@ export interface TransactionDTO {
   createdAt: Date;
   creditCode: string;
 }
-
-export interface ICreditAccountFlowDetails {
-  purchaseAmount?: number;
-  treatmentCount?: number;
-  pricePerTreatment?: number;
-}
