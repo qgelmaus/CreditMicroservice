@@ -3,7 +3,10 @@
 	"version": "1.0.0",
 	"type": "commonjs",
 	"main": "dist/index.js",
-	"workspaces": ["src", "gui"],
+	"workspaces": [
+		"src",
+		"gui"
+	],
 	"scripts": {
 		"generate": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
 		"generate:test": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
@@ -30,6 +33,7 @@
 		"pino": "^8.21.0"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@types/dotenv": "^8.2.3",
 		"@types/express": "^5.0.1",
 		"@types/jest": "^29.5.14",

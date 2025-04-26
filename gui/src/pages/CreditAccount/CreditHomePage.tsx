@@ -1,8 +1,7 @@
 import { Card } from "../../ui/Card";
 import { GET_ALL_ACCOUNTS } from "../../services/accountService";
-import { CreditAccount } from "../../types/CreditAccount";
+import type { CreditAccount } from "../../types/CreditAccount";
 import { useQuery } from "@apollo/client";
-import { ButtonLink } from "../../ui/ButtonLink";
 import { ButtonBar } from "../../components/ButtonBar";
 import { Button } from "../../ui/Button";
 import { SearchBar } from "../../components/SearchBar";

@@ -86,11 +86,12 @@ export class CustomerCreditAccountFlow {
     if (this.state !== "validated") {
       throw new Error("You must validate before finalizing");
     }
+    if (!this) throw new Error("Something went wrong");
 
     return {
-      type: this.context.type!,
-      email: this.context.email!,
-      details: this.context.details!,
+      type: this.context.type,
+      email: this.context.email,
+      details: this.context.details,
     };
   }
 }
