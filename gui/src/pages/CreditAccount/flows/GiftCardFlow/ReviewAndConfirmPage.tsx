@@ -1,5 +1,9 @@
+// ReviewAndConfirmPage.tsx
+
+import type { GiftCardFormData } from "../../../../types/CreditAccount";
+
 type ReviewAndConfirmPageProps = {
-	formData: Record<string, any>;
+	formData: GiftCardFormData;
 	onNext: () => void;
 	onBack: () => void;
 };
@@ -33,9 +37,8 @@ export const ReviewAndConfirmPage = ({
 	);
 };
 
-// Lille hjælpefunktion til at gøre labels pænere
 const formatLabel = (key: string) => {
 	return key
-		.replace(/([A-Z])/g, " $1") // sæt mellemrum foran store bogstaver
-		.replace(/^./, (str) => str.toUpperCase()); // stort begyndelsesbogstav
+		.replace(/([A-Z])/g, " $1")
+		.replace(/^./, (str) => str.toUpperCase());
 };

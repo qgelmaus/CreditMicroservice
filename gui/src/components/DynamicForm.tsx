@@ -1,13 +1,6 @@
 import type React from "react";
 
-type Field =
-	| { name: string; label: string; type: "text" | "number" | "textarea" }
-	| {
-			name: string;
-			label: string;
-			type: "select";
-			options: { label: string; value: string }[];
-	  };
+import type { Field } from "../types/FormFields"; // eller hvor du lægger typen
 
 type DynamicFormProps = {
 	fields: Field[];

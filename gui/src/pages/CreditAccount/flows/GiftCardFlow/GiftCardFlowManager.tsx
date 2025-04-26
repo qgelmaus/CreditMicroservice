@@ -1,30 +1,67 @@
-import { useState } from "react";
-
+// GiftCardFlowManager.tsx
+import { useEffect, useState } from "react";
 import { ReviewAndConfirmPage } from "./ReviewAndConfirmPage";
 import { FillGiftAccountDetailsPage } from "./FillGiftAccountDetailsFlowPage";
 import { SuccessPage } from "./SuccessPage";
-
-type Step = "fill" | "review" | "success";
+import { SubmitEmailFlowPage } from "./SubmitEmailFlowPage";
+import { useSubmitEmail } from "../../../../services/flow/useSubmitEmail";
+import { useSubmitCreditAccountDetails } from "../../../../services/flow/useSubmitCreditAccountsDetails";
+import { useValidateCreditAccount } from "../../../../services/flow/useValidateCreditAccount";
+import { useFinalizeCreditAccount } from "../../../../services/flow/useFinalizeCreditAccount";
+import { useGiftCardFlowForm } from "../../../../services/flow/useGiftCardFlowForm";
+import { useSelectCreditAccountType } from "../../../../services/flow/useSelectedCreditAccountType";
 
 export const GiftCardFlowManager = () => {
-	const [step, setStep] = useState<Step>("fill");
-	const [formData, setFormData] = useState<Record<string, any>>({});
+	const { selectType } = useSelectCreditAccountType();
+	const { submitEmail } = useSubmitEmail();
+	const { submitDetails } = useSubmitCreditAccountDetails();
+	const { validate } = useValidateCreditAccount();
+	const { finalize } = useFinalizeCreditAccount();
 
-	const handleNext = () => {
-		if (step === "fill") setStep("review");
-		else if (step === "review") setStep("success");
+	const [step, setStep] = useState<"email" | "fill" | "review" | "success">(
+		"email",
+	);
+	const { formData, setField } = useGiftCardFlowForm();
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		(async () => {
+			await selectType("GIFT_CARD");
+		})();
+	}, []);
+
+	const handleNext = async () => {
+		if (step === "email") {
+			await submitEmail(formData.email);
+			setStep("fill");
+		} else if (step === "fill") {
+			await submitDetails(formData);
+			await validate();
+			setStep("review");
+		} else if (step === "review") {
+			await finalize();
+			setStep("success");
+		}
 	};
 
 	const handleBack = () => {
 		if (step === "review") setStep("fill");
+		else if (step === "fill") setStep("email");
 	};
 
 	return (
 		<>
+			{step === "email" && (
+				<SubmitEmailFlowPage
+					formData={formData}
+					setField={setField}
+					onNext={handleNext}
+					onBack={handleBack}
+				/>
+			)}
 			{step === "fill" && (
 				<FillGiftAccountDetailsPage
 					formData={formData}
-					setFormData={setFormData}
+					setField={setField}
 					onNext={handleNext}
 					onBack={handleBack}
 				/>

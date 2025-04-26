@@ -1,10 +1,10 @@
-// FillGiftAccountDetailsPage.tsx
+// SubmitEmailFlowPage.tsx
 import { DynamicForm } from "../../../../components/DynamicForm";
-import { GiftCardFormData } from "../../../../types/CreditAccount";
+import type { GiftCardFormData } from "../../../../types/CreditAccount";
 
-const fields = [{ name: "credits", label: "Antal Credits", type: "number" }];
+const fields = [{ name: "email", label: "Email", type: "text" }];
 
-type FillGiftAccountDetailsPageProps = {
+type SubmitEmailFlowPageProps = {
 	formData: GiftCardFormData;
 	setField: <K extends keyof GiftCardFormData>(
 		field: K,
@@ -14,19 +14,19 @@ type FillGiftAccountDetailsPageProps = {
 	onBack: () => void;
 };
 
-export const FillGiftAccountDetailsPage = ({
+export const SubmitEmailFlowPage = ({
 	formData,
 	setField,
 	onNext,
 	onBack,
-}: FillGiftAccountDetailsPageProps) => {
+}: SubmitEmailFlowPageProps) => {
 	const handleChange = (fieldName: string, value: any) => {
 		setField(fieldName as keyof GiftCardFormData, value);
 	};
 
 	return (
 		<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-			<h2 style={{ textAlign: "center" }}>Udfyld Credits</h2>
+			<h2 style={{ textAlign: "center" }}>Udfyld Email</h2>
 
 			<DynamicForm
 				fields={fields}

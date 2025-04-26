@@ -1,8 +1,6 @@
-type SuccessPageProps = {
-	onDone?: () => void;
-};
+// SuccessPage.tsx
 
-export const SuccessPage = ({ onDone }: SuccessPageProps) => {
+export const SuccessPage = () => {
 	return (
 		<div
 			style={{
@@ -14,12 +12,6 @@ export const SuccessPage = ({ onDone }: SuccessPageProps) => {
 		>
 			<h2>✅ Succes!</h2>
 			<p>Din gavekort-konto er blevet oprettet.</p>
-
-			{onDone && (
-				<button type="button" onClick={onDone} style={{ marginTop: "20px" }}>
-					Tilbage til forsiden
-				</button>
-			)}
 		</div>
 	);
 };

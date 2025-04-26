@@ -30,3 +30,9 @@ export type PrepaidAccount = CreditAccountBase & {
 };
 
 export type CreditAccount = GiftAccount | PrepaidAccount;
+
+export type GiftCardFormData = {
+  email: string;
+  type: "GIFT_CARD";
+  credits?: number;
+};

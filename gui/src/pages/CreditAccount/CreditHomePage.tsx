@@ -1,3 +1,4 @@
+//CreditHomePage.tsx
 import { Card } from "../../ui/Card";
 import { GET_ALL_ACCOUNTS } from "../../services/accountService";
 import type { CreditAccount } from "../../types/CreditAccount";
@@ -7,6 +8,7 @@ import { Button } from "../../ui/Button";
 import { SearchBar } from "../../components/SearchBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelectCreditAccountType } from "../../services/flow/useSelectedCreditAccountType";
 
 export default function CreditHomePage() {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -16,8 +18,16 @@ export default function CreditHomePage() {
 
 	const navigate = useNavigate();
 
-	const handleStartGiftCardFlow = () => {
-		navigate("/createGiftCard");
+	const handleGiftCardClick = async () => {
+		try {
+			navigate("/giftcard/create");
+		} catch (error) {
+			console.error("Fejl ved valg af type:", error);
+		}
+	};
+
+	const handlePrepaidCardClick = () => {
+		navigate("/giftcard/create?type=PREPAID_CARD", { replace: false });
 	};
 
 	if (loading) return <p>Henter konti...</p>;
@@ -35,9 +45,9 @@ export default function CreditHomePage() {
 		<div>
 			<div>
 				<ButtonBar>
-					<Button onClick={handleStartGiftCardFlow}>Opret Gavekort</Button>
+					<Button onClick={handleGiftCardClick}>Opret Gavekort</Button>
 
-					<Button>Opret Klippekort</Button>
+					<Button onClick={handlePrepaidCardClick}>Opret Klippekort</Button>
 				</ButtonBar>
 
 				<SearchBar

@@ -1,11 +1,10 @@
-// src/App.tsx
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import CreditHomePage from "./pages/CreditAccount/CreditHomePage";
 import AccountPage from "./pages/CreditAccount/AccountPage";
-
 import { GiftCardFlowManager } from "./pages/CreditAccount/flows/GiftCardFlow/GiftCardFlowManager";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
 	return (
@@ -13,13 +12,13 @@ function App() {
 			<Layout>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
-					<Route path="/account/:creditCode" element={<AccountPage />} />
 					<Route path="/account" element={<CreditHomePage />} />
-					<Route path="/createGiftCard" element={<GiftCardFlowManager />} />
+					<Route path="/account/:creditCode" element={<AccountPage />} />
+					<Route path="/giftcard/create" element={<GiftCardFlowManager />} />
+					<Route path="/*" element={<NotFoundPage />} />
 				</Routes>
 			</Layout>
 		</BrowserRouter>
 	);
 }
-
 export default App;
