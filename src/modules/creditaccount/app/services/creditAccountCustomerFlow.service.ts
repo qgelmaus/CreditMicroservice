@@ -1,4 +1,5 @@
 import { CustomerCreditAccountFlow } from "../../domain/flows/creditaccount/customerFlow";
+import type { ICreditAccountFlowDetails } from "../dto/creditaccount.types";
 
 import { CreditAccountService } from "./creditAccount.service";
 
@@ -9,7 +10,9 @@ export function getOrCreateFlow(userId: string): CustomerCreditAccountFlow {
   if (!flowStorage.has(userId)) {
     flowStorage.set(userId, new CustomerCreditAccountFlow());
   }
-  return flowStorage.get(userId)!;
+  const getUser = flowStorage.get(userId);
+  if (!getUser) throw new Error("get user failed");
+  return getUser;
 }
 
 export function saveFlow(userId: string, flow: CustomerCreditAccountFlow) {
@@ -33,7 +36,7 @@ export async function setCreditAccountEmail(userId: string, email: string) {
 
 export async function submitCreditAccountDetails(
   userId: string,
-  details: Record<string, any>
+  details: Record<string, ICreditAccountFlowDetails>
 ) {
   const flow = getOrCreateFlow(userId);
   flow.setDetails(details);
@@ -51,7 +54,10 @@ export async function finalizeCreditAccount(userId: string) {
   const { type, email, details } = flow.finalize();
 
   if (type === "GIFT_CARD") {
-    return await accountService.createGiftAccount(details.amount, email);
+    return await accountService.createGiftAccount(
+      details.purchaseAmount!,
+      email
+    );
   }
 
   if (type === "PREPAID_CARD") {

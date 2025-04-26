@@ -45,7 +45,7 @@ export interface TransactionDTO {
 }
 
 export interface ICreditAccountFlowDetails {
-  amount?: number;
+  purchaseAmount?: number;
   treatmentCount?: number;
   pricePerTreatment?: number;
 }
