@@ -16,9 +16,7 @@ export abstract class CreditAccount {
     public readonly createdAt: Date,
     public readonly expiresAt: Date,
     public readonly transactions: CreditTransaction[] = []
-  ) {
-    this.isActive = true;
-  }
+  ) {}
 
   useCredits(cost: number) {}
   refundCredits(cost: number) {}
@@ -91,7 +89,6 @@ export class GiftAccount extends CreditAccount {
       expiresAt,
       transactions
     );
-    this.isActive = true;
   }
 
   useCredits(cost: number) {
@@ -145,7 +142,6 @@ export class PrepaidAccount extends CreditAccount {
       expiresAt,
       transactions
     );
-    this.isActive = true;
   }
 
   useCredits(cost: number) {

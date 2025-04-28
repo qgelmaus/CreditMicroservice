@@ -1,7 +1,3 @@
-import type React from "react";
-
-import type { Field } from "../types/FormFields"; // eller hvor du lægger typen
-
 type DynamicFormProps = {
 	fields: Field[];
 	formData: Record<string, any>;
@@ -24,16 +20,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
 						{field.label}
 					</label>
 
-					{field.type === "textarea" && (
-						<textarea
-							id={field.name}
-							name={field.name}
-							value={formData[field.name] || ""}
-							onChange={(e) => onChange(field.name, e.target.value)}
-							style={{ width: "100%", minHeight: "100px" }}
-						/>
-					)}
-
+					{/* Tekst input eller number input */}
 					{(field.type === "text" || field.type === "number") && (
 						<input
 							id={field.name}
@@ -45,6 +32,18 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
 						/>
 					)}
 
+					{/* Tekstområde */}
+					{field.type === "textarea" && (
+						<textarea
+							id={field.name}
+							name={field.name}
+							value={formData[field.name] || ""}
+							onChange={(e) => onChange(field.name, e.target.value)}
+							style={{ width: "100%", minHeight: "100px" }}
+						/>
+					)}
+
+					{/* Dropdown/select */}
 					{field.type === "select" && (
 						<select
 							id={field.name}
@@ -62,12 +61,22 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
 							style={{ width: "100%" }}
 						>
 							<option value="">-- Vælg --</option>
-							{field.options.map((option) => (
+							{field.options?.map((option) => (
 								<option key={option.value} value={option.value}>
 									{option.label}
 								</option>
 							))}
 						</select>
+					)}
+
+					{/* Custom komponent */}
+					{field.type === "custom" && field.component && (
+						<field.component
+							id={field.name}
+							name={field.name}
+							value={formData[field.name] || ""}
+							onChange={(value: any) => onChange(field.name, value)}
+						/>
 					)}
 				</div>
 			))}

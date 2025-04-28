@@ -12,12 +12,10 @@ export class CreditAccountRepository {
   }
 
   async findByCreditCode(code: string) {
-    const account = await prisma.creditAccount.findUnique({
+    return await prisma.creditAccount.findUnique({
       where: { creditCode: code },
       include: { transactions: true },
     });
-    console.log("Repository console.log:", account);
-    return account;
   }
 
   async findAll() {
