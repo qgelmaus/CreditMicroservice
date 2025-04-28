@@ -12,6 +12,8 @@ export function Button({ variant = "primary", ...props }: ButtonProps) {
 		padding: "0.5rem 1rem",
 		border: "none",
 		borderRadius: "4px",
+		height: "45px",
+		width: "100px",
 		fontWeight: "bold",
 		cursor: "pointer",
 	} as const;

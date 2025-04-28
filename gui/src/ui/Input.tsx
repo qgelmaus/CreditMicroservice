@@ -1,22 +1,50 @@
-import { InputHTMLAttributes } from "react";
-import { theme } from "./theme";
+import type { ChangeEvent } from "react";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>;
-
-export function Input({ style, ...props }: InputProps) {
-  return (
-    <input
-      {...props}
-      style={{
-        border: `1px solid ${theme.colors.muted}`,
-        borderRadius: theme.borderRadius.small,
-        padding: theme.spacing.sm,
-        fontFamily: theme.fonts.body,
-        fontSize: "1rem",
-        width: "100%",
-        boxSizing: "border-box",
-        ...style,
-      }}
-    />
-  );
+interface InputProps {
+	id?: string;
+	name?: string;
+	type?: "text" | "number" | "email" | "password";
+	value: string | number;
+	placeholder?: string;
+	onChange: (value: any) => void;
 }
+
+export const Input = ({
+	id,
+	name,
+	type = "text",
+	value,
+	placeholder,
+	onChange,
+}: InputProps) => {
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (type === "number") {
+			onChange(Number(e.target.value));
+		} else {
+			onChange(e.target.value);
+		}
+	};
+
+	return (
+		<input
+			id={id}
+			name={name}
+			type={type}
+			value={value}
+			placeholder={placeholder}
+			onChange={handleChange}
+			style={{
+				width: "100%",
+				padding: "8px 12px",
+				height: "45px",
+				fontSize: "16px",
+				borderRadius: "8px",
+				border: "1px solid #ccc",
+				boxSizing: "border-box",
+				appearance: "textfield", // <-- NYT: Fjerner spin buttons
+				MozAppearance: "textfield", // Firefox fix
+				WebkitAppearance: "none", // Chrome/Safari fix
+			}}
+		/>
+	);
+};
