@@ -83,6 +83,7 @@ input CreditAccountDetailsInput {
 input UseCreditsInput {
 	creditCode: String!
 	cost: Float!
+	note: String
 }
 
 input RefundCreditsInput {
