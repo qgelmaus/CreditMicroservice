@@ -1,5 +1,5 @@
 // GiftCardFlowManager.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReviewAndConfirmPage } from "./ReviewAndConfirmPage";
 import { FillGiftAccountDetailsPage } from "./FillGiftAccountDetailsFlowPage";
 import { SuccessPage } from "./SuccessPage";
@@ -9,6 +9,7 @@ import { useSubmitCreditAccountDetails } from "../../../../services/flow/useSubm
 import { useValidateCreditAccount } from "../../../../services/flow/useValidateCreditAccount";
 import { useFinalizeCreditAccount } from "../../../../services/flow/useFinalizeCreditAccount";
 import { useGiftCardFlowForm } from "../../../../services/flow/useCardFlowForm";
+import { useCancelFlow } from "../../../../services/flow/useCancelFlow";
 
 export const GiftCardFlowManager = () => {
 	const { submitEmail } = useSubmitEmail();

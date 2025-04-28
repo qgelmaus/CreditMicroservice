@@ -127,6 +127,7 @@ type Mutation {
 	submitCreditAccountDetails(details: CreditAccountDetailsInput!): Boolean!
 	validateCreditAccount: Boolean!
 	finalizeCreditAccount: CreditAccount!
+	cancelCreditAccountFlow: Boolean!
 
 	#modify credits or money on an account
 	refundCredits(input: RefundCreditsInput!): CreditAccount!

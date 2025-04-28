@@ -6,9 +6,10 @@ import { useQuery } from "@apollo/client";
 import { ButtonBar } from "../../components/ButtonBar";
 import { Button } from "../../ui/Button";
 import { SearchBar } from "../../components/SearchBar";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelectCreditAccountType } from "../../services/flow/useSelectedCreditAccountType";
+import { useCancelFlow } from "../../services/flow/useCancelFlow";
 
 export default function CreditHomePage() {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -16,8 +17,42 @@ export default function CreditHomePage() {
 		allCreditAccounts: CreditAccount[];
 	}>(GET_ALL_ACCOUNTS);
 	const { selectType } = useSelectCreditAccountType();
+	const { cancelFlow } = useCancelFlow();
 
 	const navigate = useNavigate();
+
+	const location = useLocation();
+	const initialPath = useRef(location.pathname);
+
+	useEffect(() => {
+		const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+			cancelFlow();
+			event.preventDefault();
+		};
+
+		window.addEventListener("beforeunload", handleBeforeUnload);
+
+		return () => {
+			window.removeEventListener("beforeunload", handleBeforeUnload);
+		};
+	}, [cancelFlow]);
+
+	useEffect(() => {
+		const initialPath = location.pathname;
+
+		return () => {
+			if (location.pathname !== initialPath) {
+				cancelFlow();
+			}
+		};
+	}, [cancelFlow, location.pathname]);
+
+	useEffect(() => {
+		if (location.pathname !== initialPath.current) {
+			console.log("Navigating away, cancelling flow...");
+			cancelFlow();
+		}
+	}, [location.pathname, cancelFlow]);
 
 	const handleGiftCardClick = async () => {
 		try {

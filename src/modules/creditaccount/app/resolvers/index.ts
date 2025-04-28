@@ -7,6 +7,7 @@ import { refundCredits } from "../commands/CreditAccount/Account/refundCredits";
 import { refundMoney } from "../commands/CreditAccount/Account/refundMoney";
 import { transferCredits } from "../commands/CreditAccount/Account/transferCredits";
 import { useCredits } from "../commands/CreditAccount/Account/useCredits";
+import { cancelCreditAccountFlow } from "../commands/flowCommands/cancelCreditAccountFlow";
 import { finalizeCreditAccount } from "../commands/flowCommands/finalizeCreditAccount";
 import { selectCreditAccountTypeResolver } from "../commands/flowCommands/selectCreditAccountType";
 import { setCreditAccountEmail } from "../commands/flowCommands/setEmail";
@@ -49,5 +50,6 @@ export const flowResolvers = {
     submitCreditAccountDetails,
     validateCreditAccount,
     finalizeCreditAccount,
+    cancelCreditAccountFlow,
   },
 };
