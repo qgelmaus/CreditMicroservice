@@ -36,3 +36,10 @@ export type GiftCardFormData = {
   type: "GIFT_CARD";
   credits?: number;
 };
+
+export type PrepaidCardFormData = {
+  email: string;
+  type: "PREPAID_CARD";
+  pricePerTreatment?: number;
+  treatmentCount?: number;
+};

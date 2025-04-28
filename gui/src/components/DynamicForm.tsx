@@ -49,8 +49,16 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
 						<select
 							id={field.name}
 							name={field.name}
-							value={formData[field.name] || ""}
-							onChange={(e) => onChange(field.name, e.target.value)}
+							value={formData[field.name] ?? ""}
+							onChange={(e) => {
+								const selectedValue = e.target.value;
+								const option = field.options?.find(
+									(o) => o.value.toString() === selectedValue,
+								);
+								if (option) {
+									onChange(field.name, option.value);
+								}
+							}}
 							style={{ width: "100%" }}
 						>
 							<option value="">-- Vælg --</option>

@@ -29,8 +29,14 @@ export default function CreditHomePage() {
 		}
 	};
 
-	const handlePrepaidCardClick = () => {
-		navigate("/giftcard/create?type=PREPAID_CARD", { replace: false });
+	const handlePrepaidCardClick = async () => {
+		try {
+			const success = await selectType("PREPAID_CARD");
+			console.log(success);
+			if (success) navigate("/prepaidcard/create");
+		} catch (error) {
+			console.error("Fejl ved valg af type:", error);
+		}
 	};
 
 	if (loading) return <p>Henter konti...</p>;

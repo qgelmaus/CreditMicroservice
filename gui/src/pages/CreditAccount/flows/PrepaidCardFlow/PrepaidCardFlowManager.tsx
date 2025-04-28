@@ -1,16 +1,17 @@
 // GiftCardFlowManager.tsx
-import { useState } from "react";
-import { ReviewAndConfirmPage } from "./ReviewAndConfirmPage";
-import { FillGiftAccountDetailsPage } from "./FillGiftAccountDetailsFlowPage";
-import { SuccessPage } from "./SuccessPage";
-import { SubmitEmailFlowPage } from "./SubmitEmailFlowPage";
+
+import { FillPrepaidAccountDetailsPage } from "./FillPrepaidAccountDetailsFlowPage";
 import { useSubmitEmail } from "../../../../services/flow/useSubmitEmail";
 import { useSubmitCreditAccountDetails } from "../../../../services/flow/useSubmitCreditAccountsDetails";
 import { useValidateCreditAccount } from "../../../../services/flow/useValidateCreditAccount";
 import { useFinalizeCreditAccount } from "../../../../services/flow/useFinalizeCreditAccount";
-import { useGiftCardFlowForm } from "../../../../services/flow/useCardFlowForm";
+import { SubmitEmailFlowPage } from "./SubmitEmailFlowPage";
+import { useState } from "react";
+import { ReviewAndConfirmPage } from "./ReviewAndConfirmPage";
+import { SuccessPage } from "./SuccessPage";
+import { usePrepiadCardFlowForm } from "../../../../services/flow/useCardFlowForm";
 
-export const GiftCardFlowManager = () => {
+export const PrepaidCardFlowManager = () => {
 	const { submitEmail } = useSubmitEmail();
 	const { submitDetails } = useSubmitCreditAccountDetails();
 	const { validate } = useValidateCreditAccount();
@@ -19,7 +20,7 @@ export const GiftCardFlowManager = () => {
 	const [step, setStep] = useState<"email" | "fill" | "review" | "success">(
 		"email",
 	);
-	const { formData, setField } = useGiftCardFlowForm();
+	const { formData, setField } = usePrepiadCardFlowForm();
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 
 	const handleNext = async () => {
@@ -32,7 +33,8 @@ export const GiftCardFlowManager = () => {
 		} else if (step === "fill") {
 			await submitDetails({
 				email: formData.email,
-				credits: formData.credits,
+				pricePerTreatment: formData.pricePerTreatment,
+				treatmentCount: formData.treatmentCount,
 			});
 			await validate();
 			setStep("review");
@@ -58,7 +60,7 @@ export const GiftCardFlowManager = () => {
 				/>
 			)}
 			{step === "fill" && (
-				<FillGiftAccountDetailsPage
+				<FillPrepaidAccountDetailsPage
 					formData={formData}
 					setField={setField}
 					onNext={handleNext}

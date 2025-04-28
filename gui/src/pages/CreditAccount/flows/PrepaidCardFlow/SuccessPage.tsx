@@ -11,7 +11,7 @@ export const SuccessPage = () => {
 			}}
 		>
 			<h2>✅ Succes!</h2>
-			<p>Dit gavekort er blevet oprettet.</p>
+			<p>Dit klippekort er blevet oprettet.</p>
 		</div>
 	);
 };
