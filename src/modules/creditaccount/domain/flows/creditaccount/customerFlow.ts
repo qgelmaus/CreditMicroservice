@@ -27,6 +27,7 @@ export class CustomerCreditAccountFlow {
 
   selectType(type: CreditAccountType) {
     if (this.state !== "start") {
+      console.log("Type must be selected from start state");
       throw new Error("Type must be selected from start state");
     }
 
@@ -53,7 +54,7 @@ export class CustomerCreditAccountFlow {
     }
 
     if (this.context.type === "GIFT_CARD") {
-      if (!details.amount || typeof details.amount !== "number") {
+      if (!details.credits || typeof details.credits !== "number") {
         throw new Error("Missing or invalid amount for gift card");
       }
     }

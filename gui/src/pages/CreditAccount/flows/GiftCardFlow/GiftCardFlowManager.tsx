@@ -9,10 +9,8 @@ import { useSubmitCreditAccountDetails } from "../../../../services/flow/useSubm
 import { useValidateCreditAccount } from "../../../../services/flow/useValidateCreditAccount";
 import { useFinalizeCreditAccount } from "../../../../services/flow/useFinalizeCreditAccount";
 import { useGiftCardFlowForm } from "../../../../services/flow/useGiftCardFlowForm";
-import { useSelectCreditAccountType } from "../../../../services/flow/useSelectedCreditAccountType";
 
 export const GiftCardFlowManager = () => {
-	const { selectType } = useSelectCreditAccountType();
 	const { submitEmail } = useSubmitEmail();
 	const { submitDetails } = useSubmitCreditAccountDetails();
 	const { validate } = useValidateCreditAccount();
@@ -23,18 +21,19 @@ export const GiftCardFlowManager = () => {
 	);
 	const { formData, setField } = useGiftCardFlowForm();
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-	useEffect(() => {
-		(async () => {
-			await selectType("GIFT_CARD");
-		})();
-	}, []);
 
 	const handleNext = async () => {
 		if (step === "email") {
+			if (!formData.email) {
+				alert("Udfyld venligst din email før du fortsætter.");
+			}
 			await submitEmail(formData.email);
 			setStep("fill");
 		} else if (step === "fill") {
-			await submitDetails(formData);
+			await submitDetails({
+				email: formData.email,
+				credits: formData.credits,
+			});
 			await validate();
 			setStep("review");
 		} else if (step === "review") {

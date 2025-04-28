@@ -3,11 +3,18 @@ import { gql, useMutation } from "@apollo/client";
 const FINALIZE_CREDIT_ACCOUNT = gql`
   mutation FinalizeCreditAccount {
     finalizeCreditAccount {
-      id
-      creditCode
-      email
-      originalCredits
-      originalMoney
+      ... on GiftAccount {
+        creditCode
+        email
+        originalCredits
+        originalMoney
+      }
+      ... on PrepaidAccount {
+        creditCode
+        email
+        originalCredits
+        originalMoney
+      }
     }
   }
 `;

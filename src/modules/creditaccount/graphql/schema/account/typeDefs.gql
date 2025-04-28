@@ -75,7 +75,7 @@ input CreatePrepaidAccountInput {
 
 input CreditAccountDetailsInput {
 	email: String!
-	amount: Float
+	credits: Float
 	treatmentCount: Int
 	pricePerTreatment: Float
 }

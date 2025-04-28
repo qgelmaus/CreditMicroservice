@@ -1,6 +1,6 @@
 // FillGiftAccountDetailsPage.tsx
 import { DynamicForm } from "../../../../components/DynamicForm";
-import { GiftCardFormData } from "../../../../types/CreditAccount";
+import type { GiftCardFormData } from "../../../../types/CreditAccount";
 
 const fields = [{ name: "credits", label: "Antal Credits", type: "number" }];
 
@@ -21,7 +21,12 @@ export const FillGiftAccountDetailsPage = ({
 	onBack,
 }: FillGiftAccountDetailsPageProps) => {
 	const handleChange = (fieldName: string, value: any) => {
-		setField(fieldName as keyof GiftCardFormData, value);
+		const field = fields.find((f) => f.name === fieldName);
+		if (field?.type === "number") {
+			setField(fieldName as keyof GiftCardFormData, Number(value));
+		} else {
+			setField(fieldName as keyof GiftCardFormData, value);
+		}
 	};
 
 	return (

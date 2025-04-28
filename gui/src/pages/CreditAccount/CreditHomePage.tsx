@@ -15,12 +15,15 @@ export default function CreditHomePage() {
 	const { data, loading, error } = useQuery<{
 		allCreditAccounts: CreditAccount[];
 	}>(GET_ALL_ACCOUNTS);
+	const { selectType } = useSelectCreditAccountType();
 
 	const navigate = useNavigate();
 
 	const handleGiftCardClick = async () => {
 		try {
-			navigate("/giftcard/create");
+			const success = await selectType("GIFT_CARD");
+			console.log(success);
+			if (success) navigate("/giftcard/create");
 		} catch (error) {
 			console.error("Fejl ved valg af type:", error);
 		}

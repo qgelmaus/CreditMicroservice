@@ -42,15 +42,26 @@ export async function submitCreditAccountDetails(
   details: Record<string, any>
 ) {
   const flow = getOrCreateFlow(userId);
+
+  console.log("CURRENT FLOW STATE:", flow.getCurrentState());
+  console.log("FLOW CONTEXT:", flow.getContext());
+  console.log("INCOMING DETAILS:", details);
+
   flow.setDetails(details);
   console.log("FLOWSERVICE: SET DETAILS HIT", details);
+
   saveFlow(userId, flow);
 }
 
 export async function validateCreditAccount(userId: string) {
   const flow = getOrCreateFlow(userId);
+  console.log("CURRENT STATE BEFORE VALIDATE:", flow.getCurrentState());
   flow.validate();
   saveFlow(userId, flow);
+}
+
+export function deleteFlow(userId: string) {
+  flowStorage.delete(userId);
 }
 
 export async function finalizeCreditAccount(userId: string) {
@@ -59,15 +70,23 @@ export async function finalizeCreditAccount(userId: string) {
   if (!details || !email) throw new Error("Details or email is undefined");
 
   if (type === "GIFT_CARD") {
-    return await accountService.createGiftAccount(details.amount, email);
+    const finishedAccount = await accountService.createGiftAccount(
+      details.credits,
+      email
+    );
+    deleteFlow(userId);
+    return finishedAccount;
   }
 
   if (type === "PREPAID_CARD") {
-    return await accountService.createPrepaidAccount(
+    const finishedAccount = await accountService.createPrepaidAccount(
       details.treatmentCount,
       details.pricePerTreatment,
       email
     );
+
+    deleteFlow(userId);
+    return finishedAccount;
   }
 
   throw new Error("Invalid account type");

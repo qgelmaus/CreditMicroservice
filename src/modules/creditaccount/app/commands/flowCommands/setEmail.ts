@@ -2,10 +2,16 @@ import { setCreditAccountEmail as service } from "../../../app/services/creditAc
 
 export const setCreditAccountEmail = async (
   _: any,
-  email: string,
+  args: { email: string },
   context: { user: { id: string } }
 ) => {
-  await service(email, context.user.id);
-  console.log("hit email");
+  const { email } = args;
+  console.log("ARGS: ", args);
+  console.log("USER: ", context.user);
+
+  // TEST: Fjern service midlertidigt
+  // await service(email, context.user.id);
+  service(context.user.id, email);
+  console.log("Reached end of setCreditAccountEmail");
   return true;
 };

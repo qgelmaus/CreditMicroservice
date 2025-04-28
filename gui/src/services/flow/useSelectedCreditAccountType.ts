@@ -11,7 +11,8 @@ export const useSelectCreditAccountType = () => {
 
   const selectType = async (type: string) => {
     const { data } = await selectTypeMutation({ variables: { type } });
-    return data.selectCreditAccountType;
+    console.log(data);
+    return data?.selectCreditAccountType;
   };
 
   return { selectType };
