@@ -1,0 +1,44 @@
+// ReviewAndConfirmPage.tsx
+
+import type { GiftCardFormData } from "../../../../types/CreditAccount";
+
+type ReviewAndConfirmPageProps = {
+	formData: GiftCardFormData;
+	onNext: () => void;
+	onBack: () => void;
+};
+
+export const ReviewAndConfirmPage = ({
+	formData,
+	onNext,
+	onBack,
+}: ReviewAndConfirmPageProps) => {
+	return (
+		<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+			<h2 style={{ textAlign: "center" }}>Gennemse dine oplysninger</h2>
+
+			<div style={{ marginBottom: "20px" }}>
+				{Object.entries(formData).map(([key, value]) => (
+					<div key={key} style={{ marginBottom: "10px" }}>
+						<strong>{formatLabel(key)}:</strong> {String(value)}
+					</div>
+				))}
+			</div>
+
+			<div style={{ display: "flex", justifyContent: "space-between" }}>
+				<button type="button" onClick={onBack}>
+					Tilbage
+				</button>
+				<button type="button" onClick={onNext}>
+					Bekræft og fortsæt
+				</button>
+			</div>
+		</div>
+	);
+};
+
+const formatLabel = (key: string) => {
+	return key
+		.replace(/([A-Z])/g, " $1")
+		.replace(/^./, (str) => str.toUpperCase());
+};

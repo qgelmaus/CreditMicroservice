@@ -1,23 +1,15 @@
 import React from "react";
+import { GlobalStyles } from "./ui/theme/GlobalStyles.tsx";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import App from "./App.tsx";
 import { ApolloProvider } from "@apollo/client";
-import { client } from "./lib/apolloClient";
+import { client } from "./lib/apolloClient.ts";
 
-import AccountPage from "./pages/AccountPage";
-import LandingPage from "./pages/LandingPage";
-
-// biome-ignore lint/style/noNonNullAssertion: <explanation>
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
+		<GlobalStyles />
 		<ApolloProvider client={client}>
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<LandingPage />} />
-					<Route path="/account/:code" element={<AccountPage />} />
-					<Route path="*" element={<p>404 - Not Found</p>} />
-				</Routes>
-			</BrowserRouter>
+			<App />
 		</ApolloProvider>
 	</React.StrictMode>,
 );

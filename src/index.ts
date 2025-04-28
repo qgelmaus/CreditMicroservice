@@ -24,12 +24,14 @@ process.on("unhandledRejection", (reason) => {
   logger.error(reason, "Unhandled Rejection");
 });
 
-app.use(
-  "/graphql",
+app.use("/graphql", (req, res) =>
   graphqlHTTP({
     schema,
     graphiql: true,
-  })
+    context: {
+      user: { id: "FAKE-USER-ID" },
+    },
+  })(req, res)
 );
 
 app.listen(port, () => {

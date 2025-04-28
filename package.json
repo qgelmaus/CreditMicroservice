@@ -14,7 +14,8 @@
 		"build": "tsc",
 		"start": "node dist/index.js",
 		"test:prepare": "dotenv -e .env -- prisma db push --schema=src/shared/infrastructure/db/prisma/schema.prisma",
-		"test": "pnpm run test:prepare && jest"
+		"test": "pnpm run test:prepare && jest",
+		"dev:codegen": "graphql-codegen --config gqlconfig.ts"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.13.8",
@@ -30,6 +31,8 @@
 		"pino": "^8.21.0"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@graphql-codegen/cli": "5.0.5",
 		"@types/dotenv": "^8.2.3",
 		"@types/express": "^5.0.1",
 		"@types/jest": "^29.5.14",
@@ -45,10 +48,14 @@
 		"ts-jest": "^29.3.1",
 		"ts-node": "10.9.2",
 		"ts-node-dev": "^2.0.0",
-		"typescript": "^5.3.3"
+		"typescript": "^5.3.3",
+		"@graphql-codegen/typescript": "4.1.6",
+		"@graphql-codegen/typescript-resolvers": "4.5.0",
+		"@graphql-codegen/introspection": "4.0.3"
 	},
 	"prisma": {
 		"seed": "ts-node src/shared/infrastructure/db/prisma/seed.ts",
 		"schema": "src/shared/infrastructure/db/prisma/schema.prisma"
-	}
+	},
+	"biome": {}
 }

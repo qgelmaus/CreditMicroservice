@@ -10,12 +10,14 @@ const schema = makeExecutableSchema({
   resolvers,
 });
 
-app.use(
-  "/graphql",
+app.use("/graphql", (req, res) =>
   graphqlHTTP({
     schema,
-    graphiql: process.env.NODE_ENV !== "test",
-  })
+    graphiql: true,
+    context: {
+      user: { id: "FAKE-USER-ID" },
+    },
+  })(req, res)
 );
 
 export { app };
