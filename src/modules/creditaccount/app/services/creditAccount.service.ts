@@ -225,7 +225,6 @@ export class CreditAccountService {
 
   async findByCode(creditCode: string): Promise<CreditAccountDTO> {
     const account = await this.accountRepo.findByCreditCode(creditCode);
-    console.log("Service console.log: ", account);
     if (!account) throw new Error("Account not found");
     return toDTO(toDomain(account));
   }

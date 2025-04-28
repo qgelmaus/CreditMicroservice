@@ -27,7 +27,6 @@ export class CustomerCreditAccountFlow {
 
   selectType(type: CreditAccountType) {
     if (this.state !== "start") {
-      console.log("Type must be selected from start state");
       throw new Error("Type must be selected from start state");
     }
 
