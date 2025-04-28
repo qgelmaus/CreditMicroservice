@@ -12,10 +12,12 @@ export class CreditAccountRepository {
   }
 
   async findByCreditCode(code: string) {
-    return await prisma.creditAccount.findUnique({
+    const account = await prisma.creditAccount.findUnique({
       where: { creditCode: code },
       include: { transactions: true },
     });
+    console.log("Repository console.log:", account);
+    return account;
   }
 
   async findAll() {
@@ -44,7 +46,7 @@ export class CreditAccountRepository {
     const baseUpdate = {
       availableCredits: account.availableCredits,
       availableMoney: account.availableMoney,
-      isActive: account.isActive
+      isActive: account.isActive,
     };
 
     if (account instanceof PrepaidAccount) {

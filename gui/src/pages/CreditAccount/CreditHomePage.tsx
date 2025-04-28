@@ -15,7 +15,7 @@ export default function CreditHomePage() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const { data, loading, error } = useQuery<{
 		allCreditAccounts: CreditAccount[];
-	}>(GET_ALL_ACCOUNTS);
+	}>(GET_ALL_ACCOUNTS, { fetchPolicy: "network-only" });
 	const { selectType } = useSelectCreditAccountType();
 	const { cancelFlow } = useCancelFlow();
 

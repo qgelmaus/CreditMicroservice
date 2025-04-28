@@ -14,7 +14,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/account" element={<CreditHomePage />} />
-					<Route path="/account/:creditCode" element={<AccountPage />} />
+					<Route path="/account/:code" element={<AccountPage />} />
 					<Route path="/giftcard/create" element={<GiftCardFlowManager />} />
 					<Route
 						path="/prepaidcard/create"

@@ -23,7 +23,6 @@ export async function selectCreditAccountType(
   type: "GIFT_CARD" | "PREPAID_CARD"
 ) {
   const flow = getOrCreateFlow(userId);
-  console.log("FLOWSERVICE: TYPE HIT", type);
 
   flow.selectType(type);
   saveFlow(userId, flow);
@@ -33,7 +32,7 @@ export async function setCreditAccountEmail(userId: string, email: string) {
   const flow = getOrCreateFlow(userId);
 
   flow.setEmail(email);
-  console.log("FLOWSERVICE: SET EMAIL HIT", email);
+
   saveFlow(userId, flow);
 }
 
@@ -43,19 +42,13 @@ export async function submitCreditAccountDetails(
 ) {
   const flow = getOrCreateFlow(userId);
 
-  console.log("CURRENT FLOW STATE:", flow.getCurrentState());
-  console.log("FLOW CONTEXT:", flow.getContext());
-  console.log("INCOMING DETAILS:", details);
-
   flow.setDetails(details);
-  console.log("FLOWSERVICE: SET DETAILS HIT", details);
 
   saveFlow(userId, flow);
 }
 
 export async function validateCreditAccount(userId: string) {
   const flow = getOrCreateFlow(userId);
-  console.log("CURRENT STATE BEFORE VALIDATE:", flow.getCurrentState());
   flow.validate();
   saveFlow(userId, flow);
 }

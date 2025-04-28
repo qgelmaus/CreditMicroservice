@@ -1,4 +1,5 @@
 import type React from "react";
+import { theme } from "../ui/theme";
 
 type ContentWindowProps = {
 	title: string;
@@ -24,6 +25,7 @@ export const ContentWindow: React.FC<ContentWindowProps> = ({
 					marginBottom: "10px",
 					fontSize: "1.5rem",
 					textAlign: "center",
+					color: theme.colors.headingColor,
 				}}
 			>
 				{title}

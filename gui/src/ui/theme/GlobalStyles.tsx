@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { theme } from "./index";
 
 export function GlobalStyles() {
-  useEffect(() => {
-    const style = document.createElement("style");
-    style.innerHTML = `
+	useEffect(() => {
+		const style = document.createElement("style");
+		style.innerHTML = `
       /* Body */
       body {
         margin: 0;
@@ -68,12 +68,12 @@ export function GlobalStyles() {
         list-style: none;
       }
     `;
-    document.head.appendChild(style);
+		document.head.appendChild(style);
 
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+		return () => {
+			document.head.removeChild(style);
+		};
+	}, []);
 
-  return null;
+	return null;
 }

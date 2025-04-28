@@ -194,40 +194,38 @@ export class CreditAccountService {
 
     const updated = await this.accountRepo.updateState(account);
 
-    await this.transactionRepo.logMoneyRefund(
+    await this.transactionRepo.logMoneyRefund(updated.id, 0, money, note ?? "");
+
+    return toDTO(toDomain(updated));
+  }
+
+  async nullifyAccount(
+    creditCode: string,
+    note?: string
+  ): Promise<CreditAccountDTO> {
+    const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
+    if (!dbAccount) throw new Error("Account not found");
+
+    const account = toDomain(dbAccount);
+    const removedCredits = account.availableCredits;
+    const removedMoney = account.availableMoney;
+    account.nullifyAccount();
+
+    const updated = await this.accountRepo.updateState(account);
+
+    await this.transactionRepo.logNullification(
       updated.id,
-      0,
-      money,
+      removedCredits,
+      removedMoney,
       note ?? ""
     );
 
     return toDTO(toDomain(updated));
   }
 
-  async nullifyAccount(creditCode: string, note?: string): Promise<CreditAccountDTO>{
-    const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
-    if(!dbAccount) throw new Error("Account not found");
-
-    const account = toDomain(dbAccount)
-    const removedCredits = account.availableCredits;
-    const removedMoney = account.availableMoney;
-    account.nullifyAccount();
-
-    const updated = await this.accountRepo.updateState(account)
-    
-    await this.transactionRepo.logNullification(
-      updated.id,
-      removedCredits,
-      removedMoney,
-      note ?? ""
-      
-    )
-
-    return toDTO(toDomain(updated))
-  }
-
   async findByCode(creditCode: string): Promise<CreditAccountDTO> {
     const account = await this.accountRepo.findByCreditCode(creditCode);
+    console.log("Service console.log: ", account);
     if (!account) throw new Error("Account not found");
     return toDTO(toDomain(account));
   }

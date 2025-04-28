@@ -4,12 +4,15 @@ export const theme = {
     heading: "'Inter', sans-serif",
   },
   colors: {
-    background: "#f9f9f9",
-    primary: "#319795",
-    primaryHover: "#2c7a7b",
-    text: "#2d3748",
-    muted: "#718096",
+    background: "#00000",
+    primary: "#2b6cb0",
+    primaryHover: "#2c5282",
+    text: "#00000", // lys tekst på mørk baggrund
+    muted: "#a0aec0",
     white: "#ffffff",
+    buttonPrimaryColor: "#2b6cb0", // orange (fed kontrast)
+    buttonSecondaryColor: "#2d3748", // lidt lysere mørkegrå
+    headingColor: "#00000",
   },
   borderRadius: {
     small: "4px",

@@ -1,41 +1,42 @@
 // src/ui/Button.tsx
 
-import { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
+import { theme } from "./theme";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary";
+	variant?: "primary" | "secondary";
 };
 
 export function Button({ variant = "primary", ...props }: ButtonProps) {
-  const baseStyle = {
-    padding: "0.5rem 1rem",
-    border: "none",
-    borderRadius: "4px",
-    fontWeight: "bold",
-    cursor: "pointer",
-  } as const;
+	const baseStyle = {
+		padding: "0.5rem 1rem",
+		border: "none",
+		borderRadius: "4px",
+		fontWeight: "bold",
+		cursor: "pointer",
+	} as const;
 
-  const variantStyles = {
-    primary: {
-      backgroundColor: "#319795",
-      color: "white",
-    },
-    secondary: {
-      backgroundColor: "#e2e8f0",
-      color: "#2d3748",
-    },
-  } as const;
+	const variantStyles = {
+		primary: {
+			backgroundColor: theme.colors.buttonPrimaryColor,
+			color: "white",
+		},
+		secondary: {
+			backgroundColor: theme.colors.buttonSecondaryColor,
+			color: "#2d3748",
+		},
+	} as const;
 
-  return (
-    <button
-      {...props}
-      style={{
-        ...baseStyle,
-        ...variantStyles[variant],
-        ...props.style,
-      }}
-    >
-      {props.children}
-    </button>
-  );
+	return (
+		<button
+			{...props}
+			style={{
+				...baseStyle,
+				...variantStyles[variant],
+				...props.style,
+			}}
+		>
+			{props.children}
+		</button>
+	);
 }

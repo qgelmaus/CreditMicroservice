@@ -5,7 +5,6 @@ export const validateCreditAccount = async (
   __: any,
   context: { user: { id: string } }
 ) => {
-  console.log("USER: ", context.user);
   await service(context.user.id);
   return true;
 };
