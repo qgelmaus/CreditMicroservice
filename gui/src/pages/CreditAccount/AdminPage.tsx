@@ -1,58 +1,22 @@
-//CreditHomePage.tsx
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ButtonBar } from "../../components/ButtonBar";
+import { SearchBar } from "../../components/SearchBar";
+
+import { useSelectCreditAccountType } from "../../services/flow/useSelectedCreditAccountType";
+import type { CreditAccount } from "../../types/CreditAccount";
+import { Button } from "../../ui/Button";
 import { Card } from "../../ui/Card";
 import { GET_ALL_ACCOUNTS } from "../../services/accountService";
-import type { CreditAccount } from "../../types/CreditAccount";
-import { useQuery } from "@apollo/client";
-import { ButtonBar } from "../../components/ButtonBar";
-import { Button } from "../../ui/Button";
-import { SearchBar } from "../../components/SearchBar";
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelectCreditAccountType } from "../../services/flow/useSelectedCreditAccountType";
-import { useCancelFlow } from "../../services/flow/useCancelFlow";
 
-export default function CreditHomePage() {
+export default function AdminPage() {
+	const { data, loading, error } = useQuery(GET_ALL_ACCOUNTS);
 	const [searchTerm, setSearchTerm] = useState("");
-	const { data, loading, error } = useQuery<{
-		allCreditAccounts: CreditAccount[];
-	}>(GET_ALL_ACCOUNTS, { fetchPolicy: "network-only" });
+
 	const { selectType } = useSelectCreditAccountType();
-	const { cancelFlow } = useCancelFlow();
 
 	const navigate = useNavigate();
-
-	const location = useLocation();
-	const initialPath = useRef(location.pathname);
-
-	useEffect(() => {
-		const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-			cancelFlow();
-			event.preventDefault();
-		};
-
-		window.addEventListener("beforeunload", handleBeforeUnload);
-
-		return () => {
-			window.removeEventListener("beforeunload", handleBeforeUnload);
-		};
-	}, [cancelFlow]);
-
-	useEffect(() => {
-		const initialPath = location.pathname;
-
-		return () => {
-			if (location.pathname !== initialPath) {
-				cancelFlow();
-			}
-		};
-	}, [cancelFlow, location.pathname]);
-
-	useEffect(() => {
-		if (location.pathname !== initialPath.current) {
-			console.log("Navigating away, cancelling flow...");
-			cancelFlow();
-		}
-	}, [location.pathname, cancelFlow]);
 
 	const handleGiftCardClick = async () => {
 		try {
@@ -78,13 +42,15 @@ export default function CreditHomePage() {
 	if (error) return <p>Fejl: {error.message}</p>;
 	if (!data) return null;
 
-	const filteredAccounts = data.allCreditAccounts.filter((account) => {
-		const lowerSearch = searchTerm.toLowerCase();
-		return (
-			account.creditCode.toLowerCase().includes(lowerSearch) ||
-			account.email.toLowerCase().includes(lowerSearch)
-		);
-	});
+	const filteredAccounts = data.allCreditAccounts.filter(
+		(account: CreditAccount) => {
+			const lowerSearch = searchTerm.toLowerCase();
+			return (
+				account.creditCode.toLowerCase().includes(lowerSearch) ||
+				account.email.toLowerCase().includes(lowerSearch)
+			);
+		},
+	);
 	return (
 		<div>
 			<div>

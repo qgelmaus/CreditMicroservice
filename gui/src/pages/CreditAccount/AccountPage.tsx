@@ -11,7 +11,7 @@ import { TextInput } from "../../ui/TextInput";
 import { AccountOverview } from "../../components/CreditAccount/AccountOverview";
 import { EditCreditActions } from "../../hooks/CreditAccount/editCreditActions";
 import { formatMoney } from "../../utils/formatMoney";
-import { Transaction } from "../../types/CreditAccount";
+import type { Transaction } from "../../types/CreditAccount";
 
 export default function AccountPage() {
 	const { code } = useParams<{ code: string }>();

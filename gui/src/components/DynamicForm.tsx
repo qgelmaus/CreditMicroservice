@@ -1,8 +1,4 @@
-type DynamicFormProps = {
-	fields: Field[];
-	formData: Record<string, any>;
-	onChange: (fieldName: string, value: any) => void;
-};
+import type { DynamicFormProps } from "../types/Component.types";
 
 export const DynamicForm: React.FC<DynamicFormProps> = ({
 	fields,
