@@ -59,7 +59,7 @@ export default function TransactionsPage() {
 	return (
 		<div>
 			<SearchBar
-				placeholder="Søg efter transaktioner..."
+				placeholder="Søg i transaktioner..."
 				onSearch={(term) => setSearchTerm(term)}
 			/>
 			<h2 style={{ marginTop: "30px" }}>Transaktioner</h2>
