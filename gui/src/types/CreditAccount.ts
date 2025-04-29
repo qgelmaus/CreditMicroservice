@@ -1,29 +1,32 @@
-export type Transaction = {
+export interface Transaction {
   id: number;
   credits: number;
   money: number;
   createdAt: string;
-};
-
-export type CreditAccountBase = {
+  type: string;
+  note: string
   creditCode: string;
-  type: "GIFT_CARD" | "PREPAID_CARD";
+}
+
+export interface BaseCreditAccount {
+  creditCode: string;
+  type: "GIFT_CARD" | "PREPAID_CARD"; // eller importér din enum
   originalCredits: number;
   originalMoney: number;
   availableCredits: number;
   availableMoney: number;
   email: string;
   isActive: boolean;
-  dateCreated: string;
-  dateExpired: string;
+  createdAt: string;
+  expiresAt: string;
   transactions: Transaction[];
-};
+}
 
-export type GiftAccount = CreditAccountBase & {
+export type GiftAccount = BaseCreditAccount & {
   type: "GIFT_CARD";
 };
 
-export type PrepaidAccount = CreditAccountBase & {
+export type PrepaidAccount = BaseCreditAccount & {
   type: "PREPAID_CARD";
   treatmentCount: number;
   discountPercentage: number;
@@ -43,3 +46,10 @@ export type PrepaidCardFormData = {
   pricePerTreatment?: number;
   treatmentCount?: number;
 };
+
+
+
+
+
+e
+}

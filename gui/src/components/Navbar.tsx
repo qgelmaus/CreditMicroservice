@@ -5,7 +5,7 @@ const navLinks = [
 	{ to: "/", label: "Forside" },
 	{ to: "/account", label: "Customer Flow" },
 	{ to: "/admin", label: "Admin Flow" },
-	{ to: "/transaction", label: "Transactions" },
+	{ to: "/transactions", label: "Transactions" },
 ];
 
 export function Navbar() {
