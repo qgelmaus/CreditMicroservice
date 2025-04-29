@@ -9,6 +9,7 @@ import { PrepaidCardFlowManager } from "./pages/CreditAccount/flows/PrepaidCardF
 import TransactionsPage from "./pages/TransactionsPage";
 import CustomerPage from "./pages/CreditAccount/CustomerPage";
 import AdminPage from "./pages/CreditAccount/AdminPage";
+import AdminCardCreationPage from "./pages/CreditAccount/AdminCardCreationPage";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 					<Route path="/admin" element={<AdminPage />} />
 					<Route path="/account/:code" element={<AccountPage />} />
 					<Route path="/giftcard/create" element={<GiftCardFlowManager />} />
+					<Route path="/admin/create" element={<AdminCardCreationPage />} />
 					<Route path="/transactions" element={<TransactionsPage />} />
 					<Route
 						path="/prepaidcard/create"

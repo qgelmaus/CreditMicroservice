@@ -13,7 +13,7 @@ type ButtonField = {
 
 type SimpleDynamicFormProps = {
 	inputs: InputField[];
-	buttons: ButtonField[];
+	buttons?: ButtonField[];
 };
 
 export const SimpleDynamicForm: React.FC<SimpleDynamicFormProps> = ({
@@ -36,8 +36,7 @@ export const SimpleDynamicForm: React.FC<SimpleDynamicFormProps> = ({
 					/>
 				</label>
 			))}
-
-			{buttons.map((button) => (
+			{buttons?.map((button) => (
 				<button
 					key={button.id}
 					type="button"

@@ -3,39 +3,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ButtonBar } from "../../components/ButtonBar";
 import { SearchBar } from "../../components/SearchBar";
-
-import { useSelectCreditAccountType } from "../../services/flow/useSelectedCreditAccountType";
+import { GET_ALL_ACCOUNTS } from "../../services/accountService";
 import type { CreditAccount } from "../../types/CreditAccount";
 import { Button } from "../../ui/Button";
 import { Card } from "../../ui/Card";
-import { GET_ALL_ACCOUNTS } from "../../services/accountService";
 
 export default function AdminPage() {
 	const { data, loading, error } = useQuery(GET_ALL_ACCOUNTS);
 	const [searchTerm, setSearchTerm] = useState("");
 
-	const { selectType } = useSelectCreditAccountType();
-
 	const navigate = useNavigate();
 
 	const handleGiftCardClick = async () => {
-		try {
-			const success = await selectType("GIFT_CARD");
-			console.log(success);
-			if (success) navigate("/giftcard/create");
-		} catch (error) {
-			console.error("Fejl ved valg af type:", error);
-		}
-	};
-
-	const handlePrepaidCardClick = async () => {
-		try {
-			const success = await selectType("PREPAID_CARD");
-			console.log(success);
-			if (success) navigate("/prepaidcard/create");
-		} catch (error) {
-			console.error("Fejl ved valg af type:", error);
-		}
+		navigate("/admin/create");
 	};
 
 	if (loading) return <p>Henter konti...</p>;
@@ -55,9 +35,7 @@ export default function AdminPage() {
 		<div>
 			<div>
 				<ButtonBar>
-					<Button onClick={handleGiftCardClick}>Opret Gavekort</Button>
-
-					<Button onClick={handlePrepaidCardClick}>Opret Klippekort</Button>
+					<Button onClick={handleGiftCardClick}>Opret ny konto</Button>
 				</ButtonBar>
 
 				<SearchBar
