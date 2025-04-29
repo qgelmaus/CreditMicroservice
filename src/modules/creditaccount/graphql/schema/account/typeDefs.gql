@@ -117,6 +117,7 @@ extend type Query {
 
 	#transactions
 	transactionsForAccountByCode(code: String!): [Transaction!]
+	allCreditTransactions: [Transaction!]!
 
 	#transfers
 }

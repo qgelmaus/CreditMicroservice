@@ -1,4 +1,4 @@
-import type { CreditAccount, CreditTransaction } from "@prisma/client";
+import type { CreditTransaction } from "@prisma/client";
 import type { TransactionDTO } from "../../app/dto/creditaccount.types";
 
 export function toTransactionDTO(

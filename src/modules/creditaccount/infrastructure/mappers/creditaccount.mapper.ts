@@ -13,7 +13,6 @@ import {
 import type {
 	CreditAccountDTO,
 	CreditTransferDTO,
-	TransactionDTO,
 } from "../../app/dto/creditaccount.types";
 import { toTransactionDTO } from "./transaction.mapper";
 
