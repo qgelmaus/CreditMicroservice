@@ -30,7 +30,9 @@ export const ContentWindow: React.FC<ContentWindowProps> = ({
 			>
 				{title}
 			</h2>
-			<div style={{ fontSize: "1rem", color: "#333" }}>{children}</div>
+			<div style={{ fontSize: "1rem", color: "#333", textAlign: "center" }}>
+				{children}
+			</div>
 		</div>
 	);
 };

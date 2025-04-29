@@ -1,8 +1,9 @@
-import { CreditAccountService } from "../../../services/creditAccount.service";
+import { CreditTransactionService } from "../../../services/creditTransactions.service";
 
-const service = new CreditAccountService();
+const service = new CreditTransactionService();
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const transactionsForAccountByCode = async (_: any, { code }: any) => {
-  return await service.findTransactions(code);
+
+export const allCreditTransactions = async () => {
+	return await service.findAllTransactions();
 };

@@ -112,8 +112,8 @@ export class CreditTransactionRepository {
 				credits: credits,
 				money: money,
 				note,
-			}
-		})
+			},
+		});
 	}
 
 	async getTransactionsForAccount(accountId: number) {
@@ -121,6 +121,12 @@ export class CreditTransactionRepository {
 			where: { creditAccountId: accountId },
 			orderBy: { createdAt: "desc" },
 			include: { creditAccount: true },
+		});
+	}
+
+	async findAll() {
+		return await prisma.creditTransaction.findMany({
+			orderBy: { createdAt: "desc" },
 		});
 	}
 }

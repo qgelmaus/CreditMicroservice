@@ -1,40 +1,6 @@
 // src/services/accountService.ts
 import { gql } from "@apollo/client";
 
-export interface Transaction {
-  id: number;
-  credits: number;
-  money: number;
-  createdAt: string;
-  type: string;
-}
-
-export interface BaseCreditAccount {
-  creditCode: string;
-  type: "GIFT_CARD" | "PREPAID_CARD"; // eller importér din enum
-  originalCredits: number;
-  originalMoney: number;
-  availableCredits: number;
-  availableMoney: number;
-  email: string;
-  isActive: boolean;
-  createdAt: string;
-  expiresAt: string;
-  transactions: Transaction[];
-}
-
-export interface GiftAccount extends BaseCreditAccount {
-  type: "GIFT_CARD";
-}
-
-export interface PrepaidAccount extends BaseCreditAccount {
-  type: "PREPAID_CARD";
-  treatmentCount: number;
-  discountPercentage: number;
-}
-
-export type CreditAccount = GiftAccount | PrepaidAccount;
-
 export const GET_ALL_ACCOUNTS = gql`
   query GetAllAccounts {
     allCreditAccounts {

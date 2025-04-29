@@ -2,13 +2,16 @@ import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { GET_ACCOUNT_BY_CODE } from "../../services/accountService";
 import { DynamicTable } from "../../components/DynamicTable";
-import { DynamicForm } from "../../components/DynamicForm";
+
 import { useState } from "react";
 import { Button } from "../../ui/Button";
 import { NumberInput } from "../../ui/NumberInput";
 import { TextInput } from "../../ui/TextInput";
-import { useAccountActions } from "../../hooks/CreditAccount/useCreditActions";
+
 import { AccountOverview } from "../../components/CreditAccount/AccountOverview";
+import { EditCreditActions } from "../../hooks/CreditAccount/editCreditActions";
+import { formatMoney } from "../../utils/formatMoney";
+import { Transaction } from "../../types/CreditAccount";
 
 export default function AccountPage() {
 	const { code } = useParams<{ code: string }>();
@@ -16,7 +19,7 @@ export default function AccountPage() {
 		variables: { code },
 	});
 	const { useCredits, refundCredits, refundMoney, nullifyAccount } =
-		useAccountActions(refetch);
+		EditCreditActions(refetch);
 
 	const [formData, setFormData] = useState<Record<string, any>>({
 		useCreditsAmount: 0,
@@ -63,13 +66,6 @@ export default function AccountPage() {
 		await nullifyAccount(code, formData.nullifyNote);
 	};
 
-	function formatMoney(amount: number) {
-		return new Intl.NumberFormat("da-DK", {
-			style: "currency",
-			currency: "DKK",
-		}).format(amount);
-	}
-
 	if (loading) return <p>Henter konto...</p>;
 	if (error) return <p>Fejl: {error.message}</p>;
 	if (!data || !data.creditAccountByCode) return <p>Ingen konto fundet.</p>;
@@ -78,7 +74,7 @@ export default function AccountPage() {
 	const transactions = account.transactions || [];
 
 	const columns = ["Type", "Credits", "Money", "Note", "Date"];
-	const tableData = transactions.map((t: any) => ({
+	const tableData = transactions.map((t: Transaction) => ({
 		Type: t.type,
 		Credits: t.credits,
 		Money: formatMoney(t.money),
