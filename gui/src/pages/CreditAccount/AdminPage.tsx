@@ -59,6 +59,7 @@ export default function AdminPage() {
 					<Card
 						key={account.creditCode}
 						link={`/account/${account.creditCode}`}
+						style={{ width: "400px", maxWidth: "100%" }}
 					>
 						<h3>
 							{account.creditCode} ({account.type})

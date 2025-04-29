@@ -1,3 +1,5 @@
+import React from "react";
+
 type InputField = {
 	name: string;
 	label: string;
@@ -23,16 +25,32 @@ export const SimpleDynamicForm: React.FC<SimpleDynamicFormProps> = ({
 	return (
 		<form
 			onSubmit={(e) => e.preventDefault()}
-			style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				gap: "1rem",
+				alignItems: "center",
+				maxWidth: "375px",
+				width: "100%",
+				margin: "0 auto",
+				padding: "1rem",
+			}}
 		>
 			{inputs.map((input) => (
-				<label key={input.name}>
+				<label
+					key={input.name}
+					style={{ width: "100%", display: "flex", flexDirection: "column" }}
+				>
 					{input.label}
 					<input
 						type="text"
 						value={input.value}
 						onChange={(e) => input.onChange(e.target.value)}
-						style={{ width: "100%", padding: "0.5rem", marginTop: "0.5rem" }}
+						style={{
+							width: "100%",
+							padding: "0.5rem",
+							marginTop: "0.5rem",
+						}}
 					/>
 				</label>
 			))}
@@ -41,7 +59,11 @@ export const SimpleDynamicForm: React.FC<SimpleDynamicFormProps> = ({
 					key={button.id}
 					type="button"
 					onClick={button.onClick}
-					style={{ padding: "0.5rem" }}
+					style={{
+						width: "100%",
+						padding: "0.75rem",
+						fontWeight: "bold",
+					}}
 				>
 					{button.text}
 				</button>
