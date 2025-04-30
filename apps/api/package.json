@@ -1,0 +1,62 @@
+{
+	"name": "api",
+	"version": "1.0.0",
+	"type": "commonjs",
+	"main": "dist/index.js",
+	"workspaces": ["src", "gui"],
+	"scripts": {
+		"generate": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
+		"generate:test": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
+		"dev": "pnpm run generate && ts-node src/index.ts",
+		"dev:frontend": "pnpm --filter gui dev",
+		"dev:backend": "pnpm --filter src dev",
+		"dev:studio": "pnpm prisma studio",
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"test:prepare": "dotenv -e .env -- prisma db push --schema=src/shared/infrastructure/db/prisma/schema.prisma",
+		"test": "pnpm run test:prepare && jest",
+		"dev:codegen": "graphql-codegen --config gqlconfig.ts"
+	},
+	"dependencies": {
+		"@apollo/client": "^3.13.8",
+		"@graphql-tools/merge": "^9.0.24",
+		"@graphql-tools/schema": "^10.0.23",
+		"@prisma/client": "^5.22.0",
+		"@types/cors": "^2.8.17",
+		"biome": "^0.3.3",
+		"cors": "^2.8.5",
+		"express": "^4.18.2",
+		"express-graphql": "^0.12.0",
+		"graphql": "^16.10.0",
+		"graphql-tag": "^2.12.6",
+		"pino": "^8.21.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@graphql-codegen/cli": "5.0.5",
+		"@graphql-codegen/introspection": "4.0.3",
+		"@graphql-codegen/typescript": "4.1.6",
+		"@graphql-codegen/typescript-resolvers": "4.5.0",
+		"@types/dotenv": "^8.2.3",
+		"@types/express": "^5.0.1",
+		"@types/jest": "^29.5.14",
+		"@types/pino": "^7.0.5",
+		"@types/supertest": "^6.0.3",
+		"dotenv": "^16.4.7",
+		"dotenv-cli": "^8.0.0",
+		"jest": "^29.7.0",
+		"pino-pretty": "^13.0.0",
+		"prisma": "^5.12.1",
+		"sqlite3": "^5.1.7",
+		"supertest": "^7.1.0",
+		"ts-jest": "^29.3.1",
+		"ts-node": "10.9.2",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.3.3"
+	},
+	"prisma": {
+		"seed": "ts-node src/shared/infrastructure/db/prisma/seed.ts",
+		"schema": "src/shared/infrastructure/db/prisma/schema.prisma"
+	},
+	"biome": {}
+}
