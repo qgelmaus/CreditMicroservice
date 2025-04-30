@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"type": "commonjs",
 	"main": "dist/index.js",
-	"workspaces": ["src", "gui"],
 	"scripts": {
 		"generate": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",
 		"generate:test": "prisma generate --schema=src/shared/infrastructure/db/prisma/schema.prisma",

@@ -3,5 +3,6 @@
 	"compilerOptions": {
 		"outDir": "dist"
 	},
+	"references": [{ "path": "../../packages/shared" }],
 	"include": ["src"]
 }
