@@ -49,7 +49,8 @@ export default function TransactionsPage() {
 			const lowerSearch = searchTerm.toLowerCase();
 			return (
 				transaction.creditCode.toLowerCase().includes(lowerSearch) ||
-				transaction.type.toLowerCase().includes(lowerSearch)
+				transaction.type.toLowerCase().includes(lowerSearch) ||
+				transaction.creditCode.toLowerCase().includes(lowerSearch)
 			);
 		},
 	);
