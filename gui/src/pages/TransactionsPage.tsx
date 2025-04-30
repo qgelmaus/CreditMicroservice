@@ -5,7 +5,6 @@ import { DynamicTable } from "../components/DynamicTable";
 import { formatMoney } from "../utils/formatMoney";
 import type { Transaction } from "../types/CreditAccount";
 import { SearchBar } from "../components/SearchBar";
-import { Button } from "../ui/Button";
 
 const calculateSumsByType = (transactions: Transaction[]) => {
 	const sums: Record<string, number> = {};

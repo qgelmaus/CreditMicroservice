@@ -168,10 +168,10 @@ export const REFUND_MONEY = gql`
 export const TRANSFER_CREDITS = gql`
   mutation TransferCredits($input: TransferCreditsInput!) {
     transferCredits(input: $input) {
-      ...CreditAccountFields
+       amount
     }
   }
-  ${CREDIT_ACCOUNT_FIELDS}
+  
 `;
 
 export const NULLIFY_ACCOUNT = gql`
