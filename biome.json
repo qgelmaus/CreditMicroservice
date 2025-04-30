@@ -1,8 +1,0 @@
-{
-	"files": {
-		"ignore": ["scripts/*.js", "graphqlCodegenTypes.ts"]
-	},
-	"linter": {
-		"ignore": ["scripts/*.js", "graphqlCodegenTypes.ts"]
-	}
-}
