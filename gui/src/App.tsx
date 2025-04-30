@@ -24,10 +24,7 @@ function App() {
 					<Route path="/giftcard/create" element={<GiftCardFlowManager />} />
 					<Route path="/admin/create" element={<AdminCardCreationPage />} />
 					<Route path="/transactions" element={<TransactionsPage />} />
-					<Route
-						path="/admin/create/success"
-						element={<AdminSuccessPage account={undefined} />}
-					/>
+					<Route path="/admin/create/success" element={<AdminSuccessPage />} />
 					<Route
 						path="/prepaidcard/create"
 						element={<PrepaidCardFlowManager />}
