@@ -127,6 +127,7 @@ export class CreditTransactionRepository {
 	async findAll() {
 		return await prisma.creditTransaction.findMany({
 			orderBy: { createdAt: "desc" },
+			include: { creditAccount: true },
 		});
 	}
 }
