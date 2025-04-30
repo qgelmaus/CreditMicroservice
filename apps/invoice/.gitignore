@@ -1,0 +1,39 @@
+# Node
+node_modules/
+.pnpm/
+.pnp.*
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+dist/
+*.tsbuildinfo
+
+# Vite (frontend build)
+apps/demo/dist/
+
+# Prisma
+**/prisma/dev.db
+**/prisma/dev.db-journal
+**/prisma/migrations/
+
+# VSCode
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Test
+test-results/
