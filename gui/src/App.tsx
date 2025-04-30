@@ -10,6 +10,7 @@ import TransactionsPage from "./pages/TransactionsPage";
 import CustomerPage from "./pages/CreditAccount/CustomerPage";
 import AdminPage from "./pages/CreditAccount/AdminPage";
 import AdminCardCreationPage from "./pages/CreditAccount/AdminCardCreationPage";
+import { AdminSuccessPage } from "./pages/CreditAccount/AdminSuccessPage";
 
 function App() {
 	return (
@@ -23,6 +24,10 @@ function App() {
 					<Route path="/giftcard/create" element={<GiftCardFlowManager />} />
 					<Route path="/admin/create" element={<AdminCardCreationPage />} />
 					<Route path="/transactions" element={<TransactionsPage />} />
+					<Route
+						path="/admin/create/success"
+						element={<AdminSuccessPage account={undefined} />}
+					/>
 					<Route
 						path="/prepaidcard/create"
 						element={<PrepaidCardFlowManager />}

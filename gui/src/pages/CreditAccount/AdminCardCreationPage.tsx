@@ -2,11 +2,16 @@ import { useState } from "react";
 import { SimpleDynamicForm } from "../../components/SimpleDynamicForm";
 import { Button } from "../../ui/Button";
 import { CheckBoxBar } from "../../components/CheckBoxBar";
+import { useCreateGiftCard } from "../../hooks/CreditAccount/useCreateGiftCard";
+import { useCreatePrepaidCard } from "../../hooks/CreditAccount/useCreatePrepaidcard";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminCardCreationPage() {
 	const [cardType, setCardType] = useState<"GIFT_CARD" | "PREPAID_CARD" | "">(
 		"",
 	);
+	const { createGiftCard } = useCreateGiftCard();
+	const { createPrepaidCard } = useCreatePrepaidCard();
 
 	const [paymentMethod, setPaymentMethod] = useState<
 		"MOBILEPAY" | "KORT" | "FAKTURA" | ""
@@ -20,6 +25,8 @@ export default function AdminCardCreationPage() {
 		sendConfirmation: "",
 	});
 
+	const navigate = useNavigate();
+
 	const handleFormChange = (fieldName: string, value: any) => {
 		setFormData((prev) => ({ ...prev, [fieldName]: value }));
 	};
@@ -31,18 +38,35 @@ export default function AdminCardCreationPage() {
 		},
 	]);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		console.log("Form Data:", formData);
+		if (!cardType) {
+			console.error("You must choose a card type");
+			return;
+		}
 		if (cardType === "GIFT_CARD") {
-			//TODO CREATE GIFTCARD
+			const result = await createGiftCard(
+				formData.email,
+				Number.parseFloat(formData.purchaseAmount),
+			);
+			const account = result.data?.createGiftAccount;
+
+			if (account) {
+				navigate("/admin/create/success", { state: { account } });
+			}
 		}
 
 		if (cardType === "PREPAID_CARD") {
-			//TODO CREATE GIFTCARD
+			const result = await createPrepaidCard(
+				formData.email,
+				Number.parseFloat(formData.pricePerTreatment),
+				Number.parseFloat(formData.treatmentCount),
+			);
+			const account = result.data?.createPrepaidAccount;
+			if (account) {
+				navigate("/admin/create/success", { state: { account } });
+			}
 		}
-
-		return; //TODO ERROR MUST CHOSE A CARDTYPE
-		// Her sender du data videre til backend mutation!
 	};
 
 	const handleCheckboxChange = (value: string, checked: boolean) => {
