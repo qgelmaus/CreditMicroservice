@@ -41,9 +41,9 @@ export const Input = ({
 				borderRadius: "8px",
 				border: "1px solid #ccc",
 				boxSizing: "border-box",
-				appearance: "textfield", // <-- NYT: Fjerner spin buttons
-				MozAppearance: "textfield", // Firefox fix
-				WebkitAppearance: "none", // Chrome/Safari fix
+				appearance: "textfield",
+				MozAppearance: "textfield",
+				WebkitAppearance: "none",
 			}}
 		/>
 	);

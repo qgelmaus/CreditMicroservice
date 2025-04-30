@@ -9,6 +9,7 @@ import { ButtonBar } from "../../components/ButtonBar";
 import { Button } from "../../ui/Button";
 import { SimpleDynamicForm } from "../../components/SimpleDynamicForm";
 import { Card } from "../../ui/Card";
+import { AccountSummaryTable } from "../../components/CreditAccount/AccountSummaryTable";
 
 export default function CustomerPage() {
 	const [email, setEmail] = useState("");
@@ -122,9 +123,7 @@ export default function CustomerPage() {
 								<h3>
 									{account.creditCode} ({account.type})
 								</h3>
-								<p>Email: {account.email}</p>
-								<p>Kreditter: {account.availableCredits}</p>
-								<p>Penge: {account.availableMoney} DKK</p>
+								<AccountSummaryTable account={account} />
 							</Card>
 						))
 					) : (

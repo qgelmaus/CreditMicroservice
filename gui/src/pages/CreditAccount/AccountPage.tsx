@@ -31,6 +31,18 @@ export default function AccountPage() {
 		nullifyNote: "",
 	});
 
+	const resetForm = () => {
+		setFormData({
+			useCreditsAmount: 0,
+			useCreditsNote: "",
+			refundCreditsAmount: 0,
+			refundCreditsNote: "",
+			refundMoneyAmount: 0,
+			refundMoneyNote: "",
+			nullifyNote: "",
+		});
+	};
+
 	const handleFormChange = (fieldName: string, value: any) => {
 		setFormData((prev) => ({
 			...prev,
@@ -41,6 +53,7 @@ export default function AccountPage() {
 	const handleUseCredits = async () => {
 		if (!code) return;
 		await useCredits(code, formData.useCreditsAmount, formData.useCreditsNote);
+		resetForm();
 	};
 
 	const handleRefundCredits = async () => {
@@ -50,6 +63,7 @@ export default function AccountPage() {
 			formData.refundCreditsAmount,
 			formData.refundCreditsNote,
 		);
+		resetForm();
 	};
 
 	const handleRefundMoney = async () => {
@@ -59,11 +73,13 @@ export default function AccountPage() {
 			formData.refundMoneyAmount,
 			formData.refundMoneyNote,
 		);
+		resetForm();
 	};
 
 	const handleNullify = async () => {
 		if (!code) return;
 		await nullifyAccount(code, formData.nullifyNote);
+		resetForm();
 	};
 
 	if (loading) return <p>Henter konto...</p>;
@@ -86,7 +102,13 @@ export default function AccountPage() {
 		<div>
 			<AccountOverview account={account} formatMoney={formatMoney} />
 
-			<div>
+			<div
+				style={{
+					maxWidth: "600px",
+					width: "100%",
+					margin: "0 auto",
+				}}
+			>
 				{/* Brug kreditter */}
 				<div
 					style={{

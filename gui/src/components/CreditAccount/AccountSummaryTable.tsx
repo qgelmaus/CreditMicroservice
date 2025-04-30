@@ -9,7 +9,7 @@ export const AccountSummaryTable = ({ account }: Props) => {
 	return (
 		<table
 			style={{
-				margin: "2rem auto",
+				margin: "0.25rem auto",
 				borderCollapse: "collapse",
 				width: "100%",
 				maxWidth: "500px",
@@ -54,7 +54,7 @@ export const AccountSummaryTable = ({ account }: Props) => {
 						Pris:
 					</td>
 					<td style={{ padding: "0.5rem", textAlign: "right" }}>
-						{account.originalMoney},-
+						{account.originalMoney} DKK
 					</td>
 				</tr>
 				<tr>
@@ -67,6 +67,16 @@ export const AccountSummaryTable = ({ account }: Props) => {
 						{account.expiresAt
 							? new Date(account.expiresAt).toLocaleDateString()
 							: "Ukendt"}
+					</td>
+				</tr>
+				<tr>
+					<td
+						style={{ fontWeight: "bold", padding: "0.5rem", textAlign: "left" }}
+					>
+						Status:
+					</td>
+					<td style={{ padding: "0.5rem", textAlign: "right" }}>
+						{account.isActive ? "Aktiv" : "Ikke aktiv"}
 					</td>
 				</tr>
 			</tbody>

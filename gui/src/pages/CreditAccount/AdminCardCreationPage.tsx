@@ -77,7 +77,6 @@ export default function AdminCardCreationPage() {
 		);
 	};
 
-	// Dynamiske inputfelter baseret på valgt type
 	const baseInputs = [
 		{
 			name: "email",
@@ -130,9 +129,12 @@ export default function AdminCardCreationPage() {
 				maxWidth: "600px",
 				margin: "0 auto",
 				padding: "2rem",
+				display: "flex",
+				flexDirection: "column",
+				gap: "1rem",
 			}}
 		>
-			<h2>Opret nyt kort</h2>
+			<h2 style={{ textAlign: "center" }}>Opret nyt kort</h2>
 
 			{/* Vælg korttype */}
 			<select
@@ -140,7 +142,7 @@ export default function AdminCardCreationPage() {
 				onChange={(e) =>
 					setCardType(e.target.value as "GIFT_CARD" | "PREPAID_CARD")
 				}
-				style={{ width: "100%", padding: "0.5rem", marginBottom: "1rem" }}
+				style={{ width: "100%", padding: "0.5rem" }}
 			>
 				{availableCardTypes.map((option) => (
 					<option key={option.value} value={option.value}>
@@ -148,39 +150,35 @@ export default function AdminCardCreationPage() {
 					</option>
 				))}
 			</select>
-			<div>
-				{/* Dynamisk form */}
-				<SimpleDynamicForm
-					inputs={[
-						...baseInputs,
-						...(cardType === "GIFT_CARD" ? giftCardInputs : []),
-						...(cardType === "PREPAID_CARD" ? prepaidCardInputs : []),
-					]}
-				/>
-				<p>{""}</p>
 
-				{/* Vælg betalingsmetode */}
+			{/* Dynamisk form */}
+			<SimpleDynamicForm
+				inputs={[
+					...baseInputs,
+					...(cardType === "GIFT_CARD" ? giftCardInputs : []),
+					...(cardType === "PREPAID_CARD" ? prepaidCardInputs : []),
+				]}
+			/>
 
-				<select
-					value={paymentMethod}
-					onChange={(e) =>
-						setPaymentMethod(e.target.value as "MOBILEPAY" | "KORT" | "FAKTURA")
-					}
-					style={{ width: "100%", padding: "0.5rem", marginBottom: "1rem" }}
-				>
-					{paymentMethods.map((option) => (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</select>
-				{/* Vælg ekstra muligheder */}
-				<CheckBoxBar
-					options={checkboxOptions}
-					onChange={handleCheckboxChange}
-				/>
-				<Button onClick={handleSubmit}>Opret</Button>
-			</div>
+			{/* Vælg betalingsmetode */}
+			<select
+				value={paymentMethod}
+				onChange={(e) =>
+					setPaymentMethod(e.target.value as "MOBILEPAY" | "KORT" | "FAKTURA")
+				}
+				style={{ width: "100%", padding: "0.5rem" }}
+			>
+				{paymentMethods.map((option) => (
+					<option key={option.value} value={option.value}>
+						{option.label}
+					</option>
+				))}
+			</select>
+
+			{/* Ekstra muligheder */}
+			<CheckBoxBar options={checkboxOptions} onChange={handleCheckboxChange} />
+
+			<Button onClick={handleSubmit}>Opret</Button>
 		</div>
 	);
 }

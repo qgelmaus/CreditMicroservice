@@ -7,6 +7,7 @@ import { GET_ALL_ACCOUNTS } from "../../services/accountService";
 import type { CreditAccount } from "../../types/CreditAccount";
 import { Button } from "../../ui/Button";
 import { Card } from "../../ui/Card";
+import { AccountSummaryTable } from "../../components/CreditAccount/AccountSummaryTable";
 
 export default function AdminPage() {
 	const { data, loading, error } = useQuery(GET_ALL_ACCOUNTS);
@@ -64,9 +65,7 @@ export default function AdminPage() {
 						<h3>
 							{account.creditCode} ({account.type})
 						</h3>
-						<p>Email: {account.email}</p>
-						<p>Kreditter: {account.availableCredits}</p>
-						<p>Penge: {account.availableMoney} DKK</p>
+						<AccountSummaryTable account={account} />
 					</Card>
 				))}
 			</div>
