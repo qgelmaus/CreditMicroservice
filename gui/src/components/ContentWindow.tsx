@@ -14,10 +14,12 @@ export const ContentWindow: React.FC<ContentWindowProps> = ({
 		<div
 			style={{
 				border: "1px solid #ccc",
-				borderRadius: "12px",
-				padding: "20px",
-				marginBottom: "20px",
+				borderRadius: "6px",
+				padding: "10px",
+				margin: "0 auto 10px",
 				boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+				maxWidth: "600px",
+				width: "100%",
 			}}
 		>
 			<h2

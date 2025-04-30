@@ -87,6 +87,57 @@ const CREDIT_ACCOUNT_FIELDS = gql`
   }
 `;
 
+export const USE_CREATE_GIFT_ACCOUNT = gql`
+  mutation CreateGiftAccount($input: CreateGiftAccountInput!) {
+    createGiftAccount(input: $input) {
+      creditCode
+    type
+    originalCredits
+    originalMoney
+    availableCredits
+    availableMoney
+    email
+    isActive
+    createdAt
+    expiresAt
+     transactions {
+      id
+      credits
+      money
+      createdAt
+      type
+    }
+    }
+  }
+`;
+
+export const USE_CREATE_PREPAID_ACCOUNT = gql`
+  mutation CreateGiftAccount($input: CreatePrepaidAccountInput!) {
+    createPrepaidAccount(input: $input) {
+      creditCode
+    type
+    originalCredits
+    originalMoney
+    availableCredits
+    availableMoney
+    email
+    isActive
+    createdAt
+    expiresAt
+    transactions {
+      id
+      credits
+      money
+      createdAt
+      type
+    }... on PrepaidAccount {
+      treatmentCount
+      discountPercentage
+    }
+    }
+  }
+`;
+
 export const USE_CREDITS = gql`
   mutation UseCredits($input: UseCreditsInput!) {
     useCredits(input: $input) {
@@ -117,10 +168,10 @@ export const REFUND_MONEY = gql`
 export const TRANSFER_CREDITS = gql`
   mutation TransferCredits($input: TransferCreditsInput!) {
     transferCredits(input: $input) {
-      ...CreditAccountFields
+       amount
     }
   }
-  ${CREDIT_ACCOUNT_FIELDS}
+  
 `;
 
 export const NULLIFY_ACCOUNT = gql`

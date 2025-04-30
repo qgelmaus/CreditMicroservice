@@ -1,5 +1,5 @@
 // GiftCardFlowManager.tsx
-import { useEffect, useState } from "react";
+
 import { ReviewAndConfirmPage } from "./ReviewAndConfirmPage";
 import { FillGiftAccountDetailsPage } from "./FillGiftAccountDetailsFlowPage";
 import { SuccessPage } from "./SuccessPage";
@@ -9,7 +9,7 @@ import { useSubmitCreditAccountDetails } from "../../../../services/flow/useSubm
 import { useValidateCreditAccount } from "../../../../services/flow/useValidateCreditAccount";
 import { useFinalizeCreditAccount } from "../../../../services/flow/useFinalizeCreditAccount";
 import { useGiftCardFlowForm } from "../../../../services/flow/useCardFlowForm";
-import { useCancelFlow } from "../../../../services/flow/useCancelFlow";
+import { useState } from "react";
 
 export const GiftCardFlowManager = () => {
 	const { submitEmail } = useSubmitEmail();
@@ -21,7 +21,6 @@ export const GiftCardFlowManager = () => {
 		"email",
 	);
 	const { formData, setField } = useGiftCardFlowForm();
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 
 	const handleNext = async () => {
 		if (step === "email") {

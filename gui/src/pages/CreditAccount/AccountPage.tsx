@@ -1,70 +1,26 @@
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { GET_ACCOUNT_BY_CODE } from "../../services/accountService";
 import { DynamicTable } from "../../components/DynamicTable";
-
-import { useState } from "react";
-import { Button } from "../../ui/Button";
-import { NumberInput } from "../../ui/NumberInput";
-import { TextInput } from "../../ui/TextInput";
-
 import { AccountOverview } from "../../components/CreditAccount/AccountOverview";
+import { AccountActions } from "../../components/CreditAccount/AccountActions"; // ← brug korrekt path
 import { EditCreditActions } from "../../hooks/CreditAccount/editCreditActions";
 import { formatMoney } from "../../utils/formatMoney";
-import { Transaction } from "../../types/CreditAccount";
+import type { Transaction } from "../../types/CreditAccount";
 
 export default function AccountPage() {
 	const { code } = useParams<{ code: string }>();
 	const { data, loading, error, refetch } = useQuery(GET_ACCOUNT_BY_CODE, {
 		variables: { code },
 	});
-	const { useCredits, refundCredits, refundMoney, nullifyAccount } =
-		EditCreditActions(refetch);
-
-	const [formData, setFormData] = useState<Record<string, any>>({
-		useCreditsAmount: 0,
-		useCreditsNote: "",
-		refundCreditsAmount: 0,
-		refundCreditsNote: "",
-		refundMoneyAmount: 0,
-		refundMoneyNote: "",
-		nullifyNote: "",
-	});
-
-	const handleFormChange = (fieldName: string, value: any) => {
-		setFormData((prev) => ({
-			...prev,
-			[fieldName]: value,
-		}));
-	};
-
-	const handleUseCredits = async () => {
-		if (!code) return;
-		await useCredits(code, formData.useCreditsAmount, formData.useCreditsNote);
-	};
-
-	const handleRefundCredits = async () => {
-		if (!code) return;
-		await refundCredits(
-			code,
-			formData.refundCreditsAmount,
-			formData.refundCreditsNote,
-		);
-	};
-
-	const handleRefundMoney = async () => {
-		if (!code) return;
-		await refundMoney(
-			code,
-			formData.refundMoneyAmount,
-			formData.refundMoneyNote,
-		);
-	};
-
-	const handleNullify = async () => {
-		if (!code) return;
-		await nullifyAccount(code, formData.nullifyNote);
-	};
+	const {
+		executeUseCredits,
+		refundCredits,
+		refundMoney,
+		nullifyAccount,
+		transferCredits,
+	} = EditCreditActions(refetch);
 
 	if (loading) return <p>Henter konto...</p>;
 	if (error) return <p>Fejl: {error.message}</p>;
@@ -86,93 +42,27 @@ export default function AccountPage() {
 		<div>
 			<AccountOverview account={account} formatMoney={formatMoney} />
 
-			<div>
-				{/* Brug kreditter */}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "8px",
-						marginBottom: "12px",
-					}}
-				>
-					<Button disabled={!account.isActive} onClick={handleUseCredits}>
-						Brug Kreditter
-					</Button>
-					<NumberInput
-						value={formData.useCreditsAmount}
-						placeholder="Antal kreditter"
-						onChange={(value) => handleFormChange("useCreditsAmount", value)}
-					/>
-					<TextInput
-						value={formData.useCreditsNote}
-						placeholder="Note"
-						onChange={(value) => handleFormChange("useCreditsNote", value)}
-					/>
-				</div>
-
-				{/* Refunder kreditter */}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "8px",
-						marginBottom: "12px",
-					}}
-				>
-					<Button onClick={handleRefundCredits}>Refunder Kreditter</Button>
-					<NumberInput
-						value={formData.refundCreditsAmount}
-						placeholder="Antal kreditter (refunder)"
-						onChange={(value) => handleFormChange("refundCreditsAmount", value)}
-					/>
-
-					<TextInput
-						value={formData.refundCreditsNote}
-						placeholder="Note (refunder kreditter)"
-						onChange={(value) => handleFormChange("refundCreditsNote", value)}
-					/>
-				</div>
-
-				{/* Refunder penge */}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "8px",
-						marginBottom: "12px",
-					}}
-				>
-					<Button onClick={handleRefundMoney}>Refunder Penge</Button>
-					<NumberInput
-						value={formData.refundMoneyAmount}
-						placeholder="Beløb i DKK (refunder)"
-						onChange={(value) => handleFormChange("refundMoneyAmount", value)}
-					/>
-
-					<TextInput
-						value={formData.refundMoneyNote}
-						placeholder="Note (refunder penge)"
-						onChange={(value) => handleFormChange("refundMoneyNote", value)}
-					/>
-				</div>
-
-				{/* Nulstil konto */}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "8px",
-						marginBottom: "12px",
-					}}
-				>
-					<Button onClick={handleNullify}>Nulstil Konto</Button>
-					<TextInput
-						value={formData.nullifyNote}
-						placeholder="Note (nulstil konto)"
-						onChange={(value) => handleFormChange("nullifyNote", value)}
-					/>
-				</div>
+			<div
+				style={{
+					maxWidth: "700px",
+					margin: "2rem auto",
+					padding: "1rem",
+					border: "1px solid #ddd",
+					borderRadius: "8px",
+				}}
+			>
+				<h3 style={{ textAlign: "center", marginBottom: "1rem" }}>
+					Kontohandlinger
+				</h3>
+				<AccountActions
+					code={code!}
+					isActive={account.isActive}
+					useCredits={executeUseCredits}
+					refundCredits={refundCredits}
+					refundMoney={refundMoney}
+					nullifyAccount={nullifyAccount}
+					transferCredits={transferCredits}
+				/>
 			</div>
 
 			<h2 style={{ marginTop: "30px" }}>Transaktioner</h2>

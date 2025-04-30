@@ -8,7 +8,9 @@ export default function HomePage() {
 				<p>
 					Dette system håndterer kreditkonti og transaktioner. <br /> Projektet
 					er lavet i forbindelse med hovedopgaven på 5. semester af
-					Datamatikeruddannelsen.
+					Datamatikeruddannelsen. <br />
+					Intentionen med denne side er at vise hvilke ting der i øjeblikket er
+					tilgængelige fra API'en. <br />
 				</p>
 				<p>Funktioner:</p>
 				<ul>

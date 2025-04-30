@@ -10,7 +10,7 @@ export function Layout({ children }: LayoutProps) {
 				display: "flex",
 				flexDirection: "column",
 				minHeight: "100vh",
-				backgroundColor: theme.colors.background, // background, ikke color!
+				backgroundColor: theme.colors.background,
 			}}
 		>
 			<TopBar />
@@ -22,7 +22,7 @@ export function Layout({ children }: LayoutProps) {
 					padding: "2rem",
 					maxWidth: "1200px",
 					width: "100%",
-					minHeight: "600px", // <- Tilføjet minimumshøjde til main-indhold
+					minHeight: "600px",
 					margin: "0 auto",
 				}}
 			>

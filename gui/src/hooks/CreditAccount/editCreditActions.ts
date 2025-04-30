@@ -4,21 +4,42 @@ import {
 	REFUND_CREDITS,
 	REFUND_MONEY,
 	NULLIFY_ACCOUNT,
+	TRANSFER_CREDITS,
 } from "../../services/accountService";
 
 export function EditCreditActions(refetch: () => void) {
-	const [UseCreditsMutation] = useMutation(USE_CREDITS);
+	const [ExecuteUseCreditsMutation] = useMutation(USE_CREDITS);
 	const [RefundCreditsMutation] = useMutation(REFUND_CREDITS);
 	const [RefundMoneyMutation] = useMutation(REFUND_MONEY);
 	const [NullifyAccountMutation] = useMutation(NULLIFY_ACCOUNT);
+	const [TransferCreditsMutation] = useMutation(TRANSFER_CREDITS);
 
-	const useCredits = async (
+	const executeUseCredits = async (
 		creditCode: string,
 		cost: number,
 		note?: string,
 	) => {
-		await UseCreditsMutation({
+		await ExecuteUseCreditsMutation({
 			variables: { input: { creditCode, cost, note: note ?? "" } },
+		});
+		await refetch();
+	};
+
+	const transferCredits = async (
+		fromCode: string,
+		toCode: string,
+		amount: number,
+		note?: string,
+	) => {
+		await TransferCreditsMutation({
+			variables: {
+				input: {
+					fromCreditCode: fromCode,
+					toCreditCode: toCode,
+					amount: amount,
+					note: note,
+				},
+			},
 		});
 		await refetch();
 	};
@@ -52,5 +73,11 @@ export function EditCreditActions(refetch: () => void) {
 		await refetch();
 	};
 
-	return { useCredits, refundCredits, refundMoney, nullifyAccount };
+	return {
+		executeUseCredits,
+		transferCredits,
+		refundCredits,
+		refundMoney,
+		nullifyAccount,
+	};
 }
