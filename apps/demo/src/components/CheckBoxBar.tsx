@@ -22,12 +22,18 @@ export const CheckBoxBar: React.FC<CheckBoxBarProps> = ({
 				gap: "1.5rem",
 				flexWrap: "wrap",
 				marginTop: "1rem",
+				marginBottom: "1rem",
 			}}
 		>
 			{options.map((option) => (
 				<label
 					key={option.value}
-					style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+					style={{
+						display: "flex",
+						alignItems: "center",
+						gap: "0.5rem",
+						whiteSpace: "nowrap",
+					}}
 				>
 					<input
 						type="checkbox"
