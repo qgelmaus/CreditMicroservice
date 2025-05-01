@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DynamicForm } from "../../../../components/DynamicForm";
 import type { GiftCardFormData } from "../../../../types/CreditAccount";
+import { isValidEmail } from "src/utils/validation";
 
 const fields = [{ name: "email", label: "Email", type: "text" }];
 
@@ -12,11 +13,6 @@ type SubmitEmailFlowPageProps = {
 	) => void;
 	onNext: () => void;
 	onBack: () => void;
-};
-
-const isValidEmail = (email: string): boolean => {
-	const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return regex.test(email);
 };
 
 export const SubmitEmailFlowPage = ({

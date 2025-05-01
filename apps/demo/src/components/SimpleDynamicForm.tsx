@@ -23,19 +23,7 @@ export const SimpleDynamicForm: React.FC<SimpleDynamicFormProps> = ({
 	buttons,
 }) => {
 	return (
-		<form
-			onSubmit={(e) => e.preventDefault()}
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				gap: "1rem",
-				alignItems: "center",
-				maxWidth: "375px",
-				width: "100%",
-				margin: "0 auto",
-				padding: "1rem",
-			}}
-		>
+		<form onSubmit={(e) => e.preventDefault()} style={{ marginBottom: "20px" }}>
 			{inputs.map((input) => (
 				<label
 					key={input.name}

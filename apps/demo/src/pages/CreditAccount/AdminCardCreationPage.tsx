@@ -5,6 +5,7 @@ import { CheckBoxBar } from "../../components/CheckBoxBar";
 import { useCreateGiftCard } from "../../hooks/CreditAccount/useCreateGiftCard";
 import { useCreatePrepaidCard } from "../../hooks/CreditAccount/useCreatePrepaidcard";
 import { useNavigate } from "react-router-dom";
+import { isPositiveNumber, isValidEmail } from "src/utils/validation";
 
 export default function AdminCardCreationPage() {
 	const [cardType, setCardType] = useState<"GIFT_CARD" | "PREPAID_CARD" | "">(
@@ -125,60 +126,75 @@ export default function AdminCardCreationPage() {
 
 	return (
 		<div
-			style={{
-				maxWidth: "600px",
-				margin: "0 auto",
-				padding: "2rem",
-				display: "flex",
-				flexDirection: "column",
-				gap: "1rem",
-			}}
+			className="page-content-wrapper"
+			style={{ maxWidth: "350px", margin: "0 auto", padding: "20px" }}
 		>
 			<h2 style={{ textAlign: "center" }}>Opret nyt kort</h2>
 
 			{/* Vælg korttype */}
-			<select
-				value={cardType}
-				onChange={(e) =>
-					setCardType(e.target.value as "GIFT_CARD" | "PREPAID_CARD")
-				}
-				style={{ width: "100%", padding: "0.5rem" }}
+			<div
+				style={{
+					display: "table-column",
+					justifyContent: "space-between",
+					marginTop: "20px",
+					width: "100%",
+				}}
 			>
-				{availableCardTypes.map((option) => (
-					<option key={option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</select>
+				<select
+					value={cardType}
+					onChange={(e) =>
+						setCardType(e.target.value as "GIFT_CARD" | "PREPAID_CARD")
+					}
+					style={{ width: "100%", padding: "0.5rem" }}
+				>
+					{availableCardTypes.map((option) => (
+						<option key={option.value} value={option.value}>
+							{option.label}
+						</option>
+					))}
+				</select>
 
-			{/* Dynamisk form */}
-			<SimpleDynamicForm
-				inputs={[
-					...baseInputs,
-					...(cardType === "GIFT_CARD" ? giftCardInputs : []),
-					...(cardType === "PREPAID_CARD" ? prepaidCardInputs : []),
-				]}
-			/>
+				{/* Dynamisk form */}
+				<SimpleDynamicForm
+					inputs={[
+						...baseInputs,
+						...(cardType === "GIFT_CARD" ? giftCardInputs : []),
+						...(cardType === "PREPAID_CARD" ? prepaidCardInputs : []),
+					]}
+				/>
 
-			{/* Vælg betalingsmetode */}
-			<select
-				value={paymentMethod}
-				onChange={(e) =>
-					setPaymentMethod(e.target.value as "MOBILEPAY" | "KORT" | "FAKTURA")
-				}
-				style={{ width: "100%", padding: "0.5rem" }}
-			>
-				{paymentMethods.map((option) => (
-					<option key={option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</select>
+				{/* Vælg betalingsmetode */}
+				<select
+					value={paymentMethod}
+					onChange={(e) =>
+						setPaymentMethod(e.target.value as "MOBILEPAY" | "KORT" | "FAKTURA")
+					}
+					style={{ width: "100%", padding: "0.5rem" }}
+				>
+					{paymentMethods.map((option) => (
+						<option key={option.value} value={option.value}>
+							{option.label}
+						</option>
+					))}
+				</select>
 
-			{/* Ekstra muligheder */}
-			<CheckBoxBar options={checkboxOptions} onChange={handleCheckboxChange} />
+				{/* Ekstra muligheder */}
+				<CheckBoxBar
+					options={checkboxOptions}
+					onChange={handleCheckboxChange}
+				/>
 
-			<Button onClick={handleSubmit}>Opret</Button>
+				<Button
+					onClick={handleSubmit}
+					disabled={
+						(isValidEmail(formData.email) &&
+							isPositiveNumber(formData.purchaseAmount)) ||
+						isPositiveNumber(formData.pricePerTreatment)
+					}
+				>
+					Opret
+				</Button>
+			</div>
 		</div>
 	);
 }

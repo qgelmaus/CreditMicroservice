@@ -1,4 +1,5 @@
 // FillGiftAccountDetailsPage.tsx
+import { isPositiveNumber } from "src/utils/validation";
 import { DynamicForm } from "../../../../components/DynamicForm";
 import type { PrepaidCardFormData } from "../../../../types/CreditAccount";
 
@@ -41,18 +42,6 @@ export const FillPrepaidAccountDetailsPage = ({
 		}
 	};
 
-	const isValidCredits = (
-		pricePerTreatment: number | undefined,
-		treatmentCount: number | undefined,
-	): boolean => {
-		return (
-			typeof pricePerTreatment === "number" &&
-			pricePerTreatment > 0 &&
-			typeof treatmentCount === "number" &&
-			treatmentCount > 0
-		);
-	};
-
 	return (
 		<div
 			className="page-content-wrapper"
@@ -65,13 +54,12 @@ export const FillPrepaidAccountDetailsPage = ({
 				formData={formData}
 				onChange={handleChange}
 				fieldStyles={{
-					credits: {
-						border: !isValidCredits(
-							formData.pricePerTreatment,
-							formData.treatmentCount,
-						)
-							? "1px solid red"
-							: "1px solid #ccc",
+					pricePerTreatment: {
+						border:
+							!isPositiveNumber(formData.pricePerTreatment) &&
+							!isPositiveNumber(formData.treatmentCount)
+								? "1px solid red"
+								: "1px solid #ccc",
 					},
 				}}
 			/>
@@ -88,7 +76,8 @@ export const FillPrepaidAccountDetailsPage = ({
 				</button>
 				<button
 					disabled={
-						!isValidCredits(formData.pricePerTreatment, formData.treatmentCount)
+						!isPositiveNumber(formData.pricePerTreatment) &&
+						!isPositiveNumber(formData.treatmentCount)
 					}
 					type="button"
 					onClick={onNext}
