@@ -1,5 +1,7 @@
 #//src/modules/creditaccount/graphql/schema/accounts/typeDefs.gql
 scalar Date
+scalar EmailAddress
+scalar PositiveInt
 
 interface CreditAccount {
 	creditCode: String!
@@ -8,7 +10,7 @@ interface CreditAccount {
 	originalMoney: Float!
 	availableCredits: Int!
 	availableMoney: Float!
-	email: String!
+	email: EmailAddress!
 	isActive: Boolean!
 	createdAt: Date!
 	expiresAt: Date!
@@ -22,7 +24,7 @@ type GiftAccount implements CreditAccount {
 	originalMoney: Float!
 	availableCredits: Int!
 	availableMoney: Float!
-	email: String!
+	email: EmailAddress!
 	isActive: Boolean!
 	createdAt: Date!
 	expiresAt: Date!
@@ -36,7 +38,7 @@ type PrepaidAccount implements CreditAccount {
 	originalMoney: Float!
 	availableCredits: Int!
 	availableMoney: Float!
-	email: String!
+	email: EmailAddress!
 	isActive: Boolean!
 	createdAt: Date!
 	expiresAt: Date!
@@ -64,17 +66,17 @@ type Transfer {
 
 input CreateGiftAccountInput {
 	purchaseAmount: Float!
-	email: String!
+	email: EmailAddress!
 }
 
 input CreatePrepaidAccountInput {
 	treatmentCount: Int!
 	pricePerTreatment: Float!
-	email: String!
+	email: EmailAddress!
 }
 
 input CreditAccountDetailsInput {
-	email: String!
+	email: EmailAddress!
 	credits: Float
 	treatmentCount: Int
 	pricePerTreatment: Float
