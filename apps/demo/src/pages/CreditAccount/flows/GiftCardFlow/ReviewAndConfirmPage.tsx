@@ -14,10 +14,13 @@ export const ReviewAndConfirmPage = ({
 	onBack,
 }: ReviewAndConfirmPageProps) => {
 	return (
-		<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-			<h2 style={{ textAlign: "center" }}>Gennemse dine oplysninger</h2>
+		<div
+			className="page-content-wrapper"
+			style={{ maxWidth: "350px", margin: "0 auto", padding: "20px" }}
+		>
+			<h2 style={{ textAlign: "center" }}>Bekræft oplysninger</h2>
 
-			<div style={{ marginBottom: "20px" }}>
+			<div style={{ marginTop: "20px", marginBottom: "20px" }}>
 				{Object.entries(formData).map(([key, value]) => (
 					<div key={key} style={{ marginBottom: "10px" }}>
 						<strong>{formatLabel(key)}:</strong> {String(value)}

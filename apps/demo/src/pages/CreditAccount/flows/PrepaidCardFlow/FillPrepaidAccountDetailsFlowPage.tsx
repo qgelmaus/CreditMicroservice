@@ -34,20 +34,46 @@ export const FillPrepaidAccountDetailsPage = ({
 	const handleChange = (fieldName: string, value: any) => {
 		const field = fields.find((f) => f.name === fieldName);
 		if (field?.type === "number") {
-			setField(fieldName as keyof PrepaidCardFormData, Number(value));
+			const numericValue = value === "" ? undefined : Number(value);
+			setField(fieldName as keyof PrepaidCardFormData, numericValue);
 		} else {
 			setField(fieldName as keyof PrepaidCardFormData, value);
 		}
 	};
 
+	const isValidCredits = (
+		pricePerTreatment: number | undefined,
+		treatmentCount: number | undefined,
+	): boolean => {
+		return (
+			typeof pricePerTreatment === "number" &&
+			pricePerTreatment > 0 &&
+			typeof treatmentCount === "number" &&
+			treatmentCount > 0
+		);
+	};
+
 	return (
-		<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+		<div
+			className="page-content-wrapper"
+			style={{ maxWidth: "350px", margin: "0 auto", padding: "20px" }}
+		>
 			<h2 style={{ textAlign: "center" }}>Udfyld Credits</h2>
 
 			<DynamicForm
 				fields={fields}
 				formData={formData}
 				onChange={handleChange}
+				fieldStyles={{
+					credits: {
+						border: !isValidCredits(
+							formData.pricePerTreatment,
+							formData.treatmentCount,
+						)
+							? "1px solid red"
+							: "1px solid #ccc",
+					},
+				}}
 			/>
 
 			<div
@@ -60,7 +86,13 @@ export const FillPrepaidAccountDetailsPage = ({
 				<button type="button" onClick={onBack}>
 					Tilbage
 				</button>
-				<button type="button" onClick={onNext}>
+				<button
+					disabled={
+						!isValidCredits(formData.pricePerTreatment, formData.treatmentCount)
+					}
+					type="button"
+					onClick={onNext}
+				>
 					Næste
 				</button>
 			</div>

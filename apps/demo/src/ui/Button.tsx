@@ -32,7 +32,10 @@ export function Button({ variant = "primary", ...props }: ButtonProps) {
 	return (
 		<button
 			{...props}
+			disabled={props.disabled}
 			style={{
+				opacity: props.disabled ? 0.5 : 1,
+
 				...baseStyle,
 				...variantStyles[variant],
 				...props.style,
