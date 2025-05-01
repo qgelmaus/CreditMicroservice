@@ -49,8 +49,7 @@ export default function TransactionsPage() {
 			const lowerSearch = searchTerm.toLowerCase();
 			return (
 				transaction.creditCode.toLowerCase().includes(lowerSearch) ||
-				transaction.type.toLowerCase().includes(lowerSearch) ||
-				transaction.creditCode.toLowerCase().includes(lowerSearch)
+				transaction.type.toLowerCase().includes(lowerSearch)
 			);
 		},
 	);
@@ -77,7 +76,7 @@ export default function TransactionsPage() {
 	}));
 
 	return (
-		<div style={{ maxWidth: "1000px", margin: "0 auto", padding: "2rem" }}>
+		<div className="page-content-wrapper">
 			<h2 style={{ marginBottom: "1rem", textAlign: "center" }}>
 				Transaktioner
 			</h2>
@@ -98,7 +97,7 @@ export default function TransactionsPage() {
 				<h4 style={{ marginTop: "1rem" }}>
 					Summer fordelt på transaktionstype:
 				</h4>
-				<ul style={{ listStyle: "none", paddingLeft: 0 }}>
+				<ul>
 					{Object.entries(moneySumsByType).map(([type, sum]) => (
 						<li key={type}>
 							<strong>{type}:</strong> {formatMoney(sum)}

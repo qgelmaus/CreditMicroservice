@@ -1,9 +1,9 @@
 import React from "react";
-import { GlobalStyles } from "./ui/theme/GlobalStyles.tsx";
+import { GlobalStyles } from "./ui/theme/GlobalStyles";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App from "./App";
 import { ApolloProvider } from "@apollo/client";
-import { client } from "./lib/apolloClient.ts";
+import { client } from "./lib/apolloClient";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>

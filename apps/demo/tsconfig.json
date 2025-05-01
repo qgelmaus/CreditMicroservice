@@ -1,9 +1,10 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
-		"outDir": "dist"
+		"outDir": "dist",
+		"baseUrl": ".",
 	},
-	"references": [{ "path": "../../packages/shared" }],
+	"references": [{ "path": "../../packages/shared" }, {"path": "../../packages/ui-core"}],
 	"include": ["src"],
 	"baseUrl": "."
 }

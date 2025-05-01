@@ -1,14 +1,18 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
-	},
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+	"baseUrl": ".",
 	"paths": {
-		"@shared/*": ["packages/shared/src/*"]
-	}
+    "@shared/*": ["packages/shared/src/*"],
+    "@ui-core/*": ["packages/ui-core/src/*"]
+  }
+  },
+  
 }

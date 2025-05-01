@@ -6,6 +6,11 @@ export function GlobalStyles() {
 	useEffect(() => {
 		const style = document.createElement("style");
 		style.innerHTML = `
+      /* Box sizing */
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
       /* Body */
       body {
         margin: 0;
@@ -66,6 +71,27 @@ export function GlobalStyles() {
         margin: 0;
         padding: 0;
         list-style: none;
+      }
+
+      /* Page content wrapper – bruges til at centrere sider med padding og max-width */
+      .page-content-wrapper {
+        flex-grow: 1;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Grid layout til kort */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+        width: 100%;
       }
     `;
 		document.head.appendChild(style);

@@ -15,7 +15,7 @@ export default function AdminPage() {
 
 	const navigate = useNavigate();
 
-	const handleGiftCardClick = async () => {
+	const handleGiftCardClick = () => {
 		navigate("/admin/create");
 	};
 
@@ -32,35 +32,24 @@ export default function AdminPage() {
 			);
 		},
 	);
-	return (
-		<div>
-			<div>
-				<ButtonBar>
-					<Button onClick={handleGiftCardClick}>Opret ny konto</Button>
-				</ButtonBar>
 
-				<SearchBar
-					placeholder="Søg efter konti..."
-					onSearch={(term) => setSearchTerm(term)}
-				/>
-			</div>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "repeat(3, 1fr)",
-					gap: "1.5rem",
-					marginTop: "2rem",
-					maxWidth: "1200px",
-					marginLeft: "auto",
-					marginRight: "auto",
-					padding: "0 1rem",
-				}}
-			>
+	return (
+		<div className="page-content-wrapper">
+			<ButtonBar>
+				<Button onClick={handleGiftCardClick}>Opret ny konto</Button>
+			</ButtonBar>
+
+			<SearchBar
+				placeholder="Søg efter konti..."
+				onSearch={(term) => setSearchTerm(term)}
+			/>
+
+			<div className="card-grid">
 				{filteredAccounts.map((account: CreditAccount) => (
 					<Card
 						key={account.creditCode}
 						link={`/account/${account.creditCode}`}
-						style={{ width: "400px", maxWidth: "100%" }}
+						style={{ width: "100%" }}
 					>
 						<h3>
 							{account.creditCode} ({account.type})

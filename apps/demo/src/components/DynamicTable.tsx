@@ -11,7 +11,12 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({
 }) => {
 	return (
 		<table
-			style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}
+			style={{
+				width: "100%",
+				borderCollapse: "collapse",
+				marginTop: "20px",
+				tableLayout: "fixed",
+			}}
 		>
 			<thead>
 				<tr>

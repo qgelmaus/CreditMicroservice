@@ -1,0 +1,21 @@
+/* apps/customerdemo/src/app/globals.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #c3c7cc;
+	font-family: "Inter", system-ui, sans-serif;
+	color: #111;
+	line-height: 1.6;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+* {
+	box-sizing: border-box;
+}
