@@ -1,6 +1,7 @@
 import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
+import type { PaymentDetails } from "../../paymentDetails/domain/PaymentDetails";
 
 export abstract class CreditAccount {
   constructor(
@@ -39,6 +40,10 @@ export abstract class CreditAccount {
 
   get availableMoney(): number {
     return this._availableMoney.amount;
+  }
+
+  hasCompletedPayment(payments: PaymentDetails[]): boolean {
+    return payments.some((p) => p.status);
   }
 
   getDataToPersist() {
