@@ -2,6 +2,7 @@ import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
 import type { PaymentDetails } from "../../paymentDetails/domain/PaymentDetails";
+import { CreditAccountDTO } from "../app/dto/creditaccount.types";
 
 export abstract class CreditAccount {
   constructor(
@@ -18,6 +19,10 @@ export abstract class CreditAccount {
     public readonly expiresAt: Date,
     public readonly transactions: CreditTransaction[] = []
   ) {}
+
+  getId() {
+    return this.id;
+  }
 
   useCredits(cost: number) {}
   refundCredits(cost: number) {}
@@ -63,6 +68,26 @@ export abstract class CreditAccount {
 
   equals(other: CreditAccount): boolean {
     return this.creditCode === other.creditCode;
+  }
+
+  toDTO(): CreditAccountDTO {
+    return {
+      id: this.id,
+      creditCode: this.creditCode,
+      type: this.type,
+      originalCredits: this.originalCredits.value,
+      originalMoney: this.originalMoney.amount,
+      availableCredits: this._availableCredits.value,
+      availableMoney: this._availableMoney.amount,
+      email: this.email,
+      isActive: this.isActive,
+      createdAt: this.createdAt,
+      expiresAt: this.expiresAt,
+      ...(this instanceof PrepaidAccount && {
+        treatmentCount: this.treatmentCount,
+        discountPercentage: this.discountPercentage,
+      }),
+    };
   }
 }
 

@@ -14,15 +14,22 @@ import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mappe
 import { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
 import { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
 import { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository";
-import { createNewCreditAccount } from "../../domain/CreditAccountFactory";
+import {
+  createNewCreditAccount,
+  type NewCreditAccountInput,
+} from "../../domain/CreditAccountFactory";
 import { CreditAccountType } from "@prisma/client";
+import type { CreditAccount } from "../../domain/CreditAccount";
 
 export class CreditAccountService {
   private accountRepo = new CreditAccountRepository();
   private transactionRepo = new CreditTransactionRepository();
   private transferRepo = new CreditTransferRepository();
 
-  async createGiftAccount(purchaseAmount: number, email: string) {
+  async createGiftAccount(
+    purchaseAmount: number,
+    email: string
+  ): Promise<CreditAccount> {
     const account = createNewCreditAccount({
       type: CreditAccountType.GIFT_CARD,
       email,
@@ -37,14 +44,14 @@ export class CreditAccountService {
       saved.originalMoney
     );
 
-    return toDTO(toDomain(saved));
+    return toDomain(saved);
   }
 
   async createPrepaidAccount(
     treatmentCount: number,
     pricePerTreatment: number,
     email: string
-  ): Promise<CreditAccountDTO> {
+  ): Promise<CreditAccount> {
     const discount = treatmentCount === 5 ? 0.12 : 0.16;
 
     const account = createNewCreditAccount({
@@ -62,7 +69,7 @@ export class CreditAccountService {
       saved.originalMoney
     );
 
-    return toDTO(toDomain(saved));
+    return toDomain(saved);
   }
 
   async useCredits(

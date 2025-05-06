@@ -7,6 +7,7 @@ import type { Credits } from "../../domain/valueobjects/Credits";
 import type { Money } from "../../domain/valueobjects/Money";
 
 export interface CreditAccountDTO {
+  id: number;
   creditCode: string;
   type: CreditAccountType;
   originalCredits: number;

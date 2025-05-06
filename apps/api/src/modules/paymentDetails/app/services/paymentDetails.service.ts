@@ -1,13 +1,38 @@
+import type { CreateCreditAccountWithPaymentInput } from "apps/api/src/application/services/createCreditAccountWithPayment/createCreditAccountWithPayment.input";
+import type { PaymentDetails } from "../../domain/PaymentDetails";
 import {
   toDomain,
   toDTO,
 } from "../../infrastructure/mappers/paymentdetails.mapper";
-import { PaymentDetailsRepository } from "../../infrastructure/repository/paymentDetails.repository";
+import type { PaymentDetailsRepository } from "../../infrastructure/repository/paymentDetails.repository";
 import type { PaymentDetailsDTO } from "../dto/paymentDetails.types";
+import type { CreditAccount } from "@prisma/client";
+import type { PaymentDetailsFactory } from "../../domain/PaymentDetailsFactory";
 
 export class PaymentDetailsService {
-  private paymentrepo = new PaymentDetailsRepository();
+  constructor(private readonly repo: PaymentDetailsRepository,
+    private readonly factory: PaymentDetailsFactory
+  ) {}
 
+
+  //TODO [CreateCreditAccountWithPayment]
+  async create(
+    input: CreateCreditAccountWithPaymentInput,
+  ): Promise<PaymentDetails> {
+   
+    const payment = this.factory.createNew({
+      amountMoney: amountMoney,
+      paymentMethod: paymentMethod,
+      paymentDate: new Date(),
+      paymentStatus: "PENDING",
+      creditAccount: creditAccount,
+      reference: reference,
+    });
+
+    const saved = await this.repo.save(payment); /
+
+    return saved; 
+  }
   async createPaymentDetails() {}
 
   async changePaymentStatus() {}
