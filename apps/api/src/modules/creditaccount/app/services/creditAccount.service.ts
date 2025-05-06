@@ -1,11 +1,8 @@
-import { GiftAccount, PrepaidAccount } from "../../domain/CreditAccount";
 import type {
   CreditAccountDTO,
   CreditTransferDTO,
   TransactionDTO,
 } from "../dto/creditaccount.types";
-import { Credits } from "../../domain/valueobjects/Credits";
-import { Money } from "../../domain/valueobjects/Money";
 
 import {
   toDomain,
@@ -17,6 +14,8 @@ import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mappe
 import { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
 import { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
 import { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository";
+import { createNewCreditAccount } from "../../domain/CreditAccountFactory";
+import { CreditAccountType } from "@prisma/client";
 
 export class CreditAccountService {
   private accountRepo = new CreditAccountRepository();
@@ -24,24 +23,11 @@ export class CreditAccountService {
   private transferRepo = new CreditTransferRepository();
 
   async createGiftAccount(purchaseAmount: number, email: string) {
-    const now = new Date();
-    const expiresAt = new Date();
-    expiresAt.setFullYear(now.getFullYear() + 3);
-    const credits = new Credits(purchaseAmount);
-    const money = new Money(purchaseAmount);
-
-    const account = new GiftAccount(
-      0,
-      this.generateCreditCode(),
-      credits,
-      money,
-      credits,
-      money,
+    const account = createNewCreditAccount({
+      type: CreditAccountType.GIFT_CARD,
       email,
-      true,
-      now,
-      expiresAt
-    );
+      originalAmount: purchaseAmount,
+    });
 
     const saved = await this.accountRepo.create(account.getDataToPersist());
 
@@ -60,26 +46,13 @@ export class CreditAccountService {
     email: string
   ): Promise<CreditAccountDTO> {
     const discount = treatmentCount === 5 ? 0.12 : 0.16;
-    const fullPrice = treatmentCount * pricePerTreatment;
-    const discountedPrice = fullPrice * (1 - discount);
 
-    const credits = new Credits(fullPrice);
-    const money = new Money(discountedPrice);
-
-    const account = new PrepaidAccount(
-      0,
-      this.generateCreditCode(),
-      credits,
-      money,
-      credits,
-      money,
+    const account = createNewCreditAccount({
+      type: CreditAccountType.PREPAID_CARD,
       email,
-      true,
-      new Date(),
-      this.generateDateExpired(),
+      pricePerTreatment,
       treatmentCount,
-      discount * 100
-    );
+    });
 
     const saved = await this.accountRepo.create(account.getDataToPersist());
 
@@ -242,16 +215,5 @@ export class CreditAccountService {
     );
 
     return transactions.map(toTransactionDTO);
-  }
-
-  private generateCreditCode(): string {
-    const randomDigits = Math.floor(1000000 + Math.random() * 900000);
-    return `RR${randomDigits}`;
-  }
-
-  private generateDateExpired(): Date {
-    const now = new Date();
-    now.setFullYear(now.getFullYear() + 3);
-    return now;
   }
 }

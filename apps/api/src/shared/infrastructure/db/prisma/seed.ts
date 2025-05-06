@@ -48,6 +48,7 @@ async function main() {
       paymentMethod: PaymentMethod.MANUAL,
       reference: "TEST-GIFT-001",
       paymentStatus: PaymentStatus.COMPLETED,
+      paymentDate: new Date(),
     },
   });
 
@@ -86,6 +87,7 @@ async function main() {
       paymentMethod: PaymentMethod.MANUAL,
       reference: "TEST-PREPAID5-001",
       paymentStatus: PaymentStatus.COMPLETED,
+      paymentDate: new Date(),
     },
   });
 
@@ -124,6 +126,7 @@ async function main() {
       paymentMethod: PaymentMethod.MANUAL,
       reference: "TEST-PREPAID10-001",
       paymentStatus: PaymentStatus.COMPLETED,
+      paymentDate: new Date(),
     },
   });
 
