@@ -1,6 +1,8 @@
 import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
+import type { PaymentDetails } from "../../paymentDetails/domain/PaymentDetails";
+import type { CreditAccountDTO } from "../app/dto/creditaccount.types";
 
 export abstract class CreditAccount {
   constructor(
@@ -17,6 +19,10 @@ export abstract class CreditAccount {
     public readonly expiresAt: Date,
     public readonly transactions: CreditTransaction[] = []
   ) {}
+
+  getId() {
+    return this.id;
+  }
 
   useCredits(cost: number) {}
   refundCredits(cost: number) {}
@@ -41,14 +47,26 @@ export abstract class CreditAccount {
     return this._availableMoney.amount;
   }
 
+  getOriginalCredits(): number {
+    return this.originalCredits.getValue();
+  }
+
+  getOriginalMoney(): number {
+    return this.originalMoney.getAmount();
+  }
+
+  hasCompletedPayment(payments: PaymentDetails[]): boolean {
+    return payments.some((p) => p.getStatusRaw());
+  }
+
   getDataToPersist() {
     return {
       creditCode: this.creditCode,
       type: this.type,
       originalCredits: this.originalCredits.value,
       originalMoney: this.originalMoney.amount,
-      availableCredits: this._availableCredits.value,
-      availableMoney: this._availableMoney.amount,
+      availableCredits: this.availableCredits,
+      availableMoney: this.availableMoney,
       email: this.email,
       isActive: this.isActive,
       createdAt: this.createdAt,
@@ -58,6 +76,29 @@ export abstract class CreditAccount {
 
   equals(other: CreditAccount): boolean {
     return this.creditCode === other.creditCode;
+  }
+
+  toDTO(): CreditAccountDTO {
+    const dto = {
+      id: this.id,
+      creditCode: this.creditCode,
+      type: this.type,
+      originalCredits: this.originalCredits.getValue(),
+      originalMoney: this.originalMoney.getAmount(),
+      availableCredits: this._availableCredits.getValue(),
+      availableMoney: this._availableMoney.getAmount(),
+      email: this.email,
+      isActive: this.isActive,
+      createdAt: this.createdAt,
+      expiresAt: this.expiresAt,
+      ...(this instanceof PrepaidAccount && {
+        treatmentCount: this.treatmentCount,
+        discountPercentage: this.discountPercentage,
+      }),
+    };
+
+    console.log("Returning dto: ", dto);
+    return dto;
   }
 }
 

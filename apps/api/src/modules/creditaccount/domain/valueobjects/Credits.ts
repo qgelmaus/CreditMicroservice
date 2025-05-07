@@ -5,6 +5,10 @@ export class Credits {
     }
   }
 
+  getValue(): number {
+    return this.value;
+  }
+
   add(amount: number): Credits {
     return new Credits(this.value + amount);
   }
@@ -20,7 +24,7 @@ export class Credits {
     return this.value === other.value;
   }
 
-  nullify(): Credits{
-    return new Credits(0)
+  nullify(): Credits {
+    return new Credits(0);
   }
 }
