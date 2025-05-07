@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Container from "./components/container/Container";
+import Navigation from "./components/navigation/Navigation";
+import Footer from "./components/footer/Footer";
+import type { ReactNode } from "react";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -12,14 +16,16 @@ export const metadata: Metadata = {
 	description: "Demonstrates the customer flow",
 };
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
-		<html lang="en">
-			<body className={`${inter.variable}  antialiased`}>{children}</body>
+		<html lang="da">
+			<body className="flex flex-col min-h-screen font-sans">
+				<Navigation />
+				<main className="flex-grow px-4 py-8 sm:px-8 max-w-5xl mx-auto">
+					{children}
+				</main>
+				<Footer />
+			</body>
 		</html>
 	);
 }
