@@ -13,11 +13,9 @@ export interface CreatePaymentDetailsFactoryInput {
 // biome-ignore lint/complexity/noStaticOnlyClass: This is a DDD exception
 export class PaymentDetailsFactory {
   static createNew(input: CreatePaymentDetailsFactoryInput): PaymentDetails {
-    const amount = new Money(input.amountMoney);
-
     return PaymentDetails.create({
       creditAccount: input.creditAccount,
-      amountMoney: amount,
+      amountMoney: new Money(input.amountMoney),
       paymentMethod: input.paymentMethod,
       paymentStatus: PaymentStatus.PENDING,
       reference: input.reference,

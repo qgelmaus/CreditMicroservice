@@ -1,16 +1,27 @@
-import {
-  type PaymentStatus,
-  type Prisma,
-  PrismaClient,
-  type PaymentDetails as PrismaPayment,
-} from "@prisma/client";
+import { type PaymentStatus, type Prisma, PrismaClient } from "@prisma/client";
 import type { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types";
+import type { PaymentDetails } from "../../domain/PaymentDetails";
+import { toDomain } from "../mappers/paymentdetails.mapper";
+import type { PaymentDetails as PrismaPayment } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class PaymentDetailsRepository {
-  async create(data: Prisma.PaymentDetailsCreateInput) {
-    return await prisma.paymentDetails.create({ data });
+  async create(payment: PaymentDetails): Promise<PaymentDetails> {
+    const persisted = await prisma.paymentDetails.create({
+      data: {
+        creditAccount: {
+          connect: { id: payment.getCreditAccountId() },
+        },
+        amountMoney: payment.getAmount(),
+        paymentMethod: payment.getPaymentMethod(),
+        paymentStatus: payment.getStatusRaw(),
+        reference: payment.getReference(),
+        paymentDate: payment.getPaymentDate(),
+      },
+    });
+
+    return toDomain(persisted);
   }
 
   async findById(id: string) {

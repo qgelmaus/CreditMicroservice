@@ -32,7 +32,7 @@ export function createNewCreditAccount(
     const credits = new Credits(input.originalAmount);
     const money = new Money(input.originalAmount);
     return new GiftAccount(
-      0, // midlertidigt ID
+      0,
       code,
       credits,
       money,
