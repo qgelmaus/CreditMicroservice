@@ -47,8 +47,16 @@ export abstract class CreditAccount {
     return this._availableMoney.amount;
   }
 
+  getOriginalCredits(): number {
+    return this.originalCredits.getValue();
+  }
+
+  getOriginalMoney(): number {
+    return this.originalMoney.getAmount();
+  }
+
   hasCompletedPayment(payments: PaymentDetails[]): boolean {
-    return payments.some((p) => p.status);
+    return payments.some((p) => p.getStatusRaw());
   }
 
   getDataToPersist() {
@@ -57,8 +65,8 @@ export abstract class CreditAccount {
       type: this.type,
       originalCredits: this.originalCredits.value,
       originalMoney: this.originalMoney.amount,
-      availableCredits: this._availableCredits.value,
-      availableMoney: this._availableMoney.amount,
+      availableCredits: this.availableCredits,
+      availableMoney: this.availableMoney,
       email: this.email,
       isActive: this.isActive,
       createdAt: this.createdAt,
@@ -71,14 +79,14 @@ export abstract class CreditAccount {
   }
 
   toDTO(): CreditAccountDTO {
-    return {
+    const dto = {
       id: this.id,
       creditCode: this.creditCode,
       type: this.type,
-      originalCredits: this.originalCredits.value,
-      originalMoney: this.originalMoney.amount,
-      availableCredits: this._availableCredits.value,
-      availableMoney: this._availableMoney.amount,
+      originalCredits: this.originalCredits.getValue(),
+      originalMoney: this.originalMoney.getAmount(),
+      availableCredits: this._availableCredits.getValue(),
+      availableMoney: this._availableMoney.getAmount(),
       email: this.email,
       isActive: this.isActive,
       createdAt: this.createdAt,
@@ -88,6 +96,9 @@ export abstract class CreditAccount {
         discountPercentage: this.discountPercentage,
       }),
     };
+
+    console.log("Returning dto: ", dto);
+    return dto;
   }
 }
 

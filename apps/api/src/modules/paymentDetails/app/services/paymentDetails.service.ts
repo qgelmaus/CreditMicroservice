@@ -20,21 +20,11 @@ export class PaymentDetailsService {
   constructor(private readonly repo: PaymentDetailsRepository) {}
 
   //TODO [CreateCreditAccountWithPayment]
-  async create(
-    input: Omit<PaymentInput, "creditAccountId"> & {
-      creditAccount: CreditAccount;
-    }
-  ): Promise<PaymentDetails> {
-    const payment = PaymentDetailsFactory.createNew({
-      amountMoney: input.amountMoney,
-      paymentMethod: input.paymentMethod,
-      creditAccount: input.creditAccount,
-      reference: input.reference,
-    });
-
-    const saved = await this.repo.create(payment);
-    return saved;
+  async create(input: PaymentInput): Promise<PaymentDetails> {
+    const payment = PaymentDetailsFactory.createNew(input);
+    return await this.repo.create(payment);
   }
+
   async createPaymentDetails() {}
 
   async changePaymentStatus() {}

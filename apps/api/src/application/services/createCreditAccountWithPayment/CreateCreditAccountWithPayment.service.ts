@@ -9,7 +9,6 @@ export class CreateCreditAccountWithPaymentService {
     private readonly creditAccountService: CreditAccountService,
     private readonly paymentDetailsService: PaymentDetailsService
   ) {}
-
   async execute(
     input: CreateCreditAccountWithPaymentInput
   ): Promise<CreateCreditAccountWithPaymentOutput> {
@@ -24,13 +23,13 @@ export class CreateCreditAccountWithPaymentService {
         email
       );
 
-      //TODO [CreateCreditAccountWithPayment]
       const payment = await this.paymentDetailsService.create({
-        amountMoney: amountMoney,
-        paymentMethod: paymentMethod,
-        reference: reference,
+        amountMoney,
+        paymentMethod,
+        reference,
         creditAccount: giftAccount,
       });
+
       return {
         creditAccount: giftAccount.toDTO(),
         paymentDetails: payment.toDTO(),
@@ -48,8 +47,11 @@ export class CreateCreditAccountWithPaymentService {
           pricePerTreatment,
           email
         );
+
       const payment = await this.paymentDetailsService.create({
-        ...input.paymentData,
+        amountMoney,
+        paymentMethod,
+        reference,
         creditAccount: prepaidAccount,
       });
 
@@ -59,6 +61,6 @@ export class CreateCreditAccountWithPaymentService {
       };
     }
 
-    throw new Error("Something went wrong with creditaccount type");
+    throw new Error("Ugyldige input til kreditkonto-oprettelse");
   }
 }

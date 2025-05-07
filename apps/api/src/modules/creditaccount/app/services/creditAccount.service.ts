@@ -29,7 +29,7 @@ export class CreditAccountService {
   async createGiftAccount(
     purchaseAmount: number,
     email: string
-  ): Promise<CreditAccount> {
+  ): Promise<CreditAccountDTO> {
     const account = createNewCreditAccount({
       type: CreditAccountType.GIFT_CARD,
       email,
@@ -44,14 +44,14 @@ export class CreditAccountService {
       saved.originalMoney
     );
 
-    return toDomain(saved);
+    return toDTO(toDomain(saved));
   }
 
   async createPrepaidAccount(
     treatmentCount: number,
     pricePerTreatment: number,
     email: string
-  ): Promise<CreditAccount> {
+  ): Promise<CreditAccountDTO> {
     const discount = treatmentCount === 5 ? 0.12 : 0.16;
 
     const account = createNewCreditAccount({
@@ -69,7 +69,7 @@ export class CreditAccountService {
       saved.originalMoney
     );
 
-    return toDomain(saved);
+    return toDTO(toDomain(saved));
   }
 
   async useCredits(

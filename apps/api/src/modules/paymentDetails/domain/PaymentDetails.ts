@@ -32,16 +32,41 @@ export class PaymentDetails {
     this.reference = props.reference;
   }
 
-  static create(props: PaymentDetailsProps): PaymentDetails {
+  static create(
+    props: Omit<PaymentDetailsProps, "paymentDate" | "id">
+  ): PaymentDetails {
     if (!props.reference || props.reference.trim() === "") {
       throw new Error("Reference er påkrævet");
     }
 
-    return new PaymentDetails(props);
+    return new PaymentDetails({
+      ...props,
+      paymentStatus: PaymentStatus.PENDING,
+    });
   }
 
-  get status(): boolean {
-    return this.paymentStatus === "COMPLETED";
+  getCreditAccountId(): number {
+    return this.creditAccount.getId();
+  }
+
+  getAmount(): number {
+    return this.amountMoney.getAmount();
+  }
+
+  getPaymentMethod(): PaymentMethod {
+    return this.paymentMethod;
+  }
+
+  getReference(): string {
+    return this.reference;
+  }
+
+  getPaymentDate(): Date {
+    return this.paymentDate;
+  }
+
+  getStatusRaw(): PaymentStatus {
+    return this.paymentStatus;
   }
 
   markAsCompleted(): void {
