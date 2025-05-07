@@ -64,6 +64,7 @@ export class CreditAccountRepository {
 
   toCreditAccountDTO(account: PrismaAccount): CreditAccountDTO {
     return {
+      id: account.id,
       creditCode: account.creditCode,
       type: account.type,
       originalCredits: account.originalCredits,

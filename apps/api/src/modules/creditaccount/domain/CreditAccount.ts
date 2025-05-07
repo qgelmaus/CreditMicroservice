@@ -2,7 +2,7 @@ import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
 import type { PaymentDetails } from "../../paymentDetails/domain/PaymentDetails";
-import { CreditAccountDTO } from "../app/dto/creditaccount.types";
+import type { CreditAccountDTO } from "../app/dto/creditaccount.types";
 
 export abstract class CreditAccount {
   constructor(

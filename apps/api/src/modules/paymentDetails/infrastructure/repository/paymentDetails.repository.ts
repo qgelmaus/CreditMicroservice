@@ -1,5 +1,4 @@
 import {
-  PaymentMethod,
   type PaymentStatus,
   type Prisma,
   PrismaClient,
@@ -38,7 +37,7 @@ export class PaymentDetailsRepository {
   toPaymentDetailsDTO(paymentDetails: PrismaPayment): PaymentDetailsDTO {
     return {
       id: paymentDetails.id,
-      creditAccountId: paymentDetails.creditAccountId,
+      creditAccount: paymentDetails.creditAccountId,
       amountMoney: paymentDetails.amountMoney,
       paymentMethod: paymentDetails.paymentMethod,
       paymentStatus: paymentDetails.paymentStatus,

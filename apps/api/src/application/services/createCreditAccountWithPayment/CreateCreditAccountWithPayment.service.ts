@@ -16,6 +16,8 @@ export class CreateCreditAccountWithPaymentService {
     const { type, purchaseAmount, treatmentCount, pricePerTreatment, email } =
       input.accountData;
 
+    const { amountMoney, paymentMethod, reference } = input.paymentData;
+
     if (type === CreditAccountType.GIFT_CARD && purchaseAmount) {
       const giftAccount = await this.creditAccountService.createGiftAccount(
         purchaseAmount,
@@ -24,8 +26,10 @@ export class CreateCreditAccountWithPaymentService {
 
       //TODO [CreateCreditAccountWithPayment]
       const payment = await this.paymentDetailsService.create({
-        ...input.paymentData,
-        creditAccountId: giftAccount.getId(),
+        amountMoney: amountMoney,
+        paymentMethod: paymentMethod,
+        reference: reference,
+        creditAccount: giftAccount,
       });
       return {
         creditAccount: giftAccount.toDTO(),
@@ -46,7 +50,7 @@ export class CreateCreditAccountWithPaymentService {
         );
       const payment = await this.paymentDetailsService.create({
         ...input.paymentData,
-        creditAccountId: prepaidAccount.getId(),
+        creditAccount: prepaidAccount,
       });
 
       return {

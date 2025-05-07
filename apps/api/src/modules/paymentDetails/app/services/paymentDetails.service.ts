@@ -1,4 +1,3 @@
-import type { CreateCreditAccountWithPaymentInput } from "apps/api/src/application/services/createCreditAccountWithPayment/createCreditAccountWithPayment.input";
 import type { PaymentDetails } from "../../domain/PaymentDetails";
 import {
   toDomain,
@@ -6,39 +5,42 @@ import {
 } from "../../infrastructure/mappers/paymentdetails.mapper";
 import type { PaymentDetailsRepository } from "../../infrastructure/repository/paymentDetails.repository";
 import type { PaymentDetailsDTO } from "../dto/paymentDetails.types";
-import type { CreditAccount } from "@prisma/client";
-import type { PaymentDetailsFactory } from "../../domain/PaymentDetailsFactory";
+import type { PaymentMethod } from "@prisma/client";
+import { PaymentDetailsFactory } from "../../domain/PaymentDetailsFactory";
+import type { CreditAccount } from "../../../creditaccount/domain/CreditAccount";
+
+type PaymentInput = {
+  amountMoney: number;
+  paymentMethod: PaymentMethod;
+  creditAccount: CreditAccount;
+  reference: string;
+};
 
 export class PaymentDetailsService {
-  constructor(private readonly repo: PaymentDetailsRepository,
-    private readonly factory: PaymentDetailsFactory
-  ) {}
-
+  constructor(private readonly repo: PaymentDetailsRepository) {}
 
   //TODO [CreateCreditAccountWithPayment]
   async create(
-    input: CreateCreditAccountWithPaymentInput,
+    input: Omit<PaymentInput, "creditAccountId"> & {
+      creditAccount: CreditAccount;
+    }
   ): Promise<PaymentDetails> {
-   
-    const payment = this.factory.createNew({
-      amountMoney: amountMoney,
-      paymentMethod: paymentMethod,
-      paymentDate: new Date(),
-      paymentStatus: "PENDING",
-      creditAccount: creditAccount,
-      reference: reference,
+    const payment = PaymentDetailsFactory.createNew({
+      amountMoney: input.amountMoney,
+      paymentMethod: input.paymentMethod,
+      creditAccount: input.creditAccount,
+      reference: input.reference,
     });
 
-    const saved = await this.repo.save(payment); /
-
-    return saved; 
+    const saved = await this.repo.create(payment);
+    return saved;
   }
   async createPaymentDetails() {}
 
   async changePaymentStatus() {}
 
   async findById(id: string): Promise<PaymentDetailsDTO> {
-    const paymentDetails = await this.paymentrepo.findById(id);
+    const paymentDetails = await this.repo.findById(id);
     if (!paymentDetails) throw new Error("Details not found");
     return toDTO(toDomain(paymentDetails));
   }

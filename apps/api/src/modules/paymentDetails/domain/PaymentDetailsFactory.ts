@@ -1,9 +1,10 @@
 import { type PaymentMethod, PaymentStatus } from "@prisma/client";
 import { PaymentDetails } from "./PaymentDetails";
 import { Money } from "../../creditaccount/domain/valueobjects/Money";
+import type { CreditAccount } from "../../creditaccount/domain/CreditAccount";
 
 export interface CreatePaymentDetailsFactoryInput {
-  creditAccountId: number;
+  creditAccount: CreditAccount;
   amountMoney: number;
   paymentMethod: PaymentMethod;
   reference: string;
@@ -15,7 +16,7 @@ export class PaymentDetailsFactory {
     const amount = new Money(input.amountMoney);
 
     return PaymentDetails.create({
-      creditAccountId: input.creditAccountId,
+      creditAccount: input.creditAccount,
       amountMoney: amount,
       paymentMethod: input.paymentMethod,
       paymentStatus: PaymentStatus.PENDING,
@@ -25,7 +26,7 @@ export class PaymentDetailsFactory {
 
   static restoreFromPersistence(data: {
     id: string;
-    creditAccountId: number;
+    creditAccount: CreditAccount;
     amountMoney: number;
     paymentMethod: PaymentMethod;
     paymentStatus: PaymentStatus;

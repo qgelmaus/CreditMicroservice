@@ -1,4 +1,4 @@
-import { CustomerCreditAccountFlow } from "../modules/creditaccount/domain/flows/creditaccount/customerFlow";
+import { CustomerCreditAccountFlow } from "../../modules/creditaccount/domain/flows/creditaccount/customerFlow";
 
 describe("CustomerCreditAccountFlow", () => {
   it("kan gennemføre et komplet flow for gift card", () => {
