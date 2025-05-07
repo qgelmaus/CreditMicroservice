@@ -50,7 +50,7 @@ export class PaymentDetails {
   }
 
   getAmount(): number {
-    return this.amountMoney.amount;
+    return this.amountMoney.getAmount();
   }
 
   getPaymentMethod(): PaymentMethod {
