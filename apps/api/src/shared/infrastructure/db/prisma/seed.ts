@@ -2,8 +2,6 @@ import {
   PrismaClient,
   CreditAccountType,
   TransactionType,
-  PaymentMethod,
-  PaymentStatus,
 } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -41,17 +39,6 @@ async function main() {
     },
   });
 
-  await prisma.paymentDetails.create({
-    data: {
-      creditAccountId: giftAccount.id,
-      amountMoney: 500,
-      paymentMethod: PaymentMethod.MANUAL,
-      reference: "TEST-GIFT-001",
-      paymentStatus: PaymentStatus.COMPLETED,
-      paymentDate: new Date(),
-    },
-  });
-
   // 💳 PrepaidAccount (5 behandlinger, 10% rabat)
   const prepaid5 = await prisma.creditAccount.create({
     data: {
@@ -80,17 +67,6 @@ async function main() {
     },
   });
 
-  await prisma.paymentDetails.create({
-    data: {
-      creditAccountId: prepaid5.id,
-      amountMoney: 1125,
-      paymentMethod: PaymentMethod.MANUAL,
-      reference: "TEST-PREPAID5-001",
-      paymentStatus: PaymentStatus.COMPLETED,
-      paymentDate: new Date(),
-    },
-  });
-
   // 💳 PrepaidAccount (10 behandlinger, 20% rabat)
   const prepaid10 = await prisma.creditAccount.create({
     data: {
@@ -116,17 +92,6 @@ async function main() {
       credits: 10,
       money: 2000,
       note: "Initial purchase",
-    },
-  });
-
-  await prisma.paymentDetails.create({
-    data: {
-      creditAccountId: prepaid10.id,
-      amountMoney: 2000,
-      paymentMethod: PaymentMethod.MANUAL,
-      reference: "TEST-PREPAID10-001",
-      paymentStatus: PaymentStatus.COMPLETED,
-      paymentDate: new Date(),
     },
   });
 

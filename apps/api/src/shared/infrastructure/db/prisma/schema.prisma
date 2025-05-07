@@ -9,7 +9,7 @@ datasource db {
 }
 
 
-//CREDITACCOUNTS
+
 model CreditAccount {
   id               Int                @id @default(autoincrement())
   creditCode       String             @unique
@@ -26,8 +26,6 @@ model CreditAccount {
   updatedAt        DateTime           @updatedAt
   expiresAt        DateTime
   transactions CreditTransaction[]
-
-  CreditAccountPayment PaymentDetails[]
 }
 
 model CreditTransaction {
@@ -68,34 +66,4 @@ enum TransactionType {
   TRANSFER_OUT
   REFUND
 }
-
-//PAYMENTDETAILS
-model PaymentDetails {
-  id              String   @id @default(uuid())
-  creditAccountId Int
-  amountMoney     Float
-  paymentMethod   PaymentMethod
-  paymentDate     DateTime
-  reference       String
-  paymentStatus   PaymentStatus
-  
-
-  creditAccount   CreditAccount @relation(fields: [creditAccountId], references: [id])
-}
-
-enum PaymentMethod {
-  STRIPE
-  MOBILEPAY
-  BANK_TRANSFER
-  MANUAL
-}
-
-enum PaymentStatus {
-  PENDING
-  COMPLETED
-  FAILED
-  REFUNDED
-}
-
-
 
