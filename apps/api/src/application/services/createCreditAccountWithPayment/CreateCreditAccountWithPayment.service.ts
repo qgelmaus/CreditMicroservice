@@ -27,11 +27,11 @@ export class CreateCreditAccountWithPaymentService {
         amountMoney,
         paymentMethod,
         reference,
-        creditAccount: giftAccount,
+        creditAccountId: giftAccount.id,
       });
 
       return {
-        creditAccount: giftAccount.toDTO(),
+        creditAccount: giftAccount,
         paymentDetails: payment.toDTO(),
       };
     }
@@ -52,11 +52,11 @@ export class CreateCreditAccountWithPaymentService {
         amountMoney,
         paymentMethod,
         reference,
-        creditAccount: prepaidAccount,
+        creditAccountId: prepaidAccount.id,
       });
 
       return {
-        creditAccount: prepaidAccount.toDTO(),
+        creditAccount: prepaidAccount,
         paymentDetails: payment.toDTO(),
       };
     }

@@ -20,7 +20,7 @@ export abstract class CreditAccount {
     public readonly transactions: CreditTransaction[] = []
   ) {}
 
-  getId() {
+  getId(): number {
     return this.id;
   }
 

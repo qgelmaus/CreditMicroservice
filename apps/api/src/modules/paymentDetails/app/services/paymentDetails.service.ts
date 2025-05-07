@@ -12,7 +12,7 @@ import type { CreditAccount } from "../../../creditaccount/domain/CreditAccount"
 type PaymentInput = {
   amountMoney: number;
   paymentMethod: PaymentMethod;
-  creditAccount: CreditAccount;
+  creditAccountId: number;
   reference: string;
 };
 

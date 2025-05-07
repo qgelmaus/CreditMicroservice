@@ -5,7 +5,7 @@ import type { CreditAccount } from "../../creditaccount/domain/CreditAccount";
 
 export interface PaymentDetailsProps {
   id?: string;
-  creditAccount: CreditAccount;
+  creditAccountId: number;
   amountMoney: Money;
   paymentMethod: PaymentMethod;
   paymentStatus: PaymentStatus;
@@ -15,7 +15,7 @@ export interface PaymentDetailsProps {
 
 export class PaymentDetails {
   private readonly id?: string;
-  private readonly creditAccount: CreditAccount;
+  private readonly creditAccountId: number;
   private readonly amountMoney: Money;
   private readonly paymentMethod: PaymentMethod;
   private paymentStatus: PaymentStatus;
@@ -24,7 +24,7 @@ export class PaymentDetails {
 
   private constructor(props: PaymentDetailsProps) {
     this.id = props.id;
-    this.creditAccount = props.creditAccount;
+    this.creditAccountId = props.creditAccountId;
     this.amountMoney = props.amountMoney;
     this.paymentMethod = props.paymentMethod;
     this.paymentStatus = props.paymentStatus;
@@ -46,7 +46,7 @@ export class PaymentDetails {
   }
 
   getCreditAccountId(): number {
-    return this.creditAccount.getId();
+    return this.creditAccountId;
   }
 
   getAmount(): number {
@@ -76,7 +76,7 @@ export class PaymentDetails {
 
   static restore(props: {
     id: string;
-    creditAccount: CreditAccount;
+    creditAccountId: number;
     amountMoney: number;
     paymentMethod: PaymentMethod;
     paymentStatus: PaymentStatus;
@@ -85,7 +85,7 @@ export class PaymentDetails {
   }): PaymentDetails {
     return new PaymentDetails({
       id: props.id,
-      creditAccount: props.creditAccount,
+      creditAccountId: props.creditAccountId,
       amountMoney: new Money(props.amountMoney),
       paymentMethod: props.paymentMethod,
       paymentStatus: props.paymentStatus,
@@ -101,7 +101,7 @@ export class PaymentDetails {
 
     return {
       id: this.id,
-      creditAccount: this.creditAccount,
+      creditAccount: this.creditAccountId,
       amountMoney: this.amountMoney.getAmount(),
       paymentMethod: this.paymentMethod,
       paymentStatus: this.paymentStatus,
@@ -112,7 +112,7 @@ export class PaymentDetails {
 
   getDataToPersist() {
     return {
-      creditAccount: this.creditAccount,
+      creditAccount: this.creditAccountId,
       amountMoney: this.amountMoney,
       paymentMethod: this.paymentMethod,
       paymentStatus: this.paymentStatus,

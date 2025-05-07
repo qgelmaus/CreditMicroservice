@@ -4,7 +4,7 @@ import { Money } from "../../creditaccount/domain/valueobjects/Money";
 import type { CreditAccount } from "../../creditaccount/domain/CreditAccount";
 
 export interface CreatePaymentDetailsFactoryInput {
-  creditAccount: CreditAccount;
+  creditAccountId: number;
   amountMoney: number;
   paymentMethod: PaymentMethod;
   reference: string;
@@ -14,7 +14,7 @@ export interface CreatePaymentDetailsFactoryInput {
 export class PaymentDetailsFactory {
   static createNew(input: CreatePaymentDetailsFactoryInput): PaymentDetails {
     return PaymentDetails.create({
-      creditAccount: input.creditAccount,
+      creditAccountId: input.creditAccountId,
       amountMoney: new Money(input.amountMoney),
       paymentMethod: input.paymentMethod,
       paymentStatus: PaymentStatus.PENDING,
@@ -24,7 +24,7 @@ export class PaymentDetailsFactory {
 
   static restoreFromPersistence(data: {
     id: string;
-    creditAccount: CreditAccount;
+    creditAccountId: number;
     amountMoney: number;
     paymentMethod: PaymentMethod;
     paymentStatus: PaymentStatus;
