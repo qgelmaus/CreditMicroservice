@@ -7,7 +7,4 @@ module.exports = {
 	globals: {
 		NODE_ENV: "test",
 	},
-	moduleNameMapper: {
-		"^apps/(.*)$": "<rootDir>/apps/$1",
-	},
 };
