@@ -23,11 +23,7 @@ export class Money {
     return this.amount === other.amount && this.currency === other.currency;
   }
 
-  nullify(): Money {
-    return new Money(0, this.currency);
-  }
-
-  getAmount(): number {
-    return this.amount;
+  nullify(): Money{
+    return new Money(0, this.currency)
   }
 }
