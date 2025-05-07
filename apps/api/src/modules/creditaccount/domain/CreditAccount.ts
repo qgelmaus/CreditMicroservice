@@ -1,4 +1,8 @@
-import { CreditAccountType, type CreditTransaction } from "@prisma/client";
+import {
+  CreditAccountType,
+  PaymentStatus,
+  type CreditTransaction,
+} from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
 import type { PaymentDetails } from "../../paymentDetails/domain/PaymentDetails";
@@ -55,8 +59,11 @@ export abstract class CreditAccount {
     return this.originalMoney.getAmount();
   }
 
-  hasCompletedPayment(payments: PaymentDetails[]): boolean {
-    return payments.some((p) => p.getStatusRaw());
+  hasCompletedPayment(
+    payments: PaymentDetails[],
+    status: PaymentStatus
+  ): boolean {
+    return payments.some((p) => p.getStatusRaw() === status);
   }
 
   getDataToPersist() {
@@ -97,7 +104,6 @@ export abstract class CreditAccount {
       }),
     };
 
-    console.log("Returning dto: ", dto);
     return dto;
   }
 }
