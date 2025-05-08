@@ -124,18 +124,7 @@ export default function CreateCreditAccountPage() {
     }
   }
 
-  function validateAndSubmit() {
-    console.log("Valideret:", context);
-    setState("validated");
-  }
-
-  const stepLabels: Record<FlowState, string> = {
-    start: "Trin 1 af 4: Vælg korttype",
-    typeSelected: "Trin 2 af 4: Indtast email",
-    emailSet: "Trin 3 af 4: Indtast detaljer",
-    detailsSet: "Trin 4 af 4: Gennemgå og bekræft",
-    validated: "Konto oprettet!",
-  };
+  
 
   return (
     <div className="p-6 max-w-xl mx-auto space-y-6">
