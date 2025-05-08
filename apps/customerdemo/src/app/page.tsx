@@ -22,9 +22,10 @@ export default function Home() {
           creditAccountByEmail(email: $email) {
             transactions{
     				id
-    				creditCode
     				type
     				money
+					credits
+					createdAt
   				}
           }
         }
@@ -42,56 +43,57 @@ export default function Home() {
 		}
 
 		const accounts = json.data.creditAccountByEmail ?? [];
-return accounts.flatMap((account: any) => account.transactions ?? []);
+		return accounts.flatMap((account: any) => account.transactions ?? []);
 	}
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[60vh] p-6">
 			{/* Venstre side */}
-		<div className="flex flex-col items-center justify-start w-full">
-	<form className="flex gap-4 mb-4">
-		<input
-			type="text"
-			value={email}
-			onChange={(e) => setEmail(e.target.value)}
-			placeholder="Indtast din email.."
-			className="px-4 py-2 border border-warmgreen rounded-md focus:outline-none focus:ring-2 focus:ring-warmgreen"
-		/>
-		<Button
-			onClick={async (e) => {
-				e.preventDefault();
-				const data = await fetchGraphQLTransactions(email);
-				setTransactions(data);
-			}}
-		>
-			Søg
-		</Button>
-	</form>
+			<div className="flex flex-col items-center justify-start w-full">
+				<form className="flex gap-4 mb-4">
+					<input
+						type="text"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						placeholder="Indtast din email.."
+						className="px-4 py-2 border border-bg-black rounded-md focus:outline-none focus:ring-2 focus:ring-warmgreen"
+					/>
+					<Button
+						onClick={async (e) => {
+							e.preventDefault();
+							const data = await fetchGraphQLTransactions(email);
+							setTransactions(data);
+						}}
+					>
+						Søg
+					</Button>
+				</form>
 
-	{transactions.length > 0 && (
-		<table className="w-full text-sm border border-gray-300">
-			<thead className="bg-gray-100">
-				<tr>
-					<th className="border px-4 py-2 text-left">ID</th>
-					<th className="border px-4 py-2 text-left">Type</th>
-					<th className="border px-4 py-2 text-left">CreditCode</th>
-					<th className="border px-4 py-2 text-right">Beløb</th>
-				</tr>
-			</thead>
-			<tbody>
-				{transactions.map((tx) => (
-					<tr key={tx.id} className="odd:bg-white even:bg-gray-50">
-						<td className="border px-4 py-2">{tx.id}</td>
-						<td className="border px-4 py-2">{tx.type}</td>
-						<td className="border px-4 py-2">{tx.creditCode}</td>
-						<td className="border px-4 py-2 text-right">{tx.money} kr</td>
-					</tr>
-				))}
-			</tbody>
-		</table>
-	)}
-</div>
-
+				{transactions.length > 0 && (
+					<table className="w-full text-sm border border-gray-600 ">
+						<thead className="bg-gray-100 ">
+							<tr>
+								<th className="border px-4 py-2 text-left">DKK</th>
+								<th className="border px-4 py-2 text-left">Kreditter</th>
+								<th className="border px-4 py-2 text-left">Type</th>
+								<th className="border px-4 py-2 text-right">Dato</th>
+							</tr>
+						</thead>
+						<tbody>
+							{transactions.map((tx) => (
+								<tr key={tx.id} className="odd:bg-white even:bg-gray-50">
+									<td className="border px-4 py-2">{tx.money}</td>
+									<td className="border px-4 py-2">{tx.credits}</td>
+									<td className="border px-4 py-2">{tx.type}</td>
+									<td className="border px-4 py-2 text-right">
+										{tx.createdAt}
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				)}
+			</div>
 
 			{/* Højre side */}
 			<div className="flex items-start justify-center">
