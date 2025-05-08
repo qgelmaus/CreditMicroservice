@@ -4,6 +4,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Button from "../components/button/Button";
 
+
+/*Test cards for payment:
+4242424242424242 Payment succeeds
+4000000000009995 Payment declined
+4000002500003155 Payment requires authentication
+*/
 type FlowState =
   | "start"
   | "typeSelected"
