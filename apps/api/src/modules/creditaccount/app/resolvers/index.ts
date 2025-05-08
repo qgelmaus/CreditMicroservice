@@ -16,6 +16,7 @@ import { validateCreditAccount } from "../commands/flowCommands/validateCreditAc
 import { allCreditAccounts } from "../queries/CreditAccount/Account/allCreditAccounts";
 import { creditAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode";
 import { transactionsForAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode";
+import { creditAccountByEmail } from "../queries/CreditAccount/Account/creditAccountByEmail";
 import { allCreditTransactions } from "../queries/CreditAccount/Transaction/transactionsByAccountCode";
 
 export const creditAccountResolver = {
@@ -39,6 +40,7 @@ export const creditAccountResolver = {
 
 	Query: {
 		creditAccountByCode,
+		creditAccountByEmail,
 		transactionsForAccountByCode,
 		allCreditAccounts,
 		allCreditTransactions,

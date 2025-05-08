@@ -2,9 +2,7 @@ import type { ReactNode } from "react";
 import Footer from "../footer/Footer";
 import Navigation from "../navigation/Navigation";
 
-type ContainerProps = {
-	children: ReactNode;
-};
+
 
 export default function Container({ children }: { children: ReactNode }) {
 	return (

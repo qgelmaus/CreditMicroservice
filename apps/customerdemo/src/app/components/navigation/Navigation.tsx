@@ -1,21 +1,22 @@
-"use client";
-
+'use client'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 
 const links = [
-	{ href: "/", label: "Home" },
+	{ href: "/", label: "Manage" },
+	{href: "/booking", label: "Book"},
 	{ href: "/about", label: "About" },
 	{ href: "/contact", label: "Contact" },
+	
 ];
 
 export default function Navbar() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="bg-warmgreen border-b shadow-sm">
-			<div className="max-w-5xl mx-auto px-4 sm:px-8 py-4 grid grid-cols-3 items-center">
+		<nav className="bg-blue-400 border-b shadow-sm">
+			<div className="max-w-5xl mx-auto px-4 sm:px-8 py-12 grid grid-cols-3 items-center">
 				<div className="text-left">
 					<Link href="/" className="text-xl font-bold">
 						CustomerDemo
@@ -26,7 +27,7 @@ export default function Navbar() {
 						<Link
 							key={href}
 							href={href}
-							className={clsx("text-gray-700 hover:text-black transition", {
+							className={clsx("text-gray-900 hover:text-black transition text-xl", {
 								"font-semibold underline underline-offset-4": pathname === href,
 							})}
 						>

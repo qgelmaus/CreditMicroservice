@@ -113,6 +113,7 @@ input NullifyAccountInput {
 extend type Query {
 	#Creditaccounts
 	creditAccountByCode(code: String!): CreditAccount
+	creditAccountByEmail(email: String!): [CreditAccount!]
 	allCreditAccounts: [CreditAccount!]!
 
 	#transactions

@@ -1,8 +1,14 @@
 {
-	"workspaces": ["src", "gui"],
+	"workspaces": [
+		"src",
+		"gui"
+	],
 	"scripts": {
 		"dev:api": "pnpm --filter api dev",
 		"dev:demo": "pnpm --filter demo dev",
 		"dev:customerdemo": "pnpm --filter customerdemo dev"
+	},
+	"dependencies": {
+		"cors": "^2.8.5"
 	}
 }
