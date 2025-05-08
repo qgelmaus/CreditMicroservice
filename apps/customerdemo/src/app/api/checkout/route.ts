@@ -18,22 +18,37 @@ export async function POST(req: NextRequest) {
 			price_data: {
 				currency: "dkk",
 				product_data: { name: "Gavekort" },
-				unit_amount: details.credits * 100, // fx 1 credit = 1 DKK
+				unit_amount: details.credits * 100, 
 			},
 			quantity: 1,
 		});
 	}
 
 	if (type === "PREPAID_CARD") {
-		lineItems.push({
-			price_data: {
-				currency: "dkk",
-				product_data: { name: "Klippekort" },
-				unit_amount: details.pricePerTreatment * details.treatmentCount * 100,
-			},
-			quantity: 1,
-		});
+	const { pricePerTreatment, treatmentCount } = details;
+
+	let discount = 0;
+	if (treatmentCount >= 10) {
+		discount = 0.16;
+	} else if (treatmentCount >= 5) {
+		discount = 0.12;
 	}
+
+	const rawPrice = pricePerTreatment * treatmentCount;
+	const discountedPrice = Math.round(rawPrice * (1 - discount) * 100); // i øre
+
+	lineItems.push({
+		price_data: {
+			currency: "dkk",
+			product_data: {
+				name: `Klippekort – ${treatmentCount} klip`,
+				description: `Rabatteret klippekort med ${discount * 100}% rabat`,
+			},
+			unit_amount: discountedPrice,
+		},
+		quantity: 1,
+	});
+}
 
 	const session = await stripe.checkout.sessions.create({
 		payment_method_types: ["card"],
