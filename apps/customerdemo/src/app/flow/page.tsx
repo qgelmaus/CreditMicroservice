@@ -37,7 +37,7 @@ export default function CreateCreditAccountPage() {
 
   async function sendToBackend(context: FlowContext) {
     try {
-      const response = await fetch("https://din-backend-url/graphql", {
+      const response = await fetch("http://localhost:4000/graphql", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
