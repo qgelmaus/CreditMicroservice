@@ -4,120 +4,125 @@ import type { PaymentDetailsDTO } from "../app/dto/paymentDetails.types";
 import type { CreditAccount } from "../../creditaccount/domain/CreditAccount";
 
 export interface PaymentDetailsProps {
-  id?: string;
-  creditAccountId: number;
-  amountMoney: Money;
-  paymentMethod: PaymentMethod;
-  paymentStatus: PaymentStatus;
-  paymentDate?: Date;
-  reference: string;
+	id?: string;
+	creditAccountId: number;
+	amountMoney: Money;
+	paymentMethod: PaymentMethod;
+	paymentStatus: PaymentStatus;
+	paymentDate?: Date;
+	reference: string;
 }
 
 export class PaymentDetails {
-  private readonly id?: string;
-  private readonly creditAccountId: number;
-  private readonly amountMoney: Money;
-  private readonly paymentMethod: PaymentMethod;
-  private paymentStatus: PaymentStatus;
-  private paymentDate: Date;
-  private readonly reference: string;
+	private readonly id?: string;
+	private readonly creditAccountId: number;
+	private readonly amountMoney: Money;
+	private readonly paymentMethod: PaymentMethod;
+	private paymentStatus: PaymentStatus;
+	private paymentDate: Date;
+	private readonly reference: string;
 
-  private constructor(props: PaymentDetailsProps) {
-    this.id = props.id;
-    this.creditAccountId = props.creditAccountId;
-    this.amountMoney = props.amountMoney;
-    this.paymentMethod = props.paymentMethod;
-    this.paymentStatus = props.paymentStatus;
-    this.paymentDate = props.paymentDate ?? new Date();
-    this.reference = props.reference;
-  }
+	private constructor(props: PaymentDetailsProps) {
+		this.id = props.id;
+		this.creditAccountId = props.creditAccountId;
+		this.amountMoney = props.amountMoney;
+		this.paymentMethod = props.paymentMethod;
+		this.paymentStatus = props.paymentStatus;
+		this.paymentDate = props.paymentDate ?? new Date();
+		this.reference = props.reference;
+	}
 
-  static create(
-    props: Omit<PaymentDetailsProps, "paymentDate" | "id">
-  ): PaymentDetails {
-    if (!props.reference || props.reference.trim() === "") {
-      throw new Error("Reference er påkrævet");
-    }
+	static create(
+		props: Omit<PaymentDetailsProps, "paymentDate" | "id">,
+	): PaymentDetails {
+		if (!props.reference || props.reference.trim() === "") {
+			throw new Error("Reference er påkrævet");
+		}
 
-    return new PaymentDetails({
-      ...props,
-      paymentStatus: PaymentStatus.PENDING,
-    });
-  }
+		return new PaymentDetails({
+			...props,
+			paymentStatus: PaymentStatus.PENDING,
+		});
+	}
 
-  getCreditAccountId(): number {
-    return this.creditAccountId;
-  }
+	getId(): string {
+		if (this.id) return this.id;
+		throw new Error("Id not set yet");
+	}
 
-  getAmount(): number {
-    return this.amountMoney.getAmount();
-  }
+	getCreditAccountId(): number {
+		return this.creditAccountId;
+	}
 
-  getPaymentMethod(): PaymentMethod {
-    return this.paymentMethod;
-  }
+	getAmount(): number {
+		return this.amountMoney.getAmount();
+	}
 
-  getReference(): string {
-    return this.reference;
-  }
+	getPaymentMethod(): PaymentMethod {
+		return this.paymentMethod;
+	}
 
-  getPaymentDate(): Date {
-    return this.paymentDate;
-  }
+	getReference(): string {
+		return this.reference;
+	}
 
-  getStatusRaw(): PaymentStatus {
-    return this.paymentStatus;
-  }
+	getPaymentDate(): Date {
+		return this.paymentDate;
+	}
 
-  markAsCompleted(): void {
-    this.paymentStatus = PaymentStatus.COMPLETED;
-    this.paymentDate = new Date();
-  }
+	getStatusRaw(): PaymentStatus {
+		return this.paymentStatus;
+	}
 
-  static restore(props: {
-    id: string;
-    creditAccountId: number;
-    amountMoney: number;
-    paymentMethod: PaymentMethod;
-    paymentStatus: PaymentStatus;
-    reference: string;
-    paymentDate: Date;
-  }): PaymentDetails {
-    return new PaymentDetails({
-      id: props.id,
-      creditAccountId: props.creditAccountId,
-      amountMoney: new Money(props.amountMoney),
-      paymentMethod: props.paymentMethod,
-      paymentStatus: props.paymentStatus,
-      reference: props.reference,
-      paymentDate: props.paymentDate,
-    });
-  }
+	markAsCompleted(): void {
+		this.paymentStatus = PaymentStatus.COMPLETED;
+		this.paymentDate = new Date();
+	}
 
-  toDTO(): PaymentDetailsDTO {
-    if (!this.id) {
-      throw new Error("Kan ikke mappe PaymentDetails til DTO uden id.");
-    }
+	static restore(props: {
+		id: string;
+		creditAccountId: number;
+		amountMoney: number;
+		paymentMethod: PaymentMethod;
+		paymentStatus: PaymentStatus;
+		reference: string;
+		paymentDate: Date;
+	}): PaymentDetails {
+		return new PaymentDetails({
+			id: props.id,
+			creditAccountId: props.creditAccountId,
+			amountMoney: new Money(props.amountMoney),
+			paymentMethod: props.paymentMethod,
+			paymentStatus: props.paymentStatus,
+			reference: props.reference,
+			paymentDate: props.paymentDate,
+		});
+	}
 
-    return {
-      id: this.id,
-      creditAccount: this.creditAccountId,
-      amountMoney: this.amountMoney.getAmount(),
-      paymentMethod: this.paymentMethod,
-      paymentStatus: this.paymentStatus,
-      reference: this.reference,
-      paymentDate: this.paymentDate,
-    };
-  }
+	toDTO(): PaymentDetailsDTO {
+		if (!this.id) {
+			throw new Error("Kan ikke mappe PaymentDetails til DTO uden id.");
+		}
 
-  getDataToPersist() {
-    return {
-      creditAccount: this.creditAccountId,
-      amountMoney: this.amountMoney,
-      paymentMethod: this.paymentMethod,
-      paymentStatus: this.paymentStatus,
-      paymentDate: this.paymentDate,
-      reference: this.reference,
-    };
-  }
+		return {
+			id: this.id,
+			creditAccount: this.creditAccountId,
+			amountMoney: this.amountMoney.getAmount(),
+			paymentMethod: this.paymentMethod,
+			paymentStatus: this.paymentStatus,
+			reference: this.reference,
+			paymentDate: this.paymentDate,
+		};
+	}
+
+	getDataToPersist() {
+		return {
+			creditAccount: this.creditAccountId,
+			amountMoney: this.amountMoney,
+			paymentMethod: this.paymentMethod,
+			paymentStatus: this.paymentStatus,
+			paymentDate: this.paymentDate,
+			reference: this.reference,
+		};
+	}
 }
