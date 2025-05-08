@@ -81,18 +81,18 @@ export default function CreateCreditAccountPage() {
   function getStepDescription(state: FlowState, context: FlowContext): string {
     if (state === "emailSet") {
       if (context.type === "GIFT_CARD") {
-        return "Indtast hvor mange credits gavekortet skal indeholde. 1 credit svarer til 1 krone.";
+        return "Trin 3 af 4: Indtast hvor mange kreditter gavekortet skal indeholde. 1 kredit svarer til 1 krone til brug hos os.";
       }
       if (context.type === "PREPAID_CARD") {
-        return "Indtast hvor mange klip kortet skal have, og prisen pr. behandling. Rabat gives automatisk ved 5 og 10 klip.";
+        return "Trin 3 af 4: Indtast hvor mange klip kortet skal have, og prisen pr. behandling. Rabat gives automatisk ved 5 og 10 klip.";
       }
     }
 
     const staticDescriptions: Record<FlowState, string> = {
-      start: "Vælg den type kreditbeholdning du vil oprette.",
-      typeSelected: "Indtast din email, så vi kan knytte kreditten til dig.",
+      start: "Trin 1 af 4: Vælg den type kreditbeholdning du vil oprette.",
+      typeSelected: "Trin 2 af 4: Indtast din email, så vi kan knytte kreditten til dig.",
       emailSet: "", // bruges aldrig, overskrives ovenfor
-      detailsSet: "Tjek dine oplysninger, og betal for at oprette din kreditbeholdning.",
+      detailsSet: "Trin 4 af 4: Tjek dine oplysninger, og betal for at oprette din kreditbeholdning.",
       validated:
         "Din konto er oprettet. Du kan nu gemme eller sende kvittering.",
     };
