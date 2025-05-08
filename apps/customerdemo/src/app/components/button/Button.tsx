@@ -19,8 +19,9 @@ export default function Button({
 	const base = "px-4 py-2 rounded-md font-medium transition";
 
 	const variants: Record<Variant, string> = {
-		primary: "bg-blue-400 text-white hover:bg-blue-700",
-		secondary: "bg-gray-100 text-gray-800 border border-gray-300 hover:bg-gray-200",
+		primary: "bg-slate-800 text-white hover:bg-slate-600",
+		secondary:
+			"bg-gray-100 text-gray-800 border border-gray-300 hover:bg-gray-200",
 		ghost: "bg-transparent text-gray-700 hover:bg-gray-100",
 	};
 
