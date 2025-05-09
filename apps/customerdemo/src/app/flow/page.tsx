@@ -18,6 +18,8 @@ type FlowState =
   | "validated";
 type CreditAccountType = "GIFT_CARD" | "PREPAID_CARD";
 
+type PaymentMethod = "STRIPE"
+
 interface FlowContext {
   type?: CreditAccountType;
   email?: string;
@@ -29,6 +31,7 @@ export default function CreateCreditAccountPage() {
   const [context, setContext] = useState<FlowContext>({});
 
   const [selectedType, setSelectedType] = useState<CreditAccountType>();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>()
   const [emailInput, setEmailInput] = useState("");
   const [detailsInput, setDetailsInput] = useState<Record<string, any>>({});
   const [isPaying, setIsPaying] = useState(false);
@@ -325,9 +328,22 @@ export default function CreateCreditAccountPage() {
     </div>
 
     <div className="flex justify-between">
+      <select
+            onChange={(e) =>
+              setSelectedPaymentMethod(e.target.value as PaymentMethod)
+            }
+            defaultValue=""
+            className="border p-2 rounded-md"
+          >
+            <option value="" disabled>
+              -- Vælg betalingsmetode --
+            </option>
+            <option value="STRIPE">Kort</option>
+          </select>
       <Button variant="secondary" onClick={() => setState("emailSet")}>
         Tilbage
       </Button>
+      {selectedPaymentMethod === "STRIPE"}
       <Button onClick={handlePayment} disabled={isPaying}>
         {isPaying ? "Behandler betaling..." : "Bekræft og betal"}
       </Button>

@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function Home() {
 	const router = useRouter();
 	const [email, setEmail] = useState("");
-	const [transactions, setTransactions] = useState<any[]>([]); // typisk array af { id, type, amount, date }
+	const [transactions, setTransactions] = useState<any[]>([]); 
 
 	async function fetchGraphQLTransactions(email: string): Promise<any[]> {
 		const response = await fetch("http://localhost:4000/graphql", {
