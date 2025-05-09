@@ -1,8 +1,6 @@
 {
-	"workspaces": [
-		"src",
-		"gui"
-	],
+	"name": "creditaccount",
+	"version": "1.0.0",
 	"scripts": {
 		"dev:api": "pnpm --filter api dev",
 		"dev:demo": "pnpm --filter demo dev",
