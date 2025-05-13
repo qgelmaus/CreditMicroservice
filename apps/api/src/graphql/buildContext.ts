@@ -4,6 +4,8 @@ import { CreditTransactionRepository } from "../modules/creditaccount/infrastruc
 import { CreditTransferRepository } from "../modules/creditaccount/infrastructure/repository/creditTransfer.repository";
 import { CreditAccountService } from "../modules/creditaccount/app/services/creditAccount.service";
 import { CreditTransactionService } from "../modules/creditaccount/app/services/creditTransactions.service";
+import { PaymentDetailsRepository } from "../modules/paymentDetails/infrastructure/repository/paymentDetails.repository";
+import { PaymentDetailsService } from "../modules/paymentDetails/app/services/paymentDetails.service";
 
 
 export function buildContext() {
@@ -12,6 +14,7 @@ export function buildContext() {
     const creditAccountRepo = new CreditAccountRepository(prisma);
     const transactionRepo = new CreditTransactionRepository(prisma);
     const transferRepo = new CreditTransferRepository(prisma);
+    const paymentDetailsRepository = new PaymentDetailsRepository(prisma)
   
     const creditAccountService = new CreditAccountService(
       creditAccountRepo,
@@ -22,13 +25,17 @@ export function buildContext() {
     const creditTransactionService = new CreditTransactionService(
         transactionRepo
     )
+
+    const paymentDetailsService = new PaymentDetailsService(paymentDetailsRepository)
   
     return {
       prisma,
       user: {id: "FAKE-USER-ID"},
       services: {
         creditAccount: creditAccountService,
-        creditTransaction: creditTransactionService
+        creditTransaction: creditTransactionService,
+        paymentDetails: paymentDetailsService,
+        
       },
     };
   }

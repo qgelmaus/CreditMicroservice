@@ -20,6 +20,7 @@ import { creditAccountByCode } from "../queries/CreditAccount/Account/creditAcco
 import { transactionsForAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode";
 import { creditAccountByEmail } from "../queries/CreditAccount/Account/creditAccountByEmail";
 import { allCreditTransactions } from "../queries/CreditAccount/Transaction/transactionsByAccountCode";
+import { createCreditAccountWithPayment } from "../commands/CreditAccount/Account/createCreditAccountWithPayment";
 
 export const creditAccountResolver: Resolvers = {
 	CreditAccount: {
@@ -31,6 +32,7 @@ export const creditAccountResolver: Resolvers = {
 		},
 	},
 	Mutation: {
+		createCreditAccountWithPayment,
 		createGiftAccount,
 		createPrepaidAccount,
 		useCredits,

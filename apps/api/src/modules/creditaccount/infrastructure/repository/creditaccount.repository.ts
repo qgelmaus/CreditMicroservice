@@ -72,21 +72,5 @@ export class CreditAccountRepository {
 		});
 	}
 
-	toCreditAccountDTO(account: PrismaAccount): CreditAccountDTO {
-		return {
-			id: account.id,
-			creditCode: account.creditCode,
-			type: account.type,
-			originalCredits: account.originalCredits,
-			originalMoney: account.originalMoney,
-			availableCredits: account.availableCredits,
-			availableMoney: account.availableMoney,
-			email: account.email,
-			isActive: account.isActive,
-			createdAt: account.createdAt,
-			expiresAt: account.expiresAt,
-			treatmentCount: account.treatmentCount ?? undefined,
-			discountPercentage: account.discountPercentage ?? undefined,
-		};
-	}
+	
 }

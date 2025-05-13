@@ -19,7 +19,6 @@ type PaymentDetails {
 }
 
 input CreatePaymentDetailsInput {
-	creditAccountId: Int!
 	amountMoney: Float!
 	paymentMethod: PaymentMethod!
 	reference: String!

@@ -75,7 +75,7 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
     isActive: account.isActive,
     createdAt: account.createdAt,
     expiresAt: account.expiresAt,
-    transactions: account.transactions.map(toTransactionDTO) ?? [],
+    transactions: (account.transactions ?? []).map(toTransactionDTO),
   };
 
   if (account instanceof PrepaidAccount) {
@@ -88,6 +88,7 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
 
   return base;
 }
+
 
 export function toTransferDTO(entity: CreditTransfer): CreditTransferDTO {
   return {

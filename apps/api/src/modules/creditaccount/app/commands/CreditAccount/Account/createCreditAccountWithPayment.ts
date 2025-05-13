@@ -1,11 +1,37 @@
-import {MutationResolvers } from "../../../../../../shared/types/codegen.types"
+import { MutationResolvers } from "apps/api/src/shared/types/codegen.types";
+import { CreateCreditAccountWithPaymentService } from "../../../../../../application/services/createCreditAccountWithPayment/CreateCreditAccountWithPayment.service"
+import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL";
 
+export const createCreditAccountWithPayment: MutationResolvers["createCreditAccountWithPayment"] = async (
+  _,
+  { input },
+  context
+) => {
+  try {
+    const service = new CreateCreditAccountWithPaymentService(
+    context.services.creditAccount,
+    context.services.paymentDetails
+  );
+  console.log("context.services:", context.services);
 
-export const createGiftAccount: MutationResolvers['createGiftAccount'] = async (_parent, args, context) => {
-  const { input } = args
+ 
+  const serviceInput = {
+    accountData: {
+      ...input.account,
+      treatmentCount: input.account.treatmentCount ?? undefined,
+      pricePerTreatment: input.account.pricePerTreatment ?? undefined,
+      purchaseAmount: input.account.credits ?? undefined,
+    },
+    paymentData: input.payment,
+  };
+  
+  
+  
 
-  return await context.services.creditAccount.createGiftAccount(
-    input.purchaseAmount,
-    input.email
-  )
-}
+  const result = await service.execute(serviceInput);
+  console.log("Account: ", result);
+  return mapToGraphQL(result.creditAccount) ;} catch (err) {
+    console.error("Fejl i createCreditAccountWithPayment:", err);
+    throw err; 
+  }
+};
