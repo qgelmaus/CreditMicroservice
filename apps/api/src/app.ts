@@ -1,9 +1,11 @@
 import express from "express";
-import cors from "cors";
 import { graphqlHTTP } from "express-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDefs, resolvers } from "./modules/creditaccount/graphql/schema";
 import type { Request, Response, NextFunction } from "express";
+import { CreditAccountService } from "./modules/creditaccount/app/services/creditAccount.service";
+import { PaymentDetails } from "./modules/paymentDetails/domain/PaymentDetails";
+import { PaymentDetailsService } from "./modules/paymentDetails/app/services/paymentDetails.service";
 
 
 const app = express();
@@ -39,7 +41,11 @@ app.use(
 		graphiql: true,
 		context: {
 			user: { id: "FAKE-USER-ID" },
+			services: {
+				creditAccount: new CreditAccountService(),
+			}
 		},
+
 	})
 );
 

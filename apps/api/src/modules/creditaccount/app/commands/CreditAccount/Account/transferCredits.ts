@@ -1,19 +1,10 @@
 import { CreditAccountService } from "../../../services/creditAccount.service";
+import { MutationResolvers } from "apps/api/src/shared/types/codegen.types";
 
-const service = new CreditAccountService();
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const transferCredits = async (_: any, { input }: any) => {
-  try {
-    const { fromCreditCode, toCreditCode, amount, note } = input;
 
-    return await service.transferCredits(
-      fromCreditCode,
-      toCreditCode,
-      amount,
-      note
-    );
-  } catch (err) {
-    console.error("Transfer credit failed", err);
-    throw err;
-  }
-};
+
+export const transferCredits: MutationResolvers['transferCredits'] = async(_parent, { input }, context) => {
+  const { fromCreditCode, toCreditCode, amount, note} = input ?? {};
+  return await context.service.transferCredits(fromCreditCode, toCreditCode, amount,  note)
+}
+

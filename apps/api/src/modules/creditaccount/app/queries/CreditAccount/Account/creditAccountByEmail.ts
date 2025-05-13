@@ -1,8 +1,11 @@
 import { CreditAccountService } from "../../../services/creditAccount.service";
+import { QueryResolvers } from "apps/api/src/shared/types/codegen.types";
 
-const service = new CreditAccountService();
-
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const creditAccountByEmail = async (_: any, { email }: any) => {
-	return await service.findByEmail(email);
+export const creditAccountByEmail: QueryResolvers["creditAccountByEmail"] = async (
+	_parent,
+	{ email },
+	context
+  ) => {
+	return await context.services.creditAccount.findByEmail(email);
 };
+

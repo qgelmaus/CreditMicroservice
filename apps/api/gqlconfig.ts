@@ -5,7 +5,7 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: "src/modules/creditaccount/graphql/schema/account",
   generates: {
-    "src/shared/types/graphqlCodegenTypes": {
+    "src/shared/types/codegen.types.ts": {
       plugins: ["typescript", "typescript-resolvers"]
     },
     "./graphql.schema.json": {

@@ -1,3 +1,5 @@
+//apps/api/src/modules/creditaccount/app/resolvers/index.tx
+import { Resolvers } from "apps/api/src/shared/types/codegen.types";
 import {
 	createGiftAccount,
 	createPrepaidAccount,
@@ -19,7 +21,7 @@ import { transactionsForAccountByCode } from "../queries/CreditAccount/Account/c
 import { creditAccountByEmail } from "../queries/CreditAccount/Account/creditAccountByEmail";
 import { allCreditTransactions } from "../queries/CreditAccount/Transaction/transactionsByAccountCode";
 
-export const creditAccountResolver = {
+export const creditAccountResolver: Resolvers = {
 	CreditAccount: {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		__resolveType(obj: any) {

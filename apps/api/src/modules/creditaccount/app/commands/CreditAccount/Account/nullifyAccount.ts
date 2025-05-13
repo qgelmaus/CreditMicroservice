@@ -1,9 +1,10 @@
+import { MutationResolvers } from "apps/api/src/shared/types/codegen.types";
 import { CreditAccountService } from "../../../services/creditAccount.service";
 
-const service = new CreditAccountService();
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const nullifyAccount = async (_: any, { input }: any) => {
-  const { creditCode, note } = input;
-  return await service.nullifyAccount(creditCode, note);
-};
+
+
+export const nullifyAccount: MutationResolvers['nullifyAccount'] = async(_parent, { input }, context) => {
+  const {creditCode, note} = input ?? {};
+  return await context.service.nullifyAccount(creditCode, note)
+}
