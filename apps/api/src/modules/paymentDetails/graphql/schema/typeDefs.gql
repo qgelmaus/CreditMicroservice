@@ -25,16 +25,6 @@ input CreatePaymentDetailsInput {
 	reference: String!
 }
 
-enum PaymentMethod {
-	STRIPE
-	MOBILEPAY
-	BANK_TRANSFER
-	MANUAL
-}
-
-enum PaymentStatus {
-	PENDING
-	COMPLETED
-	FAILED
-	REFUNDED
+type Mutation {
+	createPaymentDetails(input: CreateGiftAccountInput): PaymentDetails
 }

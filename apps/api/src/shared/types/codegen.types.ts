@@ -22,6 +22,13 @@ export type CreateGiftAccountInput = {
   purchaseAmount: Scalars['Float']['input'];
 };
 
+export type CreatePaymentDetailsInput = {
+  amountMoney: Scalars['Float']['input'];
+  creditAccountId: Scalars['Int']['input'];
+  paymentMethod: PaymentMethod;
+  reference: Scalars['String']['input'];
+};
+
 export type CreatePrepaidAccountInput = {
   email: Scalars['String']['input'];
   pricePerTreatment: Scalars['Float']['input'];
@@ -73,6 +80,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   cancelCreditAccountFlow: Scalars['Boolean']['output'];
   createGiftAccount: CreditAccount;
+  createPaymentDetails?: Maybe<PaymentDetails>;
   createPrepaidAccount: CreditAccount;
   finalizeCreditAccount: CreditAccount;
   nullifyAccount: CreditAccount;
@@ -89,6 +97,11 @@ export type Mutation = {
 
 export type MutationCreateGiftAccountArgs = {
   input: CreateGiftAccountInput;
+};
+
+
+export type MutationCreatePaymentDetailsArgs = {
+  input?: InputMaybe<CreateGiftAccountInput>;
 };
 
 
@@ -140,6 +153,31 @@ export type NullifyAccountInput = {
   creditCode: Scalars['String']['input'];
   note?: InputMaybe<Scalars['String']['input']>;
 };
+
+export type PaymentDetails = {
+  __typename?: 'PaymentDetails';
+  amountMoney: Scalars['Float']['output'];
+  creditAccountId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  paymentDate: Scalars['Date']['output'];
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  reference: Scalars['String']['output'];
+};
+
+export enum PaymentMethod {
+  BankTransfer = 'BANK_TRANSFER',
+  Manual = 'MANUAL',
+  Mobilepay = 'MOBILEPAY',
+  Stripe = 'STRIPE'
+}
+
+export enum PaymentStatus {
+  Completed = 'COMPLETED',
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Refunded = 'REFUNDED'
+}
 
 export type PrepaidAccount = CreditAccount & {
   __typename?: 'PrepaidAccount';
@@ -312,6 +350,7 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CreateGiftAccountInput: CreateGiftAccountInput;
+  CreatePaymentDetailsInput: CreatePaymentDetailsInput;
   CreatePrepaidAccountInput: CreatePrepaidAccountInput;
   CreditAccount: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['CreditAccount']>;
   CreditAccountDetailsInput: CreditAccountDetailsInput;
@@ -322,6 +361,9 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   NullifyAccountInput: NullifyAccountInput;
+  PaymentDetails: ResolverTypeWrapper<PaymentDetails>;
+  PaymentMethod: PaymentMethod;
+  PaymentStatus: PaymentStatus;
   PrepaidAccount: ResolverTypeWrapper<PrepaidAccount>;
   Query: ResolverTypeWrapper<{}>;
   RefundCreditsInput: RefundCreditsInput;
@@ -338,6 +380,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   CreateGiftAccountInput: CreateGiftAccountInput;
+  CreatePaymentDetailsInput: CreatePaymentDetailsInput;
   CreatePrepaidAccountInput: CreatePrepaidAccountInput;
   CreditAccount: ResolversInterfaceTypes<ResolversParentTypes>['CreditAccount'];
   CreditAccountDetailsInput: CreditAccountDetailsInput;
@@ -347,6 +390,7 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']['output'];
   Mutation: {};
   NullifyAccountInput: NullifyAccountInput;
+  PaymentDetails: PaymentDetails;
   PrepaidAccount: PrepaidAccount;
   Query: {};
   RefundCreditsInput: RefundCreditsInput;
@@ -395,6 +439,7 @@ export type GiftAccountResolvers<ContextType = any, ParentType extends Resolvers
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   cancelCreditAccountFlow?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   createGiftAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationCreateGiftAccountArgs, 'input'>>;
+  createPaymentDetails?: Resolver<Maybe<ResolversTypes['PaymentDetails']>, ParentType, ContextType, Partial<MutationCreatePaymentDetailsArgs>>;
   createPrepaidAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationCreatePrepaidAccountArgs, 'input'>>;
   finalizeCreditAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType>;
   nullifyAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, Partial<MutationNullifyAccountArgs>>;
@@ -406,6 +451,17 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   transferCredits?: Resolver<ResolversTypes['Transfer'], ParentType, ContextType, RequireFields<MutationTransferCreditsArgs, 'input'>>;
   useCredits?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationUseCreditsArgs, 'input'>>;
   validateCreditAccount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+};
+
+export type PaymentDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaymentDetails'] = ResolversParentTypes['PaymentDetails']> = {
+  amountMoney?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  creditAccountId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  paymentDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  paymentMethod?: Resolver<ResolversTypes['PaymentMethod'], ParentType, ContextType>;
+  paymentStatus?: Resolver<ResolversTypes['PaymentStatus'], ParentType, ContextType>;
+  reference?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PrepaidAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrepaidAccount'] = ResolversParentTypes['PrepaidAccount']> = {
@@ -457,6 +513,7 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   GiftAccount?: GiftAccountResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PaymentDetails?: PaymentDetailsResolvers<ContextType>;
   PrepaidAccount?: PrepaidAccountResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Transaction?: TransactionResolvers<ContextType>;

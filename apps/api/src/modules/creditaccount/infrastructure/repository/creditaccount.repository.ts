@@ -4,29 +4,32 @@ import type { Prisma, CreditAccount as PrismaAccount } from "@prisma/client";
 import type { CreditAccountDTO } from "../../app/dto/creditaccount.types";
 import { type CreditAccount, PrepaidAccount } from "../../domain/CreditAccount";
 
-const prisma = new PrismaClient();
+
 
 export class CreditAccountRepository {
+	constructor(
+		private prisma: PrismaClient
+	) {}
 	async create(data: Prisma.CreditAccountCreateInput) {
-		return await prisma.creditAccount.create({ data });
+		return await this.prisma.creditAccount.create({ data });
 	}
 
 	async findByCreditCode(code: string) {
-		return await prisma.creditAccount.findUnique({
+		return await this.prisma.creditAccount.findUnique({
 			where: { creditCode: code },
 			include: { transactions: true },
 		});
 	}
 
 	async findByEmail(email: string) {
-		return await prisma.creditAccount.findMany({
+		return await this.prisma.creditAccount.findMany({
 			where: { email: email },
 			include: { transactions: true },
 		});
 	}
 
 	async findAll() {
-		return await prisma.creditAccount.findMany({
+		return await this.prisma.creditAccount.findMany({
 			orderBy: { createdAt: "desc" },
 		});
 	}
@@ -37,7 +40,7 @@ export class CreditAccountRepository {
 		newMoneyAmount: number,
 		newTreatmentCount: number,
 	) {
-		return await prisma.creditAccount.update({
+		return await this.prisma.creditAccount.update({
 			where: { creditCode },
 			data: {
 				availableCredits: newCreditAmount,
@@ -55,7 +58,7 @@ export class CreditAccountRepository {
 		};
 
 		if (account instanceof PrepaidAccount) {
-			return await prisma.creditAccount.update({
+			return await this.prisma.creditAccount.update({
 				where: { creditCode: account.creditCode },
 				data: {
 					...baseUpdate,
@@ -63,7 +66,7 @@ export class CreditAccountRepository {
 				},
 			});
 		}
-		return await prisma.creditAccount.update({
+		return await this.prisma.creditAccount.update({
 			where: { creditCode: account.creditCode },
 			data: baseUpdate,
 		});

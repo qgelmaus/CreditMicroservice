@@ -144,16 +144,4 @@ type Mutation {
 	createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
 }
 
-enum CreditAccountType {
-	GIFT_CARD
-	PREPAID_CARD
-}
 
-enum TransactionType {
-	PURCHASE
-	USAGE
-	NULLIFICATION
-	TRANSFER_IN
-	TRANSFER_OUT
-	REFUND
-}

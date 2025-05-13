@@ -1,10 +1,13 @@
 import { PrismaClient, TransactionType } from "@prisma/client";
 
-const prisma = new PrismaClient();
+
 
 export class CreditTransactionRepository {
+  constructor(
+    private prisma: PrismaClient
+  ) {}
   async logPurchase(creditAccountId: number, credits: number, money: number) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.PURCHASE,
@@ -20,7 +23,7 @@ export class CreditTransactionRepository {
     money: number,
     note: string
   ) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.USAGE,
@@ -37,7 +40,7 @@ export class CreditTransactionRepository {
     money: number,
     note: string
   ) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.REFUND,
@@ -54,7 +57,7 @@ export class CreditTransactionRepository {
     money: number,
     note: string
   ) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.TRANSFER_IN,
@@ -71,7 +74,7 @@ export class CreditTransactionRepository {
     money: number,
     note: string
   ) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.TRANSFER_OUT,
@@ -88,7 +91,7 @@ export class CreditTransactionRepository {
     money: number,
     note: string
   ) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.REFUND,
@@ -105,7 +108,7 @@ export class CreditTransactionRepository {
     money: number,
     note: string
   ) {
-    return await prisma.creditTransaction.create({
+    return await this.prisma.creditTransaction.create({
       data: {
         creditAccountId,
         type: TransactionType.NULLIFICATION,
@@ -117,7 +120,7 @@ export class CreditTransactionRepository {
   }
 
   async getTransactionsForAccount(accountId: number) {
-    return await prisma.creditTransaction.findMany({
+    return await this.prisma.creditTransaction.findMany({
       where: { creditAccountId: accountId },
       orderBy: { createdAt: "desc" },
       include: { creditAccount: true },
@@ -125,7 +128,7 @@ export class CreditTransactionRepository {
   }
 
   async findAll() {
-    return await prisma.creditTransaction.findMany({
+    return await this.prisma.creditTransaction.findMany({
       orderBy: { createdAt: "desc" },
       include: { creditAccount: true },
     });

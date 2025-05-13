@@ -2,16 +2,20 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  overwrite: true,
-  schema: "src/modules/creditaccount/graphql/schema/account",
+  schema: [
+    "src/graphql/baseSchema.gql",
+    "src/modules/shared/typeDefs/enums.gql",
+    "src/modules/creditaccount/graphql/schema/account/typeDefs.gql",
+    "src/modules/paymentdetails/graphql/schema/typeDefs.gql",
+  ],
   generates: {
-    "src/shared/types/codegen.types.ts": {
-      plugins: ["typescript", "typescript-resolvers"]
+    'src/shared/types/codegen.types.ts': {
+      plugins: ['typescript', 'typescript-resolvers'],
     },
-    "./graphql.schema.json": {
-      plugins: ["introspection"]
-    }
-  }
+    './graphql.schema.json': {
+      plugins: ['introspection'],
+    },
+  },
 };
 
 export default config;

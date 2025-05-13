@@ -1,9 +1,10 @@
 import { submitCreditAccountDetails as service } from "../../../app/services/creditAccountCustomerFlow.service";
+import type { Context } from "apps/api/src/graphql/buildContext";
 
 export const submitCreditAccountDetails = async (
-  _: any,
+  _: unknown,
   args: { details: Record<string, any> },
-  context: { user: { id: string } }
+  context: Context
 ) => {
   await service(context.user.id, args.details);
   return true;

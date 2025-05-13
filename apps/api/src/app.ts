@@ -1,12 +1,9 @@
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { typeDefs, resolvers } from "./modules/creditaccount/graphql/schema";
 import type { Request, Response, NextFunction } from "express";
-import { CreditAccountService } from "./modules/creditaccount/app/services/creditAccount.service";
-import { PaymentDetails } from "./modules/paymentDetails/domain/PaymentDetails";
-import { PaymentDetailsService } from "./modules/paymentDetails/app/services/paymentDetails.service";
 
+import { schema } from "./graphql/index"
+import { buildContext } from "./graphql/buildContext";
 
 const app = express();
 
@@ -23,12 +20,6 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 	next();
 });
 
-const schema = makeExecutableSchema({
-	typeDefs,
-	resolvers,
-});
-
-
 
 
 app.use(express.json());
@@ -39,12 +30,7 @@ app.use(
 	graphqlHTTP({
 		schema,
 		graphiql: true,
-		context: {
-			user: { id: "FAKE-USER-ID" },
-			services: {
-				creditAccount: new CreditAccountService(),
-			}
-		},
+		context: buildContext()
 
 	})
 );

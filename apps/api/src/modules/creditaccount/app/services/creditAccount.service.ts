@@ -16,15 +16,16 @@ import { CreditTransactionRepository } from "../../infrastructure/repository/cre
 import { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository";
 import {
 	createNewCreditAccount,
-	type NewCreditAccountInput,
 } from "../../domain/CreditAccountFactory";
 import { CreditAccountType } from "@prisma/client";
-import type { CreditAccount } from "../../domain/CreditAccount";
+
 
 export class CreditAccountService {
-	private accountRepo = new CreditAccountRepository();
-	private transactionRepo = new CreditTransactionRepository();
-	private transferRepo = new CreditTransferRepository();
+	constructor(
+		private accountRepo: CreditAccountRepository,
+		private transactionRepo: CreditTransactionRepository,
+		private transferRepo: CreditTransferRepository
+	  ){}
 
 	async createGiftAccount(
 		purchaseAmount: number,
