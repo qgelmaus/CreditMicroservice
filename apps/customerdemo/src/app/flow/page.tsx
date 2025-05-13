@@ -23,12 +23,24 @@ type PaymentMethod = "STRIPE"
 interface FlowContext {
   type?: CreditAccountType;
   email?: string;
-  details?: Record<string, any>;
+  details?: {
+    credits?: number;
+    treatmentCount?: number;
+    pricePerTreatment?: number;
+  };
+  payment?: {
+    amountMoney: number;
+    paymentMethod: "STRIPE" | "MOBILEPAY" | "BANK_TRANSFER" | "MANUAL";
+    reference: string;
+  };
 }
 
 export default function CreateCreditAccountPage() {
   const [state, setState] = useState<FlowState>("start");
-  const [context, setContext] = useState<FlowContext>({});
+  const [context, setContext] = useState<FlowContext>({
+    details: {},
+  });
+  
 
   const [selectedType, setSelectedType] = useState<CreditAccountType>();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>()
@@ -40,45 +52,66 @@ export default function CreateCreditAccountPage() {
 
   useEffect(() => {
     if (searchParams.get("success") === "true") {
-      sendToBackend(context);
+      const stored = localStorage.getItem("credit-account-context");
+      if (!stored) return;
+  
+      const parsed = JSON.parse(stored);
+      setContext(parsed);
+      sendToBackend(parsed);
+      localStorage.removeItem("credit-account-context");
     }
   }, [searchParams]);
 
   async function sendToBackend(context: FlowContext) {
+    if (!context.payment) {
+      console.error("Ingen betalingsoplysninger i context:", context);
+      alert("Betalingsoplysninger mangler");
+      return;
+    }
     try {
       const response = await fetch("http://localhost:4000/graphql", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: "Bearer ...", // hvis du har auth
+          // TODO: AUTH her hvis det bliver relevant
         },
         body: JSON.stringify({
           query: `
-          mutation CreateCreditAccount($input: CreateCreditAccountInput!) {
-            createCreditAccount(input: $input) {
-              creditCode
-              email
-              type
+            mutation CreateCreditAccountWithPayment($input: CreateAccountWithPaymentInput!) {
+              createCreditAccountWithPayment(input: $input) {
+                creditCode
+                email
+                type
+                ... on PrepaidAccount {
+                  treatmentCount
+                }
+              }
             }
-          }
-        `,
+          `,
           variables: {
             input: {
-              type: context.type,
-              email: context.email,
-              ...context.details,
+              account: {
+                type: context.type,
+                email: context.email,
+                ...context.details, 
+              },
+              payment: {
+                amountMoney: context.payment!.amountMoney,
+                paymentMethod: context.payment!.paymentMethod,
+                reference: context.payment!.reference,
+              },
             },
           },
         }),
       });
-
+  
       const result = await response.json();
-
+  
       if (result.errors) {
         console.error(result.errors);
         alert("Fejl ved oprettelse i backend");
       } else {
-        console.log("Konto oprettet:", result.data.createCreditAccount);
+        console.log("Konto oprettet:", result.data.createCreditAccountWithPayment);
         setState("validated");
       }
     } catch (error) {
@@ -86,6 +119,7 @@ export default function CreateCreditAccountPage() {
       alert("Netværksfejl ved oprettelse af konto");
     }
   }
+  
 
   function getStepDescription(state: FlowState, context: FlowContext): string {
     if (state === "emailSet") {
@@ -111,14 +145,14 @@ export default function CreateCreditAccountPage() {
 
   async function handlePayment() {
     setIsPaying(true);
-
+  
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(context),
       });
-
+  
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
@@ -132,6 +166,7 @@ export default function CreateCreditAccountPage() {
       setIsPaying(false);
     }
   }
+  
 
   
 
@@ -315,7 +350,7 @@ export default function CreateCreditAccountPage() {
           {context.details?.credits} kr
         </p>
       )}
-      {context.type === "PREPAID_CARD" && (
+      {context.type === "PREPAID_CARD" && context.details.treatmentCount  && context.details.pricePerTreatment && (
         <p>
           <strong>Klip:</strong> {context.details?.treatmentCount} ×{" "}
           {context.details?.pricePerTreatment} kr ={" "}
@@ -344,9 +379,43 @@ export default function CreateCreditAccountPage() {
         Tilbage
       </Button>
       {selectedPaymentMethod === "STRIPE"}
-      <Button onClick={handlePayment} disabled={isPaying}>
-        {isPaying ? "Behandler betaling..." : "Bekræft og betal"}
-      </Button>
+      <Button
+  onClick={() => {
+    if (!selectedPaymentMethod) {
+      alert("Vælg en betalingsmetode");
+      return;
+    }
+
+    const amountMoney =
+      context.type === "GIFT_CARD"
+        ? context.details?.credits ?? 0
+        : (context.details?.treatmentCount ?? 0) *
+          (context.details?.pricePerTreatment ?? 0);
+
+    setContext((prev) => {
+      const updated = {
+        ...prev,
+        payment: {
+          amountMoney,
+          paymentMethod: selectedPaymentMethod,
+          reference: `ORDER-${Date.now()}`,
+        },
+      };
+
+      // Kald først betaling når context er sat
+      // Delay på 0 sikrer React opdaterer state før redirect
+      localStorage.setItem("credit-account-context", JSON.stringify(updated));
+setTimeout(() => handlePayment(), 0);
+;
+
+      return updated;
+    });
+  }}
+  disabled={isPaying}
+>
+  {isPaying ? "Behandler betaling..." : "Bekræft og betal"}
+</Button>
+
     </div>
   </div>
 )}
