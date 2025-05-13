@@ -12,7 +12,7 @@ export const createCreditAccountWithPayment: MutationResolvers["createCreditAcco
     context.services.creditAccount,
     context.services.paymentDetails
   );
-  console.log("context.services:", context.services);
+  
 
  
   const serviceInput = {
@@ -29,9 +29,9 @@ export const createCreditAccountWithPayment: MutationResolvers["createCreditAcco
   
 
   const result = await service.execute(serviceInput);
-  console.log("Account: ", result);
+  
   return mapToGraphQL(result.creditAccount) ;} catch (err) {
-    console.error("Fejl i createCreditAccountWithPayment:", err);
+    
     throw err; 
   }
 };
