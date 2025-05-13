@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST(req: NextRequest) {
-	console.log("Loaded Stripe key:", process.env.STRIPE_SECRET_KEY);
+	
 	const body = await req.json();
 
 	const { email, type, details } = body;
