@@ -1,4 +1,3 @@
-import type { PaymentDetails } from "../../domain/PaymentDetails";
 import {
   toDomain,
   toDTO,
@@ -6,7 +5,6 @@ import {
 import type { PaymentDetailsRepository } from "../../infrastructure/repository/paymentDetails.repository";
 import type { PaymentDetailsDTO } from "../dto/paymentDetails.types";
 import { PaymentDetailsFactory } from "../../domain/PaymentDetailsFactory";
-import type { CreditAccount } from "../../../../../../credit-service/src/modules/creditaccount/domain/CreditAccount";
 import type { PaymentMethod } from "../../../../shared/types/codegen.types";
 
 type PaymentInput = {
