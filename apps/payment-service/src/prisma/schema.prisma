@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model PaymentDetails {
+  id            String         @id @default(uuid())
+  email         String
+  amountMoney   Float
+  paymentMethod PaymentMethod
+  paymentDate   DateTime
+  reference     String         @unique
+  paymentStatus PaymentStatus
+  createdAt     DateTime       @default(now())
+}
+
+enum PaymentMethod {
+  STRIPE
+  MOBILEPAY
+  BANK_TRANSFER
+  MANUAL
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}

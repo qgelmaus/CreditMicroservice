@@ -38,4 +38,4 @@ coverage/
 # Test
 test-results/
 
-docker-compose.yml
+docker-compose.yaml

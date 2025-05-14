@@ -5,8 +5,8 @@ import gql from "graphql-tag";
 import fs from "node:fs";
 import path from "node:path";
 
-import { creditAccountModule } from "../../modules/creditaccount/graphql/schema/index";
-import { paymentDetailsModule } from "../../modules/paymentDetails/graphql/schema/index";
+import { creditAccountModule } from "../../../../credit-service/src/modules/creditaccount/graphql/schema/index";
+import { paymentDetailsModule } from "../../../../payment-service/src/modules/paymentDetails/graphql/schema/index";
 import { DateScalar } from "../../modules/shared/scalar/scalarResolver";
 
 const baseSchema = gql(
