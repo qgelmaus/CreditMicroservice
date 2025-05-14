@@ -13,7 +13,7 @@ import {
 import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mapper";
 
 import { createNewCreditAccount } from "../../domain/CreditAccountFactory";
-import { CreditAccountType } from "@prisma/client";
+import { CreditAccountType } from "../../../../prisma/generated/client";
 import type { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
 import type { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
 import type { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository";
@@ -211,12 +211,26 @@ export class CreditAccountService {
   async findByEmail(email: string): Promise<CreditAccountDTO[]> {
     const accounts = await this.accountRepo.findByEmail(email);
     if (!accounts) throw new Error("Account not found");
-    return accounts.map((a) => toDTO(toDomain(a)));
+    return accounts.map((a) => {
+      const domain = toDomain(a);
+      const dto = toDTO(domain);
+      return {
+        ...dto,
+        treatmentCount: dto.treatmentCount ?? undefined,
+      };
+    });
   }
 
   async findAll(): Promise<CreditAccountDTO[]> {
     const accounts = await this.accountRepo.findAll();
-    return accounts.map((a) => toDTO(toDomain(a)));
+    return accounts.map((a) => {
+      const domain = toDomain(a);
+      const dto = toDTO(domain);
+      return {
+        ...dto,
+        treatmentCount: dto.treatmentCount ?? undefined,
+      };
+    });
   }
 
   async findTransactions(creditCode: string): Promise<TransactionDTO[]> {

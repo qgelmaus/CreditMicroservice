@@ -1,4 +1,4 @@
-import { prisma } from "../prisma/client";
+import { paymentDb as prisma } from "../prisma/client";
 import { PaymentDetailsRepository } from "../modules/paymentDetails/infrastructure/repository/paymentDetails.repository";
 import { PaymentDetailsService } from "../modules/paymentDetails/app/services/paymentDetails.service";
 export const buildContext = async () => {

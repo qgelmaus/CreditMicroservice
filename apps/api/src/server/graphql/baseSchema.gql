@@ -1,3 +1,0 @@
-#//src/modules/paymentDetails/graphql/schema/baseSchema.gql
-type Query
-type Mutation

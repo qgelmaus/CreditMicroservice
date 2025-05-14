@@ -1,11 +1,10 @@
-import { PrismaClient, TransactionType } from "@prisma/client";
-
-
+import {
+  PrismaClient,
+  TransactionType,
+} from "../../../../prisma/generated/client";
 
 export class CreditTransactionRepository {
-  constructor(
-    private prisma: PrismaClient
-  ) {}
+  constructor(private prisma: PrismaClient) {}
   async logPurchase(creditAccountId: number, credits: number, money: number) {
     return await this.prisma.creditTransaction.create({
       data: {

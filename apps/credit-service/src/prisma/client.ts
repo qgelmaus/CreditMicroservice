@@ -1,4 +1,4 @@
 // apps/credit-service/src/infrastructure/prisma/client.ts
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient as CreditPrismaClient } from "./generated/client";
 
-export const prisma = new PrismaClient();
+export const creditDb = new CreditPrismaClient();

@@ -1,5 +1,5 @@
 // apps/credit-service/src/context/buildContext.ts
-import { prisma } from "../prisma/client";
+import { creditDb as prisma } from "../prisma/client";
 import { CreditAccountService } from "../modules/creditaccount/app/services/creditAccount.service";
 import { CreditTransactionService } from "../modules/creditaccount/app/services/creditTransactions.service";
 import { CreditAccountRepository } from "../modules/creditaccount/infrastructure/repository/creditaccount.repository";

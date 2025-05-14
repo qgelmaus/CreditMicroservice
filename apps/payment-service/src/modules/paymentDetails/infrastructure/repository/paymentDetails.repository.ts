@@ -1,12 +1,10 @@
-import type {
-  PrismaClient,
-  PaymentStatus,
-  PaymentMethod,
-  PaymentDetails as PrismaPayment,
-} from "@prisma/client";
 import type { PaymentDetails } from "../../domain/PaymentDetails";
 import { toDomain } from "../mappers/paymentdetails.mapper";
 import { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types";
+import {
+  PaymentStatus,
+  PrismaClient,
+} from "../../../../prisma/generated/client";
 
 export class PaymentDetailsRepository {
   constructor(private prisma: PrismaClient) {}

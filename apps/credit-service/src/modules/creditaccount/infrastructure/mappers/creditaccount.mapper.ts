@@ -1,8 +1,7 @@
-import type {
-  CreditTransaction,
+import {
   CreditTransfer,
   CreditAccount as PrismaAccount,
-} from "@prisma/client";
+} from "../../../../prisma/generated/client";
 import { Credits } from "../../domain/valueobjects/Credits";
 import { Money } from "../../domain/valueobjects/Money";
 import {
@@ -15,6 +14,7 @@ import type {
   CreditTransferDTO,
 } from "../../app/dto/creditaccount.types";
 import { toTransactionDTO } from "./transaction.mapper";
+import { CreditTransaction } from "../../../../prisma/generated/client";
 
 export function toDomain(
   account: PrismaAccount & { transactions?: CreditTransaction[] }
@@ -88,7 +88,6 @@ export function toDTO(account: CreditAccount): CreditAccountDTO {
 
   return base;
 }
-
 
 export function toTransferDTO(entity: CreditTransfer): CreditTransferDTO {
   return {

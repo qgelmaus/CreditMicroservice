@@ -2,9 +2,10 @@ import { Money } from "./valueobjects/Money";
 import { Credits } from "./valueobjects/Credits";
 
 import { GiftAccount, PrepaidAccount } from "./CreditAccount";
-import { CreditAccountType } from "@prisma/client";
+
 import { generateDateExpired } from "../../../utils/Generators/expirationDateGenerator";
 import { generateCreditCode } from "../../../utils/Generators/creditCodeGenerator";
+import { CreditAccountType } from "../../../prisma/generated/client";
 
 type NewGiftInput = {
   type: "GIFT_CARD";

@@ -1,7 +1,10 @@
-import { CreditAccountType, type CreditTransaction } from "@prisma/client";
 import type { Money } from "./valueobjects/Money";
 import type { Credits } from "./valueobjects/Credits";
 import type { CreditAccountDTO } from "../app/dto/creditaccount.types";
+import {
+  CreditAccountType,
+  CreditTransaction,
+} from "../../../prisma/generated/client";
 
 export abstract class CreditAccount {
   constructor(
