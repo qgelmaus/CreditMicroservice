@@ -45,6 +45,8 @@ type PrepaidAccount implements CreditAccount {
 	transactions: [Transaction]!
 }
 
+union CreditAccountResult = GiftAccount | PrepaidAccount
+
 type Transaction {
 	id: Int!
 	type: TransactionType!
@@ -75,6 +77,7 @@ input CreatePrepaidAccountInput {
 
 input CreditAccountDetailsInput {
 	email: String!
+	type: CreditAccountType!
 	credits: Float
 	treatmentCount: Int
 	pricePerTreatment: Float
@@ -110,9 +113,16 @@ input NullifyAccountInput {
 	note: String
 }
 
+input CreateAccountWithPaymentInput {
+	account: CreditAccountDetailsInput!
+	payment: CreatePaymentDetailsInput!
+	
+}
+
 extend type Query {
 	#Creditaccounts
 	creditAccountByCode(code: String!): CreditAccount
+	creditAccountByEmail(email: String!): [CreditAccount!]
 	allCreditAccounts: [CreditAccount!]!
 
 	#transactions
@@ -137,22 +147,12 @@ type Mutation {
 	transferCredits(input: TransferCreditsInput!): Transfer!
 	useCredits(input: UseCreditsInput!): CreditAccount!
 	nullifyAccount(input: NullifyAccountInput): CreditAccount!
+	
 
 	#create accounts
 	createGiftAccount(input: CreateGiftAccountInput!): CreditAccount!
 	createPrepaidAccount(input: CreatePrepaidAccountInput!): CreditAccount!
+	createCreditAccountWithPayment(input: CreateAccountWithPaymentInput!): CreditAccount!
 }
 
-enum CreditAccountType {
-	GIFT_CARD
-	PREPAID_CARD
-}
 
-enum TransactionType {
-	PURCHASE
-	USAGE
-	NULLIFICATION
-	TRANSFER_IN
-	TRANSFER_OUT
-	REFUND
-}

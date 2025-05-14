@@ -4,11 +4,12 @@ import type { PaymentDetails } from "../../domain/PaymentDetails";
 import { toDomain } from "../mappers/paymentdetails.mapper";
 import type { PaymentDetails as PrismaPayment } from "@prisma/client";
 
-const prisma = new PrismaClient();
+
 
 export class PaymentDetailsRepository {
+  constructor(private prisma: PrismaClient){}
   async create(payment: PaymentDetails): Promise<PaymentDetails> {
-    const persisted = await prisma.paymentDetails.create({
+    const persisted = await this.prisma.paymentDetails.create({
       data: {
         creditAccount: {
           connect: { id: payment.getCreditAccountId() },
@@ -25,19 +26,19 @@ export class PaymentDetailsRepository {
   }
 
   async findById(id: string) {
-    return await prisma.paymentDetails.findUnique({
+    return await this.prisma.paymentDetails.findUnique({
       where: { id },
     });
   }
 
   async findAll() {
-    return await prisma.paymentDetails.findMany({
+    return await this.prisma.paymentDetails.findMany({
       orderBy: { paymentDate: "desc" },
     });
   }
 
   async updateStatus(id: string, newPaymentStatus: PaymentStatus) {
-    return await prisma.paymentDetails.update({
+    return await this.prisma.paymentDetails.update({
       where: { id },
       data: {
         paymentStatus: newPaymentStatus,

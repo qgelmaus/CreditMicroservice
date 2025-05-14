@@ -1,10 +1,12 @@
 import { PrismaClient, TransactionType } from "@prisma/client";
 
-const prisma = new PrismaClient();
 
 export class CreditTransferRepository {
+	constructor(private prisma: PrismaClient){}
+
+
 	async logPurchase(creditAccountId: number, credits: number, money: number) {
-		return await prisma.creditTransaction.create({
+		return await this.prisma.creditTransaction.create({
 			data: {
 				creditAccountId,
 				type: TransactionType.PURCHASE,
@@ -19,7 +21,7 @@ export class CreditTransferRepository {
 		tranasctionInId: number,
 		amount: number,
 	) {
-		return await prisma.creditTransfer.create({
+		return await this.prisma.creditTransfer.create({
 			data: {
 				fromTransaction: {
 					connect: { id: transactionOutId },

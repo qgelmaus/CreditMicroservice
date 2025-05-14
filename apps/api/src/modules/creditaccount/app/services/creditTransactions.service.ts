@@ -3,7 +3,9 @@ import { CreditTransactionRepository } from "../../infrastructure/repository/cre
 import type { TransactionDTO } from "../dto/creditaccount.types";
 
 export class CreditTransactionService {
-	private transactionRepo = new CreditTransactionRepository();
+	constructor(
+		private transactionRepo: CreditTransactionRepository
+	) {}
 
 	async findAllTransactions(): Promise<TransactionDTO[]> {
 		const transactions = await this.transactionRepo.findAll();

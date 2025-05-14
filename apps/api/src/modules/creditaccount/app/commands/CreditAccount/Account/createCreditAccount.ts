@@ -1,19 +1,30 @@
-import { CreditAccountService } from "../../../services/creditAccount.service";
+import {MutationResolvers } from "../../../../../../shared/types/codegen.types"
 
-const service = new CreditAccountService();
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const createGiftAccount = async (_: any, { input }: any) => {
-  const { purchaseAmount, email } = input;
-  return await service.createGiftAccount(purchaseAmount, email);
-};
+export const createGiftAccount: MutationResolvers['createGiftAccount'] = async (_parent, args, context) => {
+  const { input } = args
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const createPrepaidAccount = async (_: any, { input }: any) => {
-  const { treatmentCount, pricePerTreatment, email } = input;
-  return await service.createPrepaidAccount(
-    treatmentCount,
-    pricePerTreatment,
-    email
+  const account = await context.services.creditAccount.createGiftAccount(
+    input.purchaseAmount,
+    input.email
+  )
+
+ 
+  return account
+  
+}
+
+
+export const createPrepaidAccount: MutationResolvers['createPrepaidAccount'] = async (
+  _parent,
+  args,
+  context
+) => {
+  const { input } = args;
+
+  return await context.services.creditAccount.createPrepaidAccount(
+    input.treatmentCount,
+    input.pricePerTreatment,
+    input.email
   );
 };

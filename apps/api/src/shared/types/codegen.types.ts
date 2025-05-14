@@ -1,4 +1,4 @@
-import type { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -17,9 +17,20 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type CreateAccountWithPaymentInput = {
+  account: CreditAccountDetailsInput;
+  payment: CreatePaymentDetailsInput;
+};
+
 export type CreateGiftAccountInput = {
   email: Scalars['String']['input'];
   purchaseAmount: Scalars['Float']['input'];
+};
+
+export type CreatePaymentDetailsInput = {
+  amountMoney: Scalars['Float']['input'];
+  paymentMethod: PaymentMethod;
+  reference: Scalars['String']['input'];
 };
 
 export type CreatePrepaidAccountInput = {
@@ -43,10 +54,14 @@ export type CreditAccount = {
 };
 
 export type CreditAccountDetailsInput = {
-  amount?: InputMaybe<Scalars['Float']['input']>;
+  credits?: InputMaybe<Scalars['Float']['input']>;
+  email: Scalars['String']['input'];
   pricePerTreatment?: InputMaybe<Scalars['Float']['input']>;
   treatmentCount?: InputMaybe<Scalars['Int']['input']>;
+  type: CreditAccountType;
 };
+
+export type CreditAccountResult = GiftAccount | PrepaidAccount;
 
 export enum CreditAccountType {
   GiftCard = 'GIFT_CARD',
@@ -70,7 +85,10 @@ export type GiftAccount = CreditAccount & {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  cancelCreditAccountFlow: Scalars['Boolean']['output'];
+  createCreditAccountWithPayment: CreditAccount;
   createGiftAccount: CreditAccount;
+  createPaymentDetails?: Maybe<PaymentDetails>;
   createPrepaidAccount: CreditAccount;
   finalizeCreditAccount: CreditAccount;
   nullifyAccount: CreditAccount;
@@ -85,8 +103,18 @@ export type Mutation = {
 };
 
 
+export type MutationCreateCreditAccountWithPaymentArgs = {
+  input: CreateAccountWithPaymentInput;
+};
+
+
 export type MutationCreateGiftAccountArgs = {
   input: CreateGiftAccountInput;
+};
+
+
+export type MutationCreatePaymentDetailsArgs = {
+  input?: InputMaybe<CreateGiftAccountInput>;
 };
 
 
@@ -139,6 +167,31 @@ export type NullifyAccountInput = {
   note?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type PaymentDetails = {
+  __typename?: 'PaymentDetails';
+  amountMoney: Scalars['Float']['output'];
+  creditAccountId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  paymentDate: Scalars['Date']['output'];
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  reference: Scalars['String']['output'];
+};
+
+export enum PaymentMethod {
+  BankTransfer = 'BANK_TRANSFER',
+  Manual = 'MANUAL',
+  Mobilepay = 'MOBILEPAY',
+  Stripe = 'STRIPE'
+}
+
+export enum PaymentStatus {
+  Completed = 'COMPLETED',
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Refunded = 'REFUNDED'
+}
+
 export type PrepaidAccount = CreditAccount & {
   __typename?: 'PrepaidAccount';
   availableCredits: Scalars['Int']['output'];
@@ -159,13 +212,20 @@ export type PrepaidAccount = CreditAccount & {
 export type Query = {
   __typename?: 'Query';
   allCreditAccounts: Array<CreditAccount>;
+  allCreditTransactions: Array<Transaction>;
   creditAccountByCode?: Maybe<CreditAccount>;
+  creditAccountByEmail?: Maybe<Array<CreditAccount>>;
   transactionsForAccountByCode?: Maybe<Array<Transaction>>;
 };
 
 
 export type QueryCreditAccountByCodeArgs = {
   code: Scalars['String']['input'];
+};
+
+
+export type QueryCreditAccountByEmailArgs = {
+  email: Scalars['String']['input'];
 };
 
 
@@ -223,6 +283,7 @@ export type TransferCreditsInput = {
 export type UseCreditsInput = {
   cost: Scalars['Float']['input'];
   creditCode: Scalars['String']['input'];
+  note?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -292,6 +353,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+/** Mapping of union types */
+export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  CreditAccountResult: ( GiftAccount ) | ( PrepaidAccount );
+};
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
@@ -301,10 +366,13 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CreateAccountWithPaymentInput: CreateAccountWithPaymentInput;
   CreateGiftAccountInput: CreateGiftAccountInput;
+  CreatePaymentDetailsInput: CreatePaymentDetailsInput;
   CreatePrepaidAccountInput: CreatePrepaidAccountInput;
   CreditAccount: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['CreditAccount']>;
   CreditAccountDetailsInput: CreditAccountDetailsInput;
+  CreditAccountResult: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CreditAccountResult']>;
   CreditAccountType: CreditAccountType;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
@@ -312,6 +380,9 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   NullifyAccountInput: NullifyAccountInput;
+  PaymentDetails: ResolverTypeWrapper<PaymentDetails>;
+  PaymentMethod: PaymentMethod;
+  PaymentStatus: PaymentStatus;
   PrepaidAccount: ResolverTypeWrapper<PrepaidAccount>;
   Query: ResolverTypeWrapper<{}>;
   RefundCreditsInput: RefundCreditsInput;
@@ -327,16 +398,20 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  CreateAccountWithPaymentInput: CreateAccountWithPaymentInput;
   CreateGiftAccountInput: CreateGiftAccountInput;
+  CreatePaymentDetailsInput: CreatePaymentDetailsInput;
   CreatePrepaidAccountInput: CreatePrepaidAccountInput;
   CreditAccount: ResolversInterfaceTypes<ResolversParentTypes>['CreditAccount'];
   CreditAccountDetailsInput: CreditAccountDetailsInput;
+  CreditAccountResult: ResolversUnionTypes<ResolversParentTypes>['CreditAccountResult'];
   Date: Scalars['Date']['output'];
   Float: Scalars['Float']['output'];
   GiftAccount: GiftAccount;
   Int: Scalars['Int']['output'];
   Mutation: {};
   NullifyAccountInput: NullifyAccountInput;
+  PaymentDetails: PaymentDetails;
   PrepaidAccount: PrepaidAccount;
   Query: {};
   RefundCreditsInput: RefundCreditsInput;
@@ -363,6 +438,10 @@ export type CreditAccountResolvers<ContextType = any, ParentType extends Resolve
   type?: Resolver<ResolversTypes['CreditAccountType'], ParentType, ContextType>;
 };
 
+export type CreditAccountResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreditAccountResult'] = ResolversParentTypes['CreditAccountResult']> = {
+  __resolveType: TypeResolveFn<'GiftAccount' | 'PrepaidAccount', ParentType, ContextType>;
+};
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
@@ -383,7 +462,10 @@ export type GiftAccountResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  cancelCreditAccountFlow?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  createCreditAccountWithPayment?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationCreateCreditAccountWithPaymentArgs, 'input'>>;
   createGiftAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationCreateGiftAccountArgs, 'input'>>;
+  createPaymentDetails?: Resolver<Maybe<ResolversTypes['PaymentDetails']>, ParentType, ContextType, Partial<MutationCreatePaymentDetailsArgs>>;
   createPrepaidAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationCreatePrepaidAccountArgs, 'input'>>;
   finalizeCreditAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType>;
   nullifyAccount?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, Partial<MutationNullifyAccountArgs>>;
@@ -395,6 +477,17 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   transferCredits?: Resolver<ResolversTypes['Transfer'], ParentType, ContextType, RequireFields<MutationTransferCreditsArgs, 'input'>>;
   useCredits?: Resolver<ResolversTypes['CreditAccount'], ParentType, ContextType, RequireFields<MutationUseCreditsArgs, 'input'>>;
   validateCreditAccount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+};
+
+export type PaymentDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaymentDetails'] = ResolversParentTypes['PaymentDetails']> = {
+  amountMoney?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  creditAccountId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  paymentDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  paymentMethod?: Resolver<ResolversTypes['PaymentMethod'], ParentType, ContextType>;
+  paymentStatus?: Resolver<ResolversTypes['PaymentStatus'], ParentType, ContextType>;
+  reference?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PrepaidAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrepaidAccount'] = ResolversParentTypes['PrepaidAccount']> = {
@@ -416,7 +509,9 @@ export type PrepaidAccountResolvers<ContextType = any, ParentType extends Resolv
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allCreditAccounts?: Resolver<Array<ResolversTypes['CreditAccount']>, ParentType, ContextType>;
+  allCreditTransactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType>;
   creditAccountByCode?: Resolver<Maybe<ResolversTypes['CreditAccount']>, ParentType, ContextType, RequireFields<QueryCreditAccountByCodeArgs, 'code'>>;
+  creditAccountByEmail?: Resolver<Maybe<Array<ResolversTypes['CreditAccount']>>, ParentType, ContextType, RequireFields<QueryCreditAccountByEmailArgs, 'email'>>;
   transactionsForAccountByCode?: Resolver<Maybe<Array<ResolversTypes['Transaction']>>, ParentType, ContextType, RequireFields<QueryTransactionsForAccountByCodeArgs, 'code'>>;
 };
 
@@ -441,9 +536,11 @@ export type TransferResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type Resolvers<ContextType = any> = {
   CreditAccount?: CreditAccountResolvers<ContextType>;
+  CreditAccountResult?: CreditAccountResultResolvers<ContextType>;
   Date?: GraphQLScalarType;
   GiftAccount?: GiftAccountResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PaymentDetails?: PaymentDetailsResolvers<ContextType>;
   PrepaidAccount?: PrepaidAccountResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Transaction?: TransactionResolvers<ContextType>;

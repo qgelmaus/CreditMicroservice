@@ -12,13 +12,13 @@ test("PaymentDetails can be created and marked as completed", () => {
 		getId: () => 1,
 	} as unknown as CreditAccount;
 
-	const payment = PaymentDetails.create({
-		creditAccountId: mockAccount.id,
-		amountMoney: new Money(500),
-		paymentMethod: PaymentMethod.STRIPE,
-		reference: "test-ref",
-		paymentStatus: "PENDING",
-	});
+  const payment = PaymentDetails.create({
+    creditAccountId: mockAccount.id,
+    amountMoney: new Money(500),
+    paymentMethod: PaymentMethod.STRIPE,
+    reference: "test-ref",
+    paymentStatus: "PENDING",
+  });
 
 	expect(payment.getAmount()).toBe(500);
 	expect(payment.getStatusRaw()).toBe(PaymentStatus.PENDING);

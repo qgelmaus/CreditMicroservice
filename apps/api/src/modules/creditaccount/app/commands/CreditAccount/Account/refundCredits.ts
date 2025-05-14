@@ -1,8 +1,12 @@
 import { CreditAccountService } from "../../../services/creditAccount.service";
+import { MutationResolvers } from "apps/api/src/shared/types/codegen.types";
 
-const service = new CreditAccountService();
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const refundCredits = async (_: any, { input }: any) => {
-  const { creditCode, cost, note } = input;
-  return await service.refundCredits(creditCode, cost, note);
-};
+
+
+export const refundCredits: MutationResolvers['refundCredits'] = async(_parent, { input }, context) => {
+  try{
+  const {creditCode, cost, note} = input ?? {};
+  return await context.services.creditAccount.refundCredits(creditCode, cost,  note)
+ }  catch (err) {
+  throw err;
+}}

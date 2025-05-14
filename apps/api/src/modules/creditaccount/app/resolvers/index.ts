@@ -1,3 +1,5 @@
+//apps/api/src/modules/creditaccount/app/resolvers/index.tx
+import { Resolvers } from "apps/api/src/shared/types/codegen.types";
 import {
 	createGiftAccount,
 	createPrepaidAccount,
@@ -16,9 +18,11 @@ import { validateCreditAccount } from "../commands/flowCommands/validateCreditAc
 import { allCreditAccounts } from "../queries/CreditAccount/Account/allCreditAccounts";
 import { creditAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode";
 import { transactionsForAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode";
+import { creditAccountByEmail } from "../queries/CreditAccount/Account/creditAccountByEmail";
 import { allCreditTransactions } from "../queries/CreditAccount/Transaction/transactionsByAccountCode";
+import { createCreditAccountWithPayment } from "../commands/CreditAccount/Account/createCreditAccountWithPayment";
 
-export const creditAccountResolver = {
+export const creditAccountResolver: Resolvers = {
 	CreditAccount: {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		__resolveType(obj: any) {
@@ -28,6 +32,7 @@ export const creditAccountResolver = {
 		},
 	},
 	Mutation: {
+		createCreditAccountWithPayment,
 		createGiftAccount,
 		createPrepaidAccount,
 		useCredits,
@@ -39,6 +44,7 @@ export const creditAccountResolver = {
 
 	Query: {
 		creditAccountByCode,
+		creditAccountByEmail,
 		transactionsForAccountByCode,
 		allCreditAccounts,
 		allCreditTransactions,

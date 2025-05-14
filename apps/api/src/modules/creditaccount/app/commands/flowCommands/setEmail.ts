@@ -1,13 +1,11 @@
 import { setCreditAccountEmail as service } from "../../../app/services/creditAccountCustomerFlow.service";
+import type { Context } from "apps/api/src/graphql/buildContext";
 
 export const setCreditAccountEmail = async (
-  _: any,
+  _: unknown,
   args: { email: string },
-  context: { user: { id: string } }
+  context: Context
 ) => {
-  const { email } = args;
-
-  service(context.user.id, email);
-
+  await service(context.user.id, args.email);
   return true;
 };
