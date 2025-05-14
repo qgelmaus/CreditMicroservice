@@ -134,7 +134,7 @@ export default function CreateCreditAccountPage() {
     const staticDescriptions: Record<FlowState, string> = {
       start: "Trin 1 af 4: Vælg den type kreditbeholdning du ønsker at købe.",
       typeSelected: "Trin 2 af 4: Indtast din email, så vi kan knytte kreditten til dig.",
-      emailSet: "", // bruges aldrig, overskrives ovenfor
+      emailSet: "", //overskrives ovenfor
       detailsSet: "Trin 4 af 4: Tjek dine oplysninger, og betal for at oprette din kreditbeholdning.",
       validated:
         "Din konto er oprettet. Du kan nu gemme eller sende kvittering.",

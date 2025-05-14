@@ -17,7 +17,6 @@ export const useCredits: MutationResolvers["useCredits"] = async (
 
     return result;
   } catch (err) {
-    console.error("useCredits error:", err);
     throw err;
   }
 };

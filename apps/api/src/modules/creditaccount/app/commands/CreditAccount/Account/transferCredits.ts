@@ -8,7 +8,6 @@ export const transferCredits: MutationResolvers['transferCredits'] = async(_pare
   const { fromCreditCode, toCreditCode, amount, note} = input ?? {};
   return await context.services.creditAccount.transferCredits(fromCreditCode, toCreditCode, amount,  note)
 } catch (err) {
-  console.error("useCredits error:", err);
   throw err;
 }}
 
