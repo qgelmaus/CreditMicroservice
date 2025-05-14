@@ -25,6 +25,8 @@ apps/demo/dist/
 **/prisma/dev.db-journal
 **/prisma/migrations/
 
+**/prisma/generated/
+
 # VSCode
 .vscode/
 
