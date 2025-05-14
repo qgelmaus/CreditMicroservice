@@ -4,11 +4,11 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [react()],
-	resolve: {
-		alias: {
-			"ui-core": path.resolve(__dirname, "../../packages/ui-core/src"),
-			src: path.resolve(__dirname, "src"),
-		},
-	},
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "ui-core": path.resolve(__dirname, "../../packages/ui-core/src"),
+      src: path.resolve(__dirname, "src"),
+    },
+  },
 });

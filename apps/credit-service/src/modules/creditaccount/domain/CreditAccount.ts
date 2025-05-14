@@ -19,7 +19,7 @@ export abstract class CreditAccount {
     public isActive: boolean,
     public readonly createdAt: Date,
     public readonly expiresAt: Date,
-    public readonly transactions: CreditTransaction[] = []
+    public readonly transactions: CreditTransaction[] = [],
   ) {}
 
   getId(): number {
@@ -112,7 +112,7 @@ export class GiftAccount extends CreditAccount {
     isActive: boolean,
     createdAt: Date,
     expiresAt: Date,
-    transactions: CreditTransaction[] = []
+    transactions: CreditTransaction[] = [],
   ) {
     super(
       id,
@@ -126,7 +126,7 @@ export class GiftAccount extends CreditAccount {
       isActive,
       createdAt,
       expiresAt,
-      transactions
+      transactions,
     );
   }
 
@@ -165,7 +165,7 @@ export class PrepaidAccount extends CreditAccount {
     expiresAt: Date,
     public treatmentCount: number,
     public readonly discountPercentage: number,
-    transactions: CreditTransaction[] = []
+    transactions: CreditTransaction[] = [],
   ) {
     super(
       id,
@@ -179,7 +179,7 @@ export class PrepaidAccount extends CreditAccount {
       isActive,
       createdAt,
       expiresAt,
-      transactions
+      transactions,
     );
   }
 

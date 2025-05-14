@@ -5,7 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const typeDefs = gql(
-  fs.readFileSync(path.join(__dirname, "typeDefs.gql"), "utf8")
+  fs.readFileSync(path.join(__dirname, "typeDefs.gql"), "utf8"),
 );
 
 export const paymentDetailsModule = {

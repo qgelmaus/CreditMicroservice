@@ -23,7 +23,7 @@ type NewPrepaidInput = {
 export type NewCreditAccountInput = NewGiftInput | NewPrepaidInput;
 
 export function createNewCreditAccount(
-  input: NewCreditAccountInput
+  input: NewCreditAccountInput,
 ): GiftAccount | PrepaidAccount {
   const now = new Date();
   const expires = generateDateExpired();
@@ -43,7 +43,7 @@ export function createNewCreditAccount(
       true,
       now,
       expires,
-      []
+      [],
     );
   }
 
@@ -68,7 +68,7 @@ export function createNewCreditAccount(
       expires,
       input.treatmentCount,
       discountPercentage,
-      []
+      [],
     );
   }
 

@@ -6,7 +6,7 @@ import type {
 import type { CreditAccountDTO } from "../../app/dto/creditaccount.types";
 
 export function mapToGraphQL(
-  dto: CreditAccountDTO
+  dto: CreditAccountDTO,
 ): GiftAccount | PrepaidAccount {
   const shared = {
     creditCode: dto.creditCode,

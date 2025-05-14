@@ -31,7 +31,7 @@ export class CreditAccountRepository {
     creditCode: string,
     newCreditAmount: number,
     newMoneyAmount: number,
-    newTreatmentCount: number
+    newTreatmentCount: number,
   ) {
     return await this.prisma.creditAccount.update({
       where: { creditCode },

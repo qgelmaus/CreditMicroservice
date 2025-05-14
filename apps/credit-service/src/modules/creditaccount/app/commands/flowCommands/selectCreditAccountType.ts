@@ -4,7 +4,7 @@ import { selectCreditAccountType as service } from "../../services/creditAccount
 export const selectCreditAccountTypeResolver = async (
   _: unknown,
   args: { type: "GIFT_CARD" | "PREPAID_CARD" },
-  context: Context
+  context: Context,
 ) => {
   await service(context.user.id, args.type);
   return true;

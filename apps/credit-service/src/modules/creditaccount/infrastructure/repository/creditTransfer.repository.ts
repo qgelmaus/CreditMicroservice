@@ -20,7 +20,7 @@ export class CreditTransferRepository {
   async saveCreditTransfer(
     transactionOutId: number,
     tranasctionInId: number,
-    amount: number
+    amount: number,
   ) {
     return await this.prisma.creditTransfer.create({
       data: {

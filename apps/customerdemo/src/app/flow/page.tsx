@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Button from "../components/button/Button";
 
-
 /*Test cards for payment:
 4242424242424242 Payment succeeds
 4000000000009995 Payment declined
@@ -18,7 +17,7 @@ type FlowState =
   | "validated";
 type CreditAccountType = "GIFT_CARD" | "PREPAID_CARD";
 
-type PaymentMethod = "STRIPE"
+type PaymentMethod = "STRIPE";
 
 interface FlowContext {
   type?: CreditAccountType;
@@ -40,10 +39,10 @@ export default function CreateCreditAccountPage() {
   const [context, setContext] = useState<FlowContext>({
     details: {},
   });
-  
 
   const [selectedType, setSelectedType] = useState<CreditAccountType>();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>()
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<PaymentMethod>();
   const [emailInput, setEmailInput] = useState("");
   const [detailsInput, setDetailsInput] = useState<Record<string, any>>({});
   const [isPaying, setIsPaying] = useState(false);
@@ -54,7 +53,7 @@ export default function CreateCreditAccountPage() {
     if (searchParams.get("success") === "true") {
       const stored = localStorage.getItem("credit-account-context");
       if (!stored) return;
-  
+
       const parsed = JSON.parse(stored);
       setContext(parsed);
       sendToBackend(parsed);
@@ -93,7 +92,7 @@ export default function CreateCreditAccountPage() {
               account: {
                 type: context.type,
                 email: context.email,
-                ...context.details, 
+                ...context.details,
               },
               payment: {
                 amountMoney: context.payment!.amountMoney,
@@ -104,14 +103,17 @@ export default function CreateCreditAccountPage() {
           },
         }),
       });
-  
+
       const result = await response.json();
-  
+
       if (result.errors) {
         console.error(result.errors);
         alert("Fejl ved oprettelse i backend");
       } else {
-        console.log("Konto oprettet:", result.data.createCreditAccountWithPayment);
+        console.log(
+          "Konto oprettet:",
+          result.data.createCreditAccountWithPayment,
+        );
         setState("validated");
       }
     } catch (error) {
@@ -119,7 +121,6 @@ export default function CreateCreditAccountPage() {
       alert("Netværksfejl ved oprettelse af konto");
     }
   }
-  
 
   function getStepDescription(state: FlowState, context: FlowContext): string {
     if (state === "emailSet") {
@@ -133,9 +134,11 @@ export default function CreateCreditAccountPage() {
 
     const staticDescriptions: Record<FlowState, string> = {
       start: "Trin 1 af 4: Vælg den type kreditbeholdning du ønsker at købe.",
-      typeSelected: "Trin 2 af 4: Indtast din email, så vi kan knytte kreditten til dig.",
+      typeSelected:
+        "Trin 2 af 4: Indtast din email, så vi kan knytte kreditten til dig.",
       emailSet: "", //overskrives ovenfor
-      detailsSet: "Trin 4 af 4: Tjek dine oplysninger, og betal for at oprette din kreditbeholdning.",
+      detailsSet:
+        "Trin 4 af 4: Tjek dine oplysninger, og betal for at oprette din kreditbeholdning.",
       validated:
         "Din konto er oprettet. Du kan nu gemme eller sende kvittering.",
     };
@@ -145,14 +148,14 @@ export default function CreateCreditAccountPage() {
 
   async function handlePayment() {
     setIsPaying(true);
-  
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(context),
       });
-  
+
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
@@ -166,9 +169,6 @@ export default function CreateCreditAccountPage() {
       setIsPaying(false);
     }
   }
-  
-
-  
 
   return (
     <div className="p-6 max-w-xl mx-auto space-y-6">
@@ -335,90 +335,91 @@ export default function CreateCreditAccountPage() {
 
       {/* Step: Gennemgå og valider */}
       {state === "detailsSet" && (
-  <div className="space-y-6">
-    <div className="bg-gray-50 border rounded-md p-4 shadow-sm text-sm space-y-2">
-      <p>
-        <strong>Type:</strong>{" "}
-        {context.type === "GIFT_CARD" ? "Gavekort" : "Klippekort"}
-      </p>
-      <p>
-        <strong>Email:</strong> {context.email}
-      </p>
-      {context.type === "GIFT_CARD" && (
-        <p>
-          <strong>Kreditter:</strong> {context.details?.credits} ={" "}
-          {context.details?.credits} kr
-        </p>
+        <div className="space-y-6">
+          <div className="bg-gray-50 border rounded-md p-4 shadow-sm text-sm space-y-2">
+            <p>
+              <strong>Type:</strong>{" "}
+              {context.type === "GIFT_CARD" ? "Gavekort" : "Klippekort"}
+            </p>
+            <p>
+              <strong>Email:</strong> {context.email}
+            </p>
+            {context.type === "GIFT_CARD" && (
+              <p>
+                <strong>Kreditter:</strong> {context.details?.credits} ={" "}
+                {context.details?.credits} kr
+              </p>
+            )}
+            {context.type === "PREPAID_CARD" && (
+              <p>
+                <strong>Klip:</strong> {context.details?.treatmentCount} ×{" "}
+                {context.details?.pricePerTreatment} kr ={" "}
+                {(
+                  context.details?.treatmentCount *
+                  context.details?.pricePerTreatment
+                ).toLocaleString("da-DK")}{" "}
+                kr
+              </p>
+            )}
+          </div>
+
+          <div className="flex justify-between">
+            <select
+              onChange={(e) =>
+                setSelectedPaymentMethod(e.target.value as PaymentMethod)
+              }
+              defaultValue=""
+              className="border p-2 rounded-md"
+            >
+              <option value="" disabled>
+                -- Vælg betalingsmetode --
+              </option>
+              <option value="STRIPE">Kort</option>
+            </select>
+            <Button variant="secondary" onClick={() => setState("emailSet")}>
+              Tilbage
+            </Button>
+            {selectedPaymentMethod === "STRIPE"}
+            <Button
+              onClick={() => {
+                if (!selectedPaymentMethod) {
+                  alert("Vælg en betalingsmetode");
+                  return;
+                }
+
+                const amountMoney =
+                  context.type === "GIFT_CARD"
+                    ? (context.details?.credits ?? 0)
+                    : (context.details?.treatmentCount ?? 0) *
+                      (context.details?.pricePerTreatment ?? 0);
+
+                setContext((prev) => {
+                  const updated = {
+                    ...prev,
+                    payment: {
+                      amountMoney,
+                      paymentMethod: selectedPaymentMethod,
+                      reference: `ORDER-${Date.now()}`,
+                    },
+                  };
+
+                  // Kald først betaling når context er sat
+                  // Delay på 0 sikrer React opdaterer state før redirect
+                  localStorage.setItem(
+                    "credit-account-context",
+                    JSON.stringify(updated),
+                  );
+                  setTimeout(() => handlePayment(), 0);
+                  return updated;
+                });
+              }}
+              disabled={isPaying}
+            >
+              {isPaying ? "Behandler betaling..." : "Bekræft og betal"}
+            </Button>
+          </div>
+        </div>
       )}
-      {context.type === "PREPAID_CARD" &&  (
-        <p>
-          <strong>Klip:</strong> {context.details?.treatmentCount} ×{" "}
-          {context.details?.pricePerTreatment} kr ={" "}
-          {(
-            context.details?.treatmentCount * context.details?.pricePerTreatment
-          ).toLocaleString("da-DK")}{" "}
-          kr
-        </p>
-      )}
-    </div>
-
-    <div className="flex justify-between">
-      <select
-            onChange={(e) =>
-              setSelectedPaymentMethod(e.target.value as PaymentMethod)
-            }
-            defaultValue=""
-            className="border p-2 rounded-md"
-          >
-            <option value="" disabled>
-              -- Vælg betalingsmetode --
-            </option>
-            <option value="STRIPE">Kort</option>
-          </select>
-      <Button variant="secondary" onClick={() => setState("emailSet")}>
-        Tilbage
-      </Button>
-      {selectedPaymentMethod === "STRIPE"}
-      <Button
-  onClick={() => {
-    if (!selectedPaymentMethod) {
-      alert("Vælg en betalingsmetode");
-      return;
-    }
-
-    const amountMoney =
-      context.type === "GIFT_CARD"
-        ? context.details?.credits ?? 0
-        : (context.details?.treatmentCount ?? 0) *
-          (context.details?.pricePerTreatment ?? 0);
-
-    setContext((prev) => {
-      const updated = {
-        ...prev,
-        payment: {
-          amountMoney,
-          paymentMethod: selectedPaymentMethod,
-          reference: `ORDER-${Date.now()}`,
-        },
-      };
-
-      // Kald først betaling når context er sat
-      // Delay på 0 sikrer React opdaterer state før redirect
-      localStorage.setItem("credit-account-context", JSON.stringify(updated));
-setTimeout(() => handlePayment(), 0);
-;
-
-      return updated;
-    });
-  }}
-  disabled={isPaying}
->
-  {isPaying ? "Behandler betaling..." : "Bekræft og betal"}
-</Button>
-
-    </div>
-  </div>
-)}
 
       {/* Step: Slut */}
       {state === "validated" && (

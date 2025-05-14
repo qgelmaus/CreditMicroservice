@@ -6,10 +6,10 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./lib/apolloClient";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
-		<GlobalStyles />
-		<ApolloProvider client={client}>
-			<App />
-		</ApolloProvider>
-	</React.StrictMode>,
+  <React.StrictMode>
+    <GlobalStyles />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </React.StrictMode>,
 );

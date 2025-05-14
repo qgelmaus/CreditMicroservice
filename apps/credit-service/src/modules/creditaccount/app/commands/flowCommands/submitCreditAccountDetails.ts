@@ -4,7 +4,7 @@ import { submitCreditAccountDetails as service } from "../../../app/services/cre
 export const submitCreditAccountDetails = async (
   _: unknown,
   args: { details: Record<string, any> },
-  context: Context
+  context: Context,
 ) => {
   await service(context.user.id, args.details);
   return true;

@@ -1,27 +1,27 @@
 {
-	"name": "payment-service",
-	"version": "1.0.0",
-	"main": "src/index.ts",
-	"scripts": {
-		"dev": "ts-node-dev --respawn src/index.ts",
-		"generate": "prisma generate --schema=src/prisma/schema.prisma",
-		"migrate": "prisma migrate dev --schema=src/prisma/schema.prisma",
-		"studio": "prisma studio --schema=src/prisma/schema.prisma",
-		"codegen": "graphql-codegen --config codegen.ts"
-	},
-	"dependencies": {
-		"@apollo/server": "^4.8.1",
-		"@prisma/client": "^5.22.0",
-		"graphql": "^16.7.1",
-		"graphql-tag": "^2.12.6",
-		"zod": "^3.22.4"
-	},
-	"devDependencies": {
-		"@types/node": "^20",
-		"nodemon": "^3.1.10",
-		"prisma": "^5.22.0",
-		"ts-node": "10.9.2",
-		"ts-node-dev": "^2.0.0",
-		"typescript": "^5.7.3"
-	}
+  "name": "payment-service",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "generate": "prisma generate --schema=src/prisma/schema.prisma",
+    "migrate": "prisma migrate dev --schema=src/prisma/schema.prisma",
+    "studio": "prisma studio --schema=src/prisma/schema.prisma",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.8.1",
+    "@prisma/client": "^5.22.0",
+    "graphql": "^16.7.1",
+    "graphql-tag": "^2.12.6",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "nodemon": "^3.1.10",
+    "prisma": "^5.22.0",
+    "ts-node": "10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  }
 }

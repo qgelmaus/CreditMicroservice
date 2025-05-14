@@ -4,7 +4,7 @@ import { setCreditAccountEmail as service } from "../../../app/services/creditAc
 export const setCreditAccountEmail = async (
   _: unknown,
   args: { email: string },
-  context: Context
+  context: Context,
 ) => {
   await service(context.user.id, args.email);
   return true;

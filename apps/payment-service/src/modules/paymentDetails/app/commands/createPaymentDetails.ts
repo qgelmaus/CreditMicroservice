@@ -4,7 +4,7 @@ import { mapToGraphQL } from "../../graphql/mapper/toGraphQL";
 export const createPayment: MutationResolvers["createPayment"] = async (
   _parent,
   { input },
-  context
+  context,
 ) => {
   const payment = await context.paymentDetailsService.create({
     email: input.email,

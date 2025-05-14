@@ -8,11 +8,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-	"baseUrl": ".",
-	"paths": {
-    "@shared/*": ["packages/shared/src/*"],
-    "@ui-core/*": ["packages/ui-core/src/*"]
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["packages/shared/src/*"],
+      "@ui-core/*": ["packages/ui-core/src/*"]
+    }
   }
-  },
-  
 }

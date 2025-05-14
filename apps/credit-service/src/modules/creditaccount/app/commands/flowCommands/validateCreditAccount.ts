@@ -4,7 +4,7 @@ import { validateCreditAccount as service } from "../../services/creditAccountCu
 export const validateCreditAccount = async (
   _: unknown,
   __: unknown,
-  context: Context
+  context: Context,
 ) => {
   await service(context.user.id, context.creditAccountService);
   return true;

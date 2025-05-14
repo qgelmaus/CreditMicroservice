@@ -3,15 +3,15 @@ import Footer from "../footer/Footer";
 import Navigation from "../navigation/Navigation";
 
 export default function Container({ children }: { children: ReactNode }) {
-	return (
-		<div>
-			<Navigation />
-			<div className="bg-white row-start-3 flex gap-[24px] flex-wrap items-center justify-center ">
-				<main className="flex flex-col gap-[22px] row-start-2 items-center sm:items-start">
-					{children}
-				</main>
-			</div>
-			<Footer />
-		</div>
-	);
+  return (
+    <div>
+      <Navigation />
+      <div className="bg-white row-start-3 flex gap-[24px] flex-wrap items-center justify-center ">
+        <main className="flex flex-col gap-[22px] row-start-2 items-center sm:items-start">
+          {children}
+        </main>
+      </div>
+      <Footer />
+    </div>
+  );
 }

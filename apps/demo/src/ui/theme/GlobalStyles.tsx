@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { theme } from "./index";
 
 export function GlobalStyles() {
-	useEffect(() => {
-		const style = document.createElement("style");
-		style.innerHTML = `
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
       /* Box sizing */
       *, *::before, *::after {
         box-sizing: border-box;
@@ -94,12 +94,12 @@ export function GlobalStyles() {
         width: 100%;
       }
     `;
-		document.head.appendChild(style);
+    document.head.appendChild(style);
 
-		return () => {
-			document.head.removeChild(style);
-		};
-	}, []);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
-	return null;
+  return null;
 }

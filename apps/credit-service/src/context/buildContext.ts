@@ -14,10 +14,10 @@ export const buildContext = async () => {
   const creditAccountService = new CreditAccountService(
     accountRepo,
     transactionRepo,
-    transferRepo
+    transferRepo,
   );
   const creditTransactionService = new CreditTransactionService(
-    transactionRepo
+    transactionRepo,
   );
 
   return {

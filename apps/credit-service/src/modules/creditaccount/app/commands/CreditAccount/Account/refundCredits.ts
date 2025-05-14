@@ -5,14 +5,14 @@ import { CreditAccountService } from "../../../services/creditAccount.service";
 export const refundCredits: MutationResolvers["refundCredits"] = async (
   _parent,
   { input },
-  context
+  context,
 ) => {
   const { creditCode, cost, note } = input;
 
   const account = await context.creditAccountService.refundCredits(
     creditCode,
     cost,
-    note ?? ""
+    note ?? "",
   );
 
   return mapToGraphQL(account);

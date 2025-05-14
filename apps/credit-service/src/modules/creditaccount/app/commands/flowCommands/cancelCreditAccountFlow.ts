@@ -4,7 +4,7 @@ import { deleteFlow as service } from "../../services/creditAccountCustomerFlow.
 export const cancelCreditAccountFlow = async (
   _: unknown,
   __: unknown,
-  context: Context
+  context: Context,
 ) => {
   service(context.user.id);
   return true;

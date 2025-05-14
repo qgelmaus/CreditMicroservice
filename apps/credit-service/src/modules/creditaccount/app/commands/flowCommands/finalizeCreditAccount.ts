@@ -4,7 +4,7 @@ import { finalizeCreditAccount as service } from "../../services/creditAccountCu
 export const finalizeCreditAccount = async (
   _: any,
   __: any,
-  context: Context
+  context: Context,
 ) => {
   const result = await service(context.user.id, context.creditAccountService);
   return result;

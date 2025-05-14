@@ -4,13 +4,13 @@ import { CreditAccountService } from "../../../services/creditAccount.service";
 export const transferCredits: MutationResolvers["transferCredits"] = async (
   _parent,
   { input },
-  context
+  context,
 ) => {
   const { fromCreditCode, toCreditCode, amount, note } = input;
   return await context.creditAccountService.transferCredits(
     fromCreditCode,
     toCreditCode,
     amount,
-    note ?? ""
+    note ?? "",
   );
 };
