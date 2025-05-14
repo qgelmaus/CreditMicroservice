@@ -1,4 +1,7 @@
-import { type PaymentMethod, PaymentStatus } from "@prisma/client";
+import {
+  type PaymentMethod,
+  PaymentStatus,
+} from "../../../prisma/generated/client";
 import type { PaymentDetailsDTO } from "../app/dto/paymentDetails.types";
 
 export interface PaymentDetailsProps {
@@ -37,7 +40,7 @@ export class PaymentDetails {
     props: Omit<
       PaymentDetailsProps,
       "paymentDate" | "id" | "createdAt" | "paymentStatus"
-    >,
+    >
   ): PaymentDetails {
     if (!props.reference || props.reference.trim() === "") {
       throw new Error("Reference er påkrævet");

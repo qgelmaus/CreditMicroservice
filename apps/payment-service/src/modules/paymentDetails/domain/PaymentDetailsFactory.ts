@@ -1,4 +1,7 @@
-import type { PaymentMethod, PaymentStatus } from "@prisma/client";
+import type {
+  PaymentMethod,
+  PaymentStatus,
+} from "../../../prisma/generated/client";
 import { PaymentDetails } from "./PaymentDetails";
 
 export interface CreatePaymentDetailsFactoryInput {

@@ -1,4 +1,4 @@
-import type { PaymentDetails as PrismaPayment } from "@prisma/client";
+import type { PaymentDetails as PrismaPayment } from "../../../../prisma/generated/client";
 import { PaymentDetails } from "../../domain/PaymentDetails";
 
 import type { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types";
