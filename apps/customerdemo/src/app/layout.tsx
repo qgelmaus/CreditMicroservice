@@ -1,21 +1,32 @@
-import "./globals.css";
 import type { Metadata } from "next";
-import Skeleton from "./components/skeleton/Skeleton";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Container from "./components/container/Container";
+import Navigation from "./components/navigation/Navigation";
+import Footer from "./components/footer/Footer";
+import type { ReactNode } from "react";
+
+const inter = Inter({
+	variable: "--font-inter",
+	subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-	title: "RaskRask Kundeportal",
-	description: "Oversigt over bookinger, profil og klippekort",
+	title: "CreditService - CustomerDemo",
+	description: "Demonstrates the customer flow",
 };
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="da">
-			<body className="min-h-screen flex flex-col bg-[#f9f9f9] text-[#111] font-sans">
-				<Skeleton>{children}</Skeleton>
+			<body className=" flex flex-col min-h-screen font-sans">
+				<Navigation />
+				<main className="flex-grow px-4 py-8 sm:px-8">
+					<div className=" max-w-5xl mx-auto bg-sand border border-gray-500 shadow-md rounded-xl p-6 sm:p-10">
+						{children}
+					</div>
+				</main>
+				<Footer />
 			</body>
 		</html>
 	);

@@ -1,9 +1,11 @@
 import { CreditTransactionService } from "../../../services/creditTransactions.service";
+import { QueryResolvers } from "apps/api/src/shared/types/codegen.types";
 
-const service = new CreditTransactionService();
-
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-
-export const allCreditTransactions = async () => {
-	return await service.findAllTransactions();
+export const allCreditTransactions: QueryResolvers["allCreditTransactions"] = async (
+	_parent,
+	_args,
+	context
+  ) => {
+	return await context.services.creditAccount.findAllTransactions();
 };
+

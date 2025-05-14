@@ -1,8 +1,7 @@
-// apps/customerdemo/src/components/Footer.tsx
 export default function Footer() {
 	return (
-		<footer className="p-4 bg-white text-sm text-center border-t mt-auto">
-			© {new Date().getFullYear()} Steffen & Katrine
+		<footer className="bg-gray-100 border-t mt-12 py-6 text-center text-sm text-gray-600">
+			<p>{new Date().getFullYear()} CustomerDemo. Steffen og Katrine</p>
 		</footer>
 	);
 }

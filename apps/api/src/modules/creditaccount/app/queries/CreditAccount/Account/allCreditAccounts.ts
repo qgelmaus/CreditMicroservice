@@ -1,7 +1,10 @@
 import { CreditAccountService } from "../../../services/creditAccount.service";
+import type { QueryResolvers } from "../../../../../../shared/types/codegen.types";
 
-const service = new CreditAccountService();
-
-export const allCreditAccounts = async () => {
-  return await service.findAll();
+export const allCreditAccounts: QueryResolvers["allCreditAccounts"] = async (
+  _parent,
+  _args,
+  context
+) => {
+  return await context.services.creditAccount.findAll();
 };

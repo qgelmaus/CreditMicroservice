@@ -19,22 +19,11 @@ type PaymentDetails {
 }
 
 input CreatePaymentDetailsInput {
-	creditAccountId: Int!
 	amountMoney: Float!
 	paymentMethod: PaymentMethod!
 	reference: String!
 }
 
-enum PaymentMethod {
-	STRIPE
-	MOBILEPAY
-	BANK_TRANSFER
-	MANUAL
-}
-
-enum PaymentStatus {
-	PENDING
-	COMPLETED
-	FAILED
-	REFUNDED
+type Mutation {
+	createPaymentDetails(input: CreateGiftAccountInput): PaymentDetails
 }

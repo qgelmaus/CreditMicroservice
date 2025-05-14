@@ -9,7 +9,7 @@ test("PaymentDetails can be created and marked as completed", () => {
   } as unknown as CreditAccount;
 
   const payment = PaymentDetails.create({
-    creditAccount: mockAccount,
+    creditAccountId: mockAccount.id,
     amountMoney: new Money(500),
     paymentMethod: PaymentMethod.STRIPE,
     reference: "test-ref",

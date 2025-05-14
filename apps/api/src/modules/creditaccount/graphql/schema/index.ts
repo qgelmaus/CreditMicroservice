@@ -1,26 +1,23 @@
-//src/modules/creditaccount/graphql/schema/index.ts
-import fs from "node:fs";
-import path from "node:path";
 import gql from "graphql-tag";
-
-import { mergeTypeDefs, mergeResolvers } from "@graphql-tools/merge";
-
-import { DateScalar } from "../scalar/scalarResolver";
+import fs from "fs";
+import path from "path";
 import { creditAccountResolver, flowResolvers } from "../../app/resolvers";
+import type { Resolvers } from "../../../../shared/types/codegen.types";
 
-const baseSchema = fs.readFileSync(
-  path.join(__dirname, "baseSchema.gql"),
-  "utf8"
-);
-const accountSchema = fs.readFileSync(
-  path.join(__dirname, "./account/typeDefs.gql"),
-  "utf8"
+const typeDefs = gql(
+  fs.readFileSync(path.join(__dirname, "account/typeDefs.gql"), "utf8")
 );
 
-export const typeDefs = mergeTypeDefs([gql(baseSchema), gql(accountSchema)]);
-
-export const resolvers = mergeResolvers([
-  { Date: DateScalar },
-  creditAccountResolver,
-  flowResolvers,
-]);
+export const creditAccountModule = {
+  typeDefs,
+  resolvers: {
+    Mutation: {
+      ...creditAccountResolver.Mutation,
+      ...flowResolvers.Mutation,
+    },
+    Query: {
+      ...creditAccountResolver.Query,
+    },
+    CreditAccount: creditAccountResolver.CreditAccount ?? {},
+  } as Resolvers, 
+};

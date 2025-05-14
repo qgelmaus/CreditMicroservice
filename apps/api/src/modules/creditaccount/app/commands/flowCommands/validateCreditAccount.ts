@@ -1,10 +1,11 @@
 import { validateCreditAccount as service } from "../../services/creditAccountCustomerFlow.service";
+import type { Context } from "../../../../../graphql/buildContext"; // hvis du har typed context
 
 export const validateCreditAccount = async (
-  _: any,
-  __: any,
-  context: { user: { id: string } }
+  _: unknown,
+  __: unknown,
+  context: Context
 ) => {
-  await service(context.user.id);
+  await service(context.user.id, context.services.creditAccount);
   return true;
 };
