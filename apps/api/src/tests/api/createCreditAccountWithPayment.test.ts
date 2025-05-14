@@ -1,9 +1,9 @@
 import request from "supertest";
-import {app} from "../../app"
+import { app } from "../../server/app";
 
 describe("createCreditAccountWithPayment mutation", () => {
-  it("should create a GiftCard and PaymentDetails", async () => {
-    const mutation = `
+	it("should create a GiftCard and PaymentDetails", async () => {
+		const mutation = `
       mutation {
         createCreditAccountWithPayment(input: {
           account: {
@@ -26,17 +26,17 @@ describe("createCreditAccountWithPayment mutation", () => {
       }
     `;
 
-    const res = await request(app)
-      .post("/graphql")
-      .send({ query: mutation });
+		const res = await request(app).post("/graphql").send({ query: mutation });
 
-    expect(res.status).toBe(200);
-    expect(res.body.data.createCreditAccountWithPayment.email).toBe("gift@test.dk");
-    expect(res.body.data.createCreditAccountWithPayment.type).toBe("GIFT_CARD");
-  });
+		expect(res.status).toBe(200);
+		expect(res.body.data.createCreditAccountWithPayment.email).toBe(
+			"gift@test.dk",
+		);
+		expect(res.body.data.createCreditAccountWithPayment.type).toBe("GIFT_CARD");
+	});
 
-  it("should create a PrepaidCard and PaymentDetails", async () => {
-    const mutation = `
+	it("should create a PrepaidCard and PaymentDetails", async () => {
+		const mutation = `
       mutation {
         createCreditAccountWithPayment(input: {
           account: {
@@ -61,13 +61,15 @@ describe("createCreditAccountWithPayment mutation", () => {
       }
     `;
 
-    const res = await request(app)
-      .post("/graphql")
-      .send({ query: mutation });
+		const res = await request(app).post("/graphql").send({ query: mutation });
 
-    expect(res.status).toBe(200);
-    expect(res.body.data.createCreditAccountWithPayment.email).toBe("prepaid@test.dk");
-    expect(res.body.data.createCreditAccountWithPayment.type).toBe("PREPAID_CARD");
-    expect(res.body.data.createCreditAccountWithPayment.treatmentCount).toBe(5);
-  });
+		expect(res.status).toBe(200);
+		expect(res.body.data.createCreditAccountWithPayment.email).toBe(
+			"prepaid@test.dk",
+		);
+		expect(res.body.data.createCreditAccountWithPayment.type).toBe(
+			"PREPAID_CARD",
+		);
+		expect(res.body.data.createCreditAccountWithPayment.treatmentCount).toBe(5);
+	});
 });

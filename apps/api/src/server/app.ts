@@ -2,7 +2,7 @@ import express from "express";
 import { graphqlHTTP } from "express-graphql";
 import type { Request, Response, NextFunction } from "express";
 
-import { schema } from "./graphql/index"
+import { schema } from "./graphql/index";
 import { buildContext } from "./graphql/buildContext";
 
 const app = express();
@@ -20,19 +20,15 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 	next();
 });
 
-
-
 app.use(express.json());
-
 
 app.use(
 	"/graphql",
 	graphqlHTTP({
 		schema,
 		graphiql: true,
-		context: buildContext()
-
-	})
+		context: buildContext(),
+	}),
 );
 
 export { app };
