@@ -37,6 +37,11 @@ export type Scalars = {
   Date: { input: any; output: any };
 };
 
+export type ChangeStatusInput = {
+  id: Scalars["String"]["input"];
+  status: PaymentStatus;
+};
+
 export type CreatePaymentInput = {
   email: Scalars["String"]["input"];
   method: PaymentMethod;
@@ -46,7 +51,12 @@ export type CreatePaymentInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  changeStatus: PaymentDetails;
   createPayment: PaymentDetails;
+};
+
+export type MutationChangeStatusArgs = {
+  input: ChangeStatusInput;
 };
 
 export type MutationCreatePaymentArgs = {
@@ -192,6 +202,7 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
+  ChangeStatusInput: ChangeStatusInput;
   CreatePaymentInput: CreatePaymentInput;
   Date: ResolverTypeWrapper<Scalars["Date"]["output"]>;
   Float: ResolverTypeWrapper<Scalars["Float"]["output"]>;
@@ -206,6 +217,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars["Boolean"]["output"];
+  ChangeStatusInput: ChangeStatusInput;
   CreatePaymentInput: CreatePaymentInput;
   Date: Scalars["Date"]["output"];
   Float: Scalars["Float"]["output"];
@@ -225,6 +237,12 @@ export type MutationResolvers<
   ParentType extends
     ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
 > = {
+  changeStatus?: Resolver<
+    ResolversTypes["PaymentDetails"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationChangeStatusArgs, "input">
+  >;
   createPayment?: Resolver<
     ResolversTypes["PaymentDetails"],
     ParentType,

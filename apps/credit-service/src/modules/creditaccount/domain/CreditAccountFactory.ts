@@ -40,7 +40,7 @@ export function createNewCreditAccount(
       credits,
       money,
       input.email,
-      true,
+      false,
       now,
       expires,
       []

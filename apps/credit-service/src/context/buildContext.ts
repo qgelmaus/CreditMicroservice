@@ -19,6 +19,7 @@ export const buildContext = async (ctx: any) => {
   if (!isIntrospection) {
     try {
       await eventPublisher.connect();
+      console.log("RabbitMQ connected");
     } catch (err) {
       console.error("❌ RabbitMQ connection failed:", err);
       throw err;

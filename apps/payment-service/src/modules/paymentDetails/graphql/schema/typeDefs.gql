@@ -3,41 +3,47 @@ type Query
 type Mutation
 
 type PaymentDetails {
-	id: String!
-	email: String!
-	amountMoney: Float!
-	paymentMethod: PaymentMethod!
-	paymentDate: Date!
-	reference: String!
-	paymentStatus: PaymentStatus!
-	createdAt: Date!
+  id: String!
+  email: String!
+  amountMoney: Float!
+  paymentMethod: PaymentMethod!
+  paymentDate: Date!
+  reference: String!
+  paymentStatus: PaymentStatus!
+  createdAt: Date!
 }
 
 enum PaymentMethod {
-	STRIPE
-	MOBILEPAY
-	BANK_TRANSFER
-	MANUAL
+  STRIPE
+  MOBILEPAY
+  BANK_TRANSFER
+  MANUAL
 }
 
 enum PaymentStatus {
-	PENDING
-	COMPLETED
-	FAILED
-	REFUNDED
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }
 
 input CreatePaymentInput {
-	email: String!
-	purchaseAmount: Float!
-	method: PaymentMethod!
-	reference: String!
+  email: String!
+  purchaseAmount: Float!
+  method: PaymentMethod!
+  reference: String!
+}
+
+input ChangeStatusInput {
+  id: String!
+  status: PaymentStatus!
 }
 
 type Mutation {
-	createPayment(input: CreatePaymentInput!): PaymentDetails!
+  createPayment(input: CreatePaymentInput!): PaymentDetails!
+  changeStatus(input: ChangeStatusInput!): PaymentDetails!
 }
 
 type Query {
-	allPayments: [PaymentDetails!]!
+  allPayments: [PaymentDetails!]!
 }
