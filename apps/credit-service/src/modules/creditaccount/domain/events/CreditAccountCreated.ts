@@ -1,4 +1,4 @@
-import { DomainEvent } from "./DomainEvent";
+import type { DomainEvent } from "./DomainEvent";
 
 export class CreditAccountCreated implements DomainEvent {
   name = "CreditAccountCreated";

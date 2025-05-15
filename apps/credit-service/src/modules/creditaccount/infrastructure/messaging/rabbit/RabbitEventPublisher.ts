@@ -1,36 +1,41 @@
-import { ChannelModel, connect, Connection } from "amqplib";
-import { DomainEventPublisher } from "../../../domain/events/DomainEventPublisher";
-import { DomainEvent } from "../../../domain/events/DomainEvent";
-import { Channel } from "diagnostics_channel";
+import { connect, type Connection, type Channel } from "amqplib";
+import type { DomainEventPublisher } from "../../../domain/events/DomainEventPublisher";
+import type { DomainEvent } from "../../../domain/events/DomainEvent";
 
 export class RabbitEventPublisher implements DomainEventPublisher {
-  connection!: Connection;
-  channel!: Channel;
-
-  private connected!: boolean;
+  private connection!: Connection;
+  private channel!: Channel;
+  private connected = false;
 
   async connect() {
     if (this.connected && this.channel) return;
-    else this.connected = true;
 
     try {
-      console.log(`⌛️ Connecting to Rabbit-MQ Server`);
-      this.connection = await client.connect(
-        `amqp://${rmqUser}:${rmqPass}@${rmqhost}:5672`
-      );
+      console.log("⌛️ Connecting to Rabbit-MQ Server");
 
-      console.log(`✅ Rabbit MQ Connection is ready`);
+      const rmqUser = process.env.RMQ_USER ?? "guest";
+      const rmqPass = process.env.RMQ_PASS ?? "guest";
+      const rmqHost = process.env.RMQ_HOST ?? "localhost";
+
+      const uri = `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`;
+      this.connection = await connect(uri);
+
+      console.log("✅ Rabbit MQ Connection is ready");
 
       this.channel = await this.connection.createChannel();
+      this.connected = true;
 
-      console.log(`🛸 Created RabbitMQ Channel successfully`);
+      console.log("🛸 Created RabbitMQ Channel successfully");
     } catch (error) {
-      console.error(error);
-      console.error(`Not connected to MQ Server`);
+      console.error("❌ Failed to connect to RabbitMQ:", error);
     }
   }
 
   async publish(event: DomainEvent) {
+    if (!this.connected || !this.channel) {
+      throw new Error("RabbitMQ is not connected");
+    }
+
     const exchange = "domain_events";
     await this.channel.assertExchange(exchange, "topic", { durable: true });
 
@@ -42,7 +47,12 @@ export class RabbitEventPublisher implements DomainEventPublisher {
   }
 
   async close() {
+    if (!this.connected) return;
+
     await this.channel.close();
     await this.connection.close();
+    this.connected = false;
+
+    console.log("🛑 RabbitMQ connection closed");
   }
 }

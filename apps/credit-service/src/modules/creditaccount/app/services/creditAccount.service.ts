@@ -17,7 +17,7 @@ import { CreditAccountType } from "../../../../prisma/generated/client";
 import type { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
 import type { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
 import type { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository";
-import { DomainEventPublisher } from "../../domain/events/DomainEventPublisher";
+import type { DomainEventPublisher } from "../../domain/events/DomainEventPublisher";
 
 export class CreditAccountService {
   constructor(
