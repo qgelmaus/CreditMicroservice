@@ -1,11 +1,11 @@
-import { Money } from "./valueobjects/Money";
-import { Credits } from "./valueobjects/Credits";
+import { Money } from "./valueobjects/Money.ts";
+import { Credits } from "./valueobjects/Credits.ts";
 
-import { GiftAccount, PrepaidAccount } from "./CreditAccount";
+import { GiftAccount, PrepaidAccount } from "./CreditAccount.ts";
 
-import { generateDateExpired } from "../../../utils/Generators/expirationDateGenerator";
-import { generateCreditCode } from "../../../utils/Generators/creditCodeGenerator";
-import { CreditAccountType } from "../../../prisma/generated/client";
+import { generateDateExpired } from "../../../utils/Generators/expirationDateGenerator.ts";
+import { generateCreditCode } from "../../../utils/Generators/creditCodeGenerator.ts";
+import { CreditAccountType } from "apps/credit-service/src/prisma/generated/client/index.js";
 
 type NewGiftInput = {
   type: "GIFT_CARD";
@@ -23,7 +23,7 @@ type NewPrepaidInput = {
 export type NewCreditAccountInput = NewGiftInput | NewPrepaidInput;
 
 export function createNewCreditAccount(
-  input: NewCreditAccountInput,
+  input: NewCreditAccountInput
 ): GiftAccount | PrepaidAccount {
   const now = new Date();
   const expires = generateDateExpired();
@@ -43,7 +43,7 @@ export function createNewCreditAccount(
       true,
       now,
       expires,
-      [],
+      []
     );
   }
 
@@ -68,7 +68,7 @@ export function createNewCreditAccount(
       expires,
       input.treatmentCount,
       discountPercentage,
-      [],
+      []
     );
   }
 

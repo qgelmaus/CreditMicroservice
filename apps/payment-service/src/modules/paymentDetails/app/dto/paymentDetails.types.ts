@@ -1,4 +1,7 @@
-import type { PaymentMethod, PaymentStatus } from "@prisma/client";
+import type {
+  PaymentMethod,
+  PaymentStatus,
+} from "apps/payment-service/src/prisma/generated/client/index.js";
 
 export interface PaymentDetailsDTO {
   id: string;

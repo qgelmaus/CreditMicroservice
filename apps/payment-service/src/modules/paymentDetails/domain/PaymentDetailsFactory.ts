@@ -1,12 +1,12 @@
 import type {
   PaymentMethod,
   PaymentStatus,
-} from "../../../prisma/generated/client";
-import { PaymentDetails } from "./PaymentDetails";
+} from "apps/payment-service/src/prisma/generated/client/index.js";
+import { PaymentDetails } from "./PaymentDetails.ts";
 
 export interface CreatePaymentDetailsFactoryInput {
   email: string;
-  amountMoney: number;
+  purchaseAmount: number;
   paymentMethod: PaymentMethod;
   reference: string;
 }
@@ -16,7 +16,7 @@ export class PaymentDetailsFactory {
   static createNew(input: CreatePaymentDetailsFactoryInput): PaymentDetails {
     return PaymentDetails.create({
       email: input.email,
-      amountMoney: input.amountMoney,
+      amountMoney: input.purchaseAmount,
       paymentMethod: input.paymentMethod,
       reference: input.reference,
     });

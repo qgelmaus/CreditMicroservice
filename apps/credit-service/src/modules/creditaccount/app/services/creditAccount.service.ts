@@ -2,22 +2,23 @@ import type {
   CreditAccountDTO,
   CreditTransferDTO,
   TransactionDTO,
-} from "../dto/creditaccount.types";
+} from "../dto/creditaccount.types.ts";
 
 import {
   toDomain,
   toDTO,
   toTransferDTO,
-} from "../../infrastructure/mappers/creditaccount.mapper";
+} from "../../infrastructure/mappers/creditaccount.mapper.ts";
 
-import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mapper";
+import { toTransactionDTO } from "../../infrastructure/mappers/transaction.mapper.ts";
 
-import { createNewCreditAccount } from "../../domain/CreditAccountFactory";
-import { CreditAccountType } from "../../../../prisma/generated/client";
-import type { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository";
-import type { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository";
-import type { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository";
-import type { DomainEventPublisher } from "../../domain/events/DomainEventPublisher";
+import { createNewCreditAccount } from "../../domain/CreditAccountFactory.ts";
+
+import type { CreditAccountRepository } from "../../infrastructure/repository/creditaccount.repository.ts";
+import type { CreditTransactionRepository } from "../../infrastructure/repository/creditTransaction.repository.ts";
+import type { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository.ts";
+import type { DomainEventPublisher } from "packages/rabbitmq/src/types.ts";
+import { CreditAccountType } from "apps/credit-service/src/prisma/generated/client/index.js";
 
 export class CreditAccountService {
   constructor(
@@ -26,6 +27,31 @@ export class CreditAccountService {
     private transferRepo: CreditTransferRepository,
     private eventPublisher: DomainEventPublisher
   ) {}
+
+  async createCreditAccount(
+    email: string,
+    type: CreditAccountType,
+    treatmentCount?: number,
+    pricePerTreatment?: number,
+    purchaseAmount?: number
+  ): Promise<CreditAccountDTO> {
+    if (type === CreditAccountType.GIFT_CARD && purchaseAmount != null)
+      return this.createGiftAccount(purchaseAmount, email);
+    if (
+      type === CreditAccountType.PREPAID_CARD &&
+      treatmentCount != null &&
+      pricePerTreatment != null
+    )
+      return this.createPrepaidAccount(
+        treatmentCount,
+        pricePerTreatment,
+        email
+      );
+
+    throw new Error(
+      `Ugyldigt input til createCreditAccount. Type: ${type}, purchaseAmount: ${purchaseAmount}, treatmentCount: ${treatmentCount}, pricePerTreatment: ${pricePerTreatment}`
+    );
+  }
 
   async createGiftAccount(
     purchaseAmount: number,
@@ -71,6 +97,15 @@ export class CreditAccountService {
     );
 
     return toDTO(toDomain(saved));
+  }
+
+  async activateAccount(creditCode: string): Promise<void> {
+    const account = await this.accountRepo.findByCreditCode(creditCode);
+    if (!account) throw new Error("Account not found");
+
+    const domain = toDomain(account);
+    domain.activate();
+    await this.accountRepo.updateState(domain);
   }
 
   async useCredits(

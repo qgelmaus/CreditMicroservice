@@ -1,18 +1,17 @@
-import type { MutationResolvers } from "../../../../../../shared/types/codegen.types";
-import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL";
-import { CreditAccountService } from "../../../services/creditAccount.service";
+import type { MutationResolvers } from "../../../../../../shared/types/codegen.types.ts";
+import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL.ts";
 
 export const refundCredits: MutationResolvers["refundCredits"] = async (
   _parent,
   { input },
-  context,
+  context
 ) => {
   const { creditCode, cost, note } = input;
 
   const account = await context.creditAccountService.refundCredits(
     creditCode,
     cost,
-    note ?? "",
+    note ?? ""
   );
 
   return mapToGraphQL(account);

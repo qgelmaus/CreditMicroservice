@@ -1,13 +1,14 @@
 // apps/credit-service/src/index.ts
-import { ApolloServer } from "@apollo/server";
+import { ApolloServer, type BaseContext } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { buildContext } from "./context/buildContext";
-import { creditAccountModule } from "./modules/creditaccount/graphql/schema/index";
-import { graphqlLoggerPlugin } from "./utils/logger/graphqlLoggerPlugin";
+import { buildContext } from "./context/buildContext.ts";
+import { creditAccountModule } from "./modules/creditaccount/graphql/schema/index.ts";
+import { graphqlLoggerPlugin } from "./utils/logger/graphqlLoggerPlugin.ts";
 
-const server = new ApolloServer({
+const server = new ApolloServer<BaseContext>({
   typeDefs: creditAccountModule.typeDefs,
   resolvers: creditAccountModule.resolvers,
+  introspection: true,
   plugins: [graphqlLoggerPlugin],
 });
 

@@ -2,11 +2,11 @@ import type {
   GiftAccount,
   PrepaidAccount,
   Transaction,
-} from "../../../../shared/types/codegen.types";
-import type { CreditAccountDTO } from "../../app/dto/creditaccount.types";
+} from "../../../../shared/types/codegen.types.ts";
+import type { CreditAccountDTO } from "../../app/dto/creditaccount.types.ts";
 
 export function mapToGraphQL(
-  dto: CreditAccountDTO,
+  dto: CreditAccountDTO
 ): GiftAccount | PrepaidAccount {
   const shared = {
     creditCode: dto.creditCode,

@@ -1,9 +1,9 @@
-import {
+import type {
   CreditAccountType,
   TransactionType,
-} from "../../../../prisma/generated/client";
-import type { Credits } from "../../domain/valueobjects/Credits";
-import type { Money } from "../../domain/valueobjects/Money";
+} from "apps/credit-service/src/prisma/generated/client/index.js";
+import type { Credits } from "../../domain/valueobjects/Credits.ts";
+import type { Money } from "../../domain/valueobjects/Money.ts";
 
 export interface CreditAccountDTO {
   id: number;

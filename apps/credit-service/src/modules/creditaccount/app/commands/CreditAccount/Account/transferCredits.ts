@@ -1,16 +1,15 @@
-import type { MutationResolvers } from "../../../../../../shared/types/codegen.types";
-import { CreditAccountService } from "../../../services/creditAccount.service";
+import type { MutationResolvers } from "../../../../../../shared/types/codegen.types.ts";
 
 export const transferCredits: MutationResolvers["transferCredits"] = async (
   _parent,
   { input },
-  context,
+  context
 ) => {
   const { fromCreditCode, toCreditCode, amount, note } = input;
   return await context.creditAccountService.transferCredits(
     fromCreditCode,
     toCreditCode,
     amount,
-    note ?? "",
+    note ?? ""
   );
 };

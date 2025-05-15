@@ -1,5 +1,5 @@
-import { CustomerCreditAccountFlow } from "../../domain/flows/creditaccount/customerFlow";
-import type { CreditAccountService } from "./creditAccount.service";
+import { CustomerCreditAccountFlow } from "../../domain/flows/creditaccount/customerFlow.ts";
+import type { CreditAccountService } from "./creditAccount.service.ts";
 
 const flowStorage = new Map<string, CustomerCreditAccountFlow>();
 
@@ -18,7 +18,7 @@ export function saveFlow(userId: string, flow: CustomerCreditAccountFlow) {
 
 export async function selectCreditAccountType(
   userId: string,
-  type: "GIFT_CARD" | "PREPAID_CARD",
+  type: "GIFT_CARD" | "PREPAID_CARD"
 ) {
   const flow = getOrCreateFlow(userId);
   flow.selectType(type);
@@ -33,7 +33,7 @@ export async function setCreditAccountEmail(userId: string, email: string) {
 
 export async function submitCreditAccountDetails(
   userId: string,
-  details: Record<string, any>,
+  details: Record<string, any>
 ) {
   const flow = getOrCreateFlow(userId);
   flow.setDetails(details);
@@ -42,7 +42,7 @@ export async function submitCreditAccountDetails(
 
 export async function validateCreditAccount(
   userId: string,
-  accountService: CreditAccountService,
+  accountService: CreditAccountService
 ) {
   const flow = getOrCreateFlow(userId);
   flow.validate();
@@ -55,7 +55,7 @@ export function deleteFlow(userId: string) {
 
 export async function finalizeCreditAccount(
   userId: string,
-  accountService: CreditAccountService,
+  accountService: CreditAccountService
 ) {
   const flow = getOrCreateFlow(userId);
   const { type, email, details } = flow.finalize();
@@ -65,7 +65,7 @@ export async function finalizeCreditAccount(
   if (type === "GIFT_CARD") {
     const finishedAccount = await accountService.createGiftAccount(
       details.credits,
-      email,
+      email
     );
     deleteFlow(userId);
     return finishedAccount;
@@ -75,7 +75,7 @@ export async function finalizeCreditAccount(
     const finishedAccount = await accountService.createPrepaidAccount(
       details.treatmentCount,
       details.pricePerTreatment,
-      email,
+      email
     );
     deleteFlow(userId);
     return finishedAccount;

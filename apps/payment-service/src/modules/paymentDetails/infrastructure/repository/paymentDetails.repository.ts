@@ -1,10 +1,8 @@
-import type { PaymentDetails } from "../../domain/PaymentDetails";
-import { toDomain } from "../mappers/paymentdetails.mapper";
-import { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types";
-import {
-  PaymentStatus,
-  PrismaClient,
-} from "../../../../prisma/generated/client";
+import type { PaymentDetails } from "../../domain/PaymentDetails.ts";
+import { toDomain } from "../mappers/paymentdetails.mapper.ts";
+import { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types.ts";
+import type { PrismaClient } from "@prisma/client/scripts/default-index.js";
+import type { PaymentStatus } from "apps/payment-service/src/prisma/generated/client/index.js";
 
 export class PaymentDetailsRepository {
   constructor(private prisma: PrismaClient) {}
@@ -36,11 +34,11 @@ export class PaymentDetailsRepository {
     });
   }
 
-  async updateStatus(id: string, newPaymentStatus: PaymentStatus) {
+  async updateStatus(input: { id: string; newPaymentStatus: PaymentStatus }) {
     return await this.prisma.paymentDetails.update({
-      where: { id },
+      where: { id: input.id },
       data: {
-        paymentStatus: newPaymentStatus,
+        paymentStatus: input.newPaymentStatus,
       },
     });
   }

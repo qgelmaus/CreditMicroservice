@@ -1,7 +1,7 @@
-import type { PaymentDetails as PrismaPayment } from "../../../../prisma/generated/client";
-import { PaymentDetails } from "../../domain/PaymentDetails";
+import type { PaymentDetails as PrismaPayment } from "apps/payment-service/src/prisma/generated/client/index.js";
+import { PaymentDetails } from "../../domain/PaymentDetails.ts";
 
-import type { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types";
+import type { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types.ts";
 
 export function toDomain(paymentDetails: PrismaPayment): PaymentDetails {
   return PaymentDetails.restore({

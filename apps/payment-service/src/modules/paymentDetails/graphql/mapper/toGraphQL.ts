@@ -1,9 +1,9 @@
-import type { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types";
+import type { PaymentDetailsDTO } from "../../app/dto/paymentDetails.types.ts";
 import type {
   PaymentDetails,
   PaymentStatus,
   PaymentMethod,
-} from "../../../../shared/types/codegen.types";
+} from "../../../../shared/types/codegen.types.ts";
 
 export function mapToGraphQL(dto: PaymentDetailsDTO): PaymentDetails {
   return {

@@ -1,7 +1,7 @@
 import {
-  PrismaClient,
+  type PrismaClient,
   TransactionType,
-} from "../../../../prisma/generated/client";
+} from "apps/credit-service/src/prisma/generated/client/index.js";
 
 export class CreditTransactionRepository {
   constructor(private prisma: PrismaClient) {}
@@ -20,7 +20,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note: string,
+    note: string
   ) {
     return await this.prisma.creditTransaction.create({
       data: {
@@ -37,7 +37,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note: string,
+    note: string
   ) {
     return await this.prisma.creditTransaction.create({
       data: {
@@ -54,7 +54,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note: string,
+    note: string
   ) {
     return await this.prisma.creditTransaction.create({
       data: {
@@ -71,7 +71,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note: string,
+    note: string
   ) {
     return await this.prisma.creditTransaction.create({
       data: {
@@ -88,7 +88,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note: string,
+    note: string
   ) {
     return await this.prisma.creditTransaction.create({
       data: {
@@ -105,7 +105,7 @@ export class CreditTransactionRepository {
     creditAccountId: number,
     credits: number,
     money: number,
-    note: string,
+    note: string
   ) {
     return await this.prisma.creditTransaction.create({
       data: {

@@ -37,6 +37,14 @@ export type Scalars = {
   Date: { input: any; output: any };
 };
 
+export type CreateCreditAccountInput = {
+  email: Scalars["String"]["input"];
+  pricePerTreatment?: InputMaybe<Scalars["Float"]["input"]>;
+  purchaseAmount?: InputMaybe<Scalars["Float"]["input"]>;
+  treatmentCount?: InputMaybe<Scalars["Int"]["input"]>;
+  type: CreditAccountType;
+};
+
 export type CreateGiftAccountInput = {
   email: Scalars["String"]["input"];
   purchaseAmount: Scalars["Float"]["input"];
@@ -95,6 +103,7 @@ export type GiftAccount = CreditAccount & {
 export type Mutation = {
   __typename?: "Mutation";
   cancelCreditAccountFlow: Scalars["Boolean"]["output"];
+  createCreditAccount: CreditAccount;
   createGiftAccount: CreditAccount;
   createPrepaidAccount: CreditAccount;
   finalizeCreditAccount: CreditAccount;
@@ -107,6 +116,10 @@ export type Mutation = {
   transferCredits: Transfer;
   useCredits: CreditAccount;
   validateCreditAccount: Scalars["Boolean"]["output"];
+};
+
+export type MutationCreateCreditAccountArgs = {
+  input: CreateCreditAccountInput;
 };
 
 export type MutationCreateGiftAccountArgs = {
@@ -174,10 +187,8 @@ export type PrepaidAccount = CreditAccount & {
 export type Query = {
   __typename?: "Query";
   allCreditAccounts: Array<CreditAccount>;
-  allCreditTransactions: Array<Transaction>;
   creditAccountByCode?: Maybe<CreditAccount>;
   creditAccountByEmail?: Maybe<Array<CreditAccount>>;
-  transactionsForAccountByCode?: Maybe<Array<Transaction>>;
 };
 
 export type QueryCreditAccountByCodeArgs = {
@@ -186,10 +197,6 @@ export type QueryCreditAccountByCodeArgs = {
 
 export type QueryCreditAccountByEmailArgs = {
   email: Scalars["String"]["input"];
-};
-
-export type QueryTransactionsForAccountByCodeArgs = {
-  code: Scalars["String"]["input"];
 };
 
 export type RefundCreditsInput = {
@@ -364,6 +371,7 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> =
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
+  CreateCreditAccountInput: CreateCreditAccountInput;
   CreateGiftAccountInput: CreateGiftAccountInput;
   CreatePrepaidAccountInput: CreatePrepaidAccountInput;
   CreditAccount: ResolverTypeWrapper<
@@ -395,6 +403,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars["Boolean"]["output"];
+  CreateCreditAccountInput: CreateCreditAccountInput;
   CreateGiftAccountInput: CreateGiftAccountInput;
   CreatePrepaidAccountInput: CreatePrepaidAccountInput;
   CreditAccount: ResolversInterfaceTypes<ResolversParentTypes>["CreditAccount"];
@@ -493,6 +502,12 @@ export type MutationResolvers<
     ResolversTypes["Boolean"],
     ParentType,
     ContextType
+  >;
+  createCreditAccount?: Resolver<
+    ResolversTypes["CreditAccount"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCreditAccountArgs, "input">
   >;
   createGiftAccount?: Resolver<
     ResolversTypes["CreditAccount"],
@@ -609,11 +624,6 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
-  allCreditTransactions?: Resolver<
-    Array<ResolversTypes["Transaction"]>,
-    ParentType,
-    ContextType
-  >;
   creditAccountByCode?: Resolver<
     Maybe<ResolversTypes["CreditAccount"]>,
     ParentType,
@@ -625,12 +635,6 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryCreditAccountByEmailArgs, "email">
-  >;
-  transactionsForAccountByCode?: Resolver<
-    Maybe<Array<ResolversTypes["Transaction"]>>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryTransactionsForAccountByCodeArgs, "code">
   >;
 };
 

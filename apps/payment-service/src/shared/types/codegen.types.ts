@@ -38,9 +38,9 @@ export type Scalars = {
 };
 
 export type CreatePaymentInput = {
-  amountMoney: Scalars["Float"]["input"];
   email: Scalars["String"]["input"];
   method: PaymentMethod;
+  purchaseAmount: Scalars["Float"]["input"];
   reference: Scalars["String"]["input"];
 };
 

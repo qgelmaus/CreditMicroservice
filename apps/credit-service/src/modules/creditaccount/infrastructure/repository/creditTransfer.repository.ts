@@ -1,7 +1,7 @@
 import {
-  PrismaClient,
+  type PrismaClient,
   TransactionType,
-} from "../../../../prisma/generated/client";
+} from "apps/credit-service/src/prisma/generated/client/index.js";
 
 export class CreditTransferRepository {
   constructor(private prisma: PrismaClient) {}
@@ -20,7 +20,7 @@ export class CreditTransferRepository {
   async saveCreditTransfer(
     transactionOutId: number,
     tranasctionInId: number,
-    amount: number,
+    amount: number
   ) {
     return await this.prisma.creditTransfer.create({
       data: {

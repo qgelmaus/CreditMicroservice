@@ -1,8 +1,8 @@
 import {
   type PaymentMethod,
   PaymentStatus,
-} from "../../../prisma/generated/client";
-import type { PaymentDetailsDTO } from "../app/dto/paymentDetails.types";
+} from "apps/payment-service/src/prisma/generated/client/index.js";
+import type { PaymentDetailsDTO } from "../app/dto/paymentDetails.types.ts";
 
 export interface PaymentDetailsProps {
   id?: string;
@@ -50,6 +50,37 @@ export class PaymentDetails {
       ...props,
       paymentStatus: PaymentStatus.PENDING,
     });
+  }
+
+  completePayment() {
+    this.paymentStatus = PaymentStatus.COMPLETED;
+  }
+
+  failPayment() {
+    this.paymentStatus = PaymentStatus.FAILED;
+  }
+
+  refundPayment() {
+    this.paymentStatus = PaymentStatus.REFUNDED;
+  }
+
+  setStatus(newStatus: PaymentStatus): void {
+    const allowed: PaymentStatus[] = [
+      PaymentStatus.PENDING,
+      PaymentStatus.COMPLETED,
+      PaymentStatus.FAILED,
+      PaymentStatus.REFUNDED,
+    ];
+
+    if (!allowed.includes(newStatus)) {
+      throw new Error(`Ugyldig status: ${newStatus}`);
+    }
+
+    this.paymentStatus = newStatus;
+
+    if (newStatus === PaymentStatus.COMPLETED) {
+      this.paymentDate = new Date();
+    }
   }
 
   getId(): string {

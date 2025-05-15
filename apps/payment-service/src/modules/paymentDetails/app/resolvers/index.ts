@@ -1,9 +1,7 @@
-import type { Resolvers } from "../../../../shared/types/codegen.types";
-import { createPayment } from "../commands/createPaymentDetails";
+import type { Resolvers } from "../../../../shared/types/codegen.types.ts";
+import { createPayment } from "../commands/createPaymentDetails.ts";
 
 export const paymentResolvers: Resolvers = {
-  PaymentDetails: {},
-
   Mutation: {
     createPayment,
   },

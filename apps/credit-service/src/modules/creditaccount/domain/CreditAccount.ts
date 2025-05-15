@@ -1,10 +1,10 @@
-import type { Money } from "./valueobjects/Money";
-import type { Credits } from "./valueobjects/Credits";
-import type { CreditAccountDTO } from "../app/dto/creditaccount.types";
+import type { Money } from "./valueobjects/Money.ts";
+import type { Credits } from "./valueobjects/Credits.ts";
+import type { CreditAccountDTO } from "../app/dto/creditaccount.types.ts";
 import {
   CreditAccountType,
-  CreditTransaction,
-} from "../../../prisma/generated/client";
+  type CreditTransaction,
+} from "apps/credit-service/src/prisma/generated/client/index.js";
 
 export abstract class CreditAccount {
   constructor(
@@ -19,11 +19,15 @@ export abstract class CreditAccount {
     public isActive: boolean,
     public readonly createdAt: Date,
     public readonly expiresAt: Date,
-    public readonly transactions: CreditTransaction[] = [],
+    public readonly transactions: CreditTransaction[] = []
   ) {}
 
   getId(): number {
     return this.id;
+  }
+
+  activate() {
+    this.isActive = true;
   }
 
   useCredits(cost: number) {}
@@ -112,7 +116,7 @@ export class GiftAccount extends CreditAccount {
     isActive: boolean,
     createdAt: Date,
     expiresAt: Date,
-    transactions: CreditTransaction[] = [],
+    transactions: CreditTransaction[] = []
   ) {
     super(
       id,
@@ -126,7 +130,7 @@ export class GiftAccount extends CreditAccount {
       isActive,
       createdAt,
       expiresAt,
-      transactions,
+      transactions
     );
   }
 
@@ -165,7 +169,7 @@ export class PrepaidAccount extends CreditAccount {
     expiresAt: Date,
     public treatmentCount: number,
     public readonly discountPercentage: number,
-    transactions: CreditTransaction[] = [],
+    transactions: CreditTransaction[] = []
   ) {
     super(
       id,
@@ -179,7 +183,7 @@ export class PrepaidAccount extends CreditAccount {
       isActive,
       createdAt,
       expiresAt,
-      transactions,
+      transactions
     );
   }
 

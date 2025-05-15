@@ -1,6 +1,5 @@
-import { CreditAccountService } from "../../../services/creditAccount.service";
-import type { QueryResolvers } from "../../../../../../shared/types/codegen.types";
-import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL";
+import type { QueryResolvers } from "../../../../../../shared/types/codegen.types.ts";
+import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL.ts";
 
 export const creditAccountByCode: QueryResolvers["creditAccountByCode"] =
   async (_parent, { code }, context) => {

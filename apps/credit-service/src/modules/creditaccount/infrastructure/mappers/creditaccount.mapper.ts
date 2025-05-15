@@ -1,23 +1,23 @@
-import {
+import type {
+  CreditTransaction,
   CreditTransfer,
   CreditAccount as PrismaAccount,
-} from "../../../../prisma/generated/client";
-import { Credits } from "../../domain/valueobjects/Credits";
-import { Money } from "../../domain/valueobjects/Money";
+} from "../../../../prisma/generated/client/index.js";
+import type {
+  CreditAccountDTO,
+  CreditTransferDTO,
+} from "../../app/dto/creditaccount.types.ts";
 import {
   type CreditAccount,
   GiftAccount,
   PrepaidAccount,
-} from "../../domain/CreditAccount";
-import type {
-  CreditAccountDTO,
-  CreditTransferDTO,
-} from "../../app/dto/creditaccount.types";
-import { toTransactionDTO } from "./transaction.mapper";
-import { CreditTransaction } from "../../../../prisma/generated/client";
+} from "../../domain/CreditAccount.ts";
+import { Credits } from "../../domain/valueobjects/Credits.ts";
+import { Money } from "../../domain/valueobjects/Money.ts";
+import { toTransactionDTO } from "./transaction.mapper.ts";
 
 export function toDomain(
-  account: PrismaAccount & { transactions?: CreditTransaction[] },
+  account: PrismaAccount & { transactions?: CreditTransaction[] }
 ) {
   const originalCredits = new Credits(account.originalCredits);
   const originalMoney = new Money(account.originalMoney);
@@ -37,7 +37,7 @@ export function toDomain(
       account.isActive,
       account.createdAt,
       account.expiresAt,
-      transactions,
+      transactions
     );
   }
 
@@ -55,7 +55,7 @@ export function toDomain(
       account.expiresAt,
       account.treatmentCount ?? 0,
       account.discountPercentage ?? 0,
-      transactions,
+      transactions
     );
   }
 

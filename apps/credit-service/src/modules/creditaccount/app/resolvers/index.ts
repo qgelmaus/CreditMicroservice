@@ -1,25 +1,23 @@
-//apps/api/src/modules/creditaccount/app/resolvers/index.tx
-
 import {
+  createCreditAccount,
   createGiftAccount,
   createPrepaidAccount,
-} from "../commands/CreditAccount/Account/createCreditAccount";
-import { nullifyAccount } from "../commands/CreditAccount/Account/nullifyAccount";
-import { refundCredits } from "../commands/CreditAccount/Account/refundCredits";
-import { refundMoney } from "../commands/CreditAccount/Account/refundMoney";
-import { transferCredits } from "../commands/CreditAccount/Account/transferCredits";
-import { useCredits } from "../commands/CreditAccount/Account/useCredits";
-import { cancelCreditAccountFlow } from "../commands/flowCommands/cancelCreditAccountFlow";
-import { finalizeCreditAccount } from "../commands/flowCommands/finalizeCreditAccount";
-import { selectCreditAccountTypeResolver } from "../commands/flowCommands/selectCreditAccountType";
-import { setCreditAccountEmail } from "../commands/flowCommands/setEmail";
-import { submitCreditAccountDetails } from "../commands/flowCommands/submitCreditAccountDetails";
-import { validateCreditAccount } from "../commands/flowCommands/validateCreditAccount";
-import { allCreditAccounts } from "../queries/CreditAccount/Account/allCreditAccounts";
-import { creditAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode";
-import { creditAccountByEmail } from "../queries/CreditAccount/Account/creditAccountByEmail";
-import { createCreditAccountWithPayment } from "../commands/CreditAccount/Account/createCreditAccountWithPayment";
-import type { Resolvers } from "../../../../shared/types/codegen.types";
+} from "../commands/CreditAccount/Account/createCreditAccount.ts";
+import { nullifyAccount } from "../commands/CreditAccount/Account/nullifyAccount.ts";
+import { refundCredits } from "../commands/CreditAccount/Account/refundCredits.ts";
+import { refundMoney } from "../commands/CreditAccount/Account/refundMoney.ts";
+import { transferCredits } from "../commands/CreditAccount/Account/transferCredits.ts";
+import { useCredits } from "../commands/CreditAccount/Account/useCredits.ts";
+import { cancelCreditAccountFlow } from "../commands/flowCommands/cancelCreditAccountFlow.ts";
+import { finalizeCreditAccount } from "../commands/flowCommands/finalizeCreditAccount.ts";
+import { selectCreditAccountTypeResolver } from "../commands/flowCommands/selectCreditAccountType.ts";
+import { setCreditAccountEmail } from "../commands/flowCommands/setEmail.ts";
+import { submitCreditAccountDetails } from "../commands/flowCommands/submitCreditAccountDetails.ts";
+import { validateCreditAccount } from "../commands/flowCommands/validateCreditAccount.ts";
+import { allCreditAccounts } from "../queries/CreditAccount/Account/allCreditAccounts.ts";
+import { creditAccountByCode } from "../queries/CreditAccount/Account/creditAccountByCode.ts";
+import { creditAccountByEmail } from "../queries/CreditAccount/Account/creditAccountByEmail.ts";
+import type { Resolvers } from "../../../../shared/types/codegen.types.ts";
 
 export const creditAccountResolver: Resolvers = {
   CreditAccount: {
@@ -31,6 +29,7 @@ export const creditAccountResolver: Resolvers = {
     },
   },
   Mutation: {
+    createCreditAccount,
     createGiftAccount,
     createPrepaidAccount,
     useCredits,

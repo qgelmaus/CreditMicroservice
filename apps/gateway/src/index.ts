@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { buildGatewaySchema } from "./schema/mergedSchema";
-import { graphqlLoggerPlugin } from "./utils/logger/logger";
+import { buildGatewaySchema } from "./graphql/schema/mergedSchema.ts";
+import { graphqlLoggerPlugin } from "./utils/logger/logger.ts";
 
 async function start() {
   const schema = await buildGatewaySchema();

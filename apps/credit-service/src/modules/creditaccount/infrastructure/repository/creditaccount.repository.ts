@@ -1,5 +1,11 @@
-import { Prisma, PrismaClient } from "../../../../prisma/generated/client";
-import { type CreditAccount, PrepaidAccount } from "../../domain/CreditAccount";
+import type {
+  Prisma,
+  PrismaClient,
+} from "apps/credit-service/src/prisma/generated/client/index.js";
+import {
+  type CreditAccount,
+  PrepaidAccount,
+} from "../../domain/CreditAccount.ts";
 
 export class CreditAccountRepository {
   constructor(private prisma: PrismaClient) {}
@@ -31,7 +37,7 @@ export class CreditAccountRepository {
     creditCode: string,
     newCreditAmount: number,
     newMoneyAmount: number,
-    newTreatmentCount: number,
+    newTreatmentCount: number
   ) {
     return await this.prisma.creditAccount.update({
       where: { creditCode },
