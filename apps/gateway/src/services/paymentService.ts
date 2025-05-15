@@ -31,7 +31,8 @@ export async function createPaymentDetails(
         mutation CreatePayment($input: CreatePaymentInput!) {
           createPayment(input: $input) {
             email
-            
+            id
+            paymentStatus
           }
         }
       `,

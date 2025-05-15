@@ -1,6 +1,8 @@
 export type CreatePaymentDetailsInput = {
   email: string;
-  purchaseAmount: number;
+  purchaseAmount?: number;
+  pricePerTreatment?: number;
+  treatmentCount?: number;
   paymentMethod: "STRIPE" | "MOBILEPAY";
   reference: string;
 };

@@ -48,6 +48,7 @@ type RemoteCreditAccount {
 	email: String!
 	originalMoney: Float!
 	creditCode: String!
+	isActive: Boolean!
 }
 
 type RemotePaymentDetails {
