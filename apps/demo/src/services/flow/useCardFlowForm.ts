@@ -15,7 +15,7 @@ export const useGiftCardFlowForm = () => {
   // Funktion til at opdatere ét felt
   const setField = <K extends keyof GiftCardFormData>(
     field: K,
-    value: GiftCardFormData[K]
+    value: GiftCardFormData[K],
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -41,7 +41,7 @@ export const usePrepiadCardFlowForm = () => {
   // Funktion til at opdatere ét felt
   const setField = <K extends keyof PrepaidCardFormData>(
     field: K,
-    value: PrepaidCardFormData[K]
+    value: PrepaidCardFormData[K],
   ) => {
     setFormData((prev) => ({
       ...prev,

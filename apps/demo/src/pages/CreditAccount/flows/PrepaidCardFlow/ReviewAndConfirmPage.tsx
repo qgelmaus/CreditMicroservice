@@ -3,55 +3,55 @@
 import type { PrepaidCardFormData } from "../../../../types/CreditAccount";
 
 type ReviewAndConfirmPageProps = {
-	formData: PrepaidCardFormData;
-	onNext: () => void;
-	onBack: () => void;
+  formData: PrepaidCardFormData;
+  onNext: () => void;
+  onBack: () => void;
 };
 
 export const ReviewAndConfirmPage = ({
-	formData,
-	onNext,
-	onBack,
+  formData,
+  onNext,
+  onBack,
 }: ReviewAndConfirmPageProps) => {
-	return (
-		<div
-			className="page-content-wrapper"
-			style={{ maxWidth: "350px", margin: "0 auto", padding: "20px" }}
-		>
-			<h2 style={{ textAlign: "center" }}>
-				Bekræft oplysninger <br />
-			</h2>
+  return (
+    <div
+      className="page-content-wrapper"
+      style={{ maxWidth: "350px", margin: "0 auto", padding: "20px" }}
+    >
+      <h2 style={{ textAlign: "center" }}>
+        Bekræft oplysninger <br />
+      </h2>
 
-			<div style={{ marginTop: "20px", marginBottom: "20px" }}>
-				{Object.entries(formData).map(([key, value]) => (
-					<div key={key} style={{ marginBottom: "10px" }}>
-						<strong>{formatLabel(key)}:</strong> {formatValue(key, value)}
-					</div>
-				))}
-			</div>
+      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+        {Object.entries(formData).map(([key, value]) => (
+          <div key={key} style={{ marginBottom: "10px" }}>
+            <strong>{formatLabel(key)}:</strong> {formatValue(key, value)}
+          </div>
+        ))}
+      </div>
 
-			<div style={{ display: "flex", justifyContent: "space-between" }}>
-				<button type="button" onClick={onBack}>
-					Tilbage
-				</button>
-				<button type="button" onClick={onNext}>
-					Bekræft og fortsæt
-				</button>
-			</div>
-		</div>
-	);
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button type="button" onClick={onBack}>
+          Tilbage
+        </button>
+        <button type="button" onClick={onNext}>
+          Bekræft og fortsæt
+        </button>
+      </div>
+    </div>
+  );
 };
 
 const formatLabel = (key: string) => {
-	return key
-		.replace(/([A-Z])/g, " $1")
-		.replace(/^./, (str) => str.toUpperCase());
+  return key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (str) => str.toUpperCase());
 };
 
 const formatValue = (key: string, value: any) => {
-	if (key === "type") {
-		if (value === "GIFT_CARD") return "Gavekort";
-		if (value === "PREPAID_CARD") return "Klippekort";
-	}
-	return String(value);
+  if (key === "type") {
+    if (value === "GIFT_CARD") return "Gavekort";
+    if (value === "PREPAID_CARD") return "Klippekort";
+  }
+  return String(value);
 };

@@ -1,8 +1,0 @@
-node_modules
-dist
-docker-compose.yml
-.env
-.env.test
-.env.prod
-settings.json
-

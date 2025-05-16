@@ -1,13 +1,35 @@
 {
 	"name": "creditaccount",
 	"version": "1.0.0",
+	"type": "module",
 	"scripts": {
 		"dev:api": "pnpm --filter api dev",
 		"dev:demo": "pnpm --filter demo dev",
 		"dev:customerdemo": "pnpm --filter customerdemo dev",
-		"dev:test": "pnpm --filter api test"
+		"dev:test": "pnpm --filter api test",
+		"dev:studio": "pnpm --filter api dev:studio",
+		"dev:credit": "pnpm --filter credit-service dev",
+		"dev:payment": "pnpm --filter payment-service dev",
+		"dev:gateway": "pnpm --filter gateway dev",
+		"dev:notification": "pnpm --filter notification-service dev",
+		"migrate:payment": "pnpm --filter payment-service migrate",
+		"migrate:credit": "pnpm --filter credit-service migrate",
+		"generate:payment": "pnpm --filter payment-service generate",
+		"generate:credit": "pnpm --filter credit-service generate",
+		"studio:payment": "pnpm --filter payment-service studio",
+		"studio:credit": "pnpm --filter credit-service studio",
+		"codegen:payment": "pnpm --filter payment-service codegen",
+		"codegen:credit": "pnpm --filter credit-service codegen",
+		"format": "prettier --write .",
+		"check-format": "prettier --check ."
 	},
 	"dependencies": {
 		"cors": "^2.8.5"
+	},
+	"devDependencies": {
+		"@graphql-codegen/cli": "5.0.5",
+		"prettier": "^3.5.3",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.19.4"
 	}
 }

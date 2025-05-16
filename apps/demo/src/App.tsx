@@ -13,26 +13,26 @@ import AdminCardCreationPage from "./pages/CreditAccount/AdminCardCreationPage";
 import { AdminSuccessPage } from "./pages/CreditAccount/AdminSuccessPage";
 
 function App() {
-	return (
-		<BrowserRouter>
-			<Layout>
-				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path="/customer" element={<CustomerPage />} />
-					<Route path="/admin" element={<AdminPage />} />
-					<Route path="/account/:code" element={<AccountPage />} />
-					<Route path="/giftcard/create" element={<GiftCardFlowManager />} />
-					<Route path="/admin/create" element={<AdminCardCreationPage />} />
-					<Route path="/transactions" element={<TransactionsPage />} />
-					<Route path="/admin/create/success" element={<AdminSuccessPage />} />
-					<Route
-						path="/prepaidcard/create"
-						element={<PrepaidCardFlowManager />}
-					/>
-					<Route path="/*" element={<NotFoundPage />} />
-				</Routes>
-			</Layout>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/customer" element={<CustomerPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/account/:code" element={<AccountPage />} />
+          <Route path="/giftcard/create" element={<GiftCardFlowManager />} />
+          <Route path="/admin/create" element={<AdminCardCreationPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/admin/create/success" element={<AdminSuccessPage />} />
+          <Route
+            path="/prepaidcard/create"
+            element={<PrepaidCardFlowManager />}
+          />
+          <Route path="/*" element={<NotFoundPage />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  );
 }
 export default App;

@@ -2,39 +2,39 @@ import type React from "react";
 import { theme } from "../ui/theme";
 
 type ContentWindowProps = {
-	title: string;
-	children: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
 };
 
 export const ContentWindow: React.FC<ContentWindowProps> = ({
-	title,
-	children,
+  title,
+  children,
 }) => {
-	return (
-		<div
-			style={{
-				border: "1px solid #ccc",
-				borderRadius: "6px",
-				padding: "10px",
-				margin: "0 auto 10px",
-				boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-				maxWidth: "600px",
-				width: "100%",
-			}}
-		>
-			<h2
-				style={{
-					marginBottom: "10px",
-					fontSize: "1.5rem",
-					textAlign: "center",
-					color: theme.colors.headingColor,
-				}}
-			>
-				{title}
-			</h2>
-			<div style={{ fontSize: "1rem", color: "#333", textAlign: "center" }}>
-				{children}
-			</div>
-		</div>
-	);
+  return (
+    <div
+      style={{
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        padding: "10px",
+        margin: "0 auto 10px",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+        maxWidth: "600px",
+        width: "100%",
+      }}
+    >
+      <h2
+        style={{
+          marginBottom: "10px",
+          fontSize: "1.5rem",
+          textAlign: "center",
+          color: theme.colors.headingColor,
+        }}
+      >
+        {title}
+      </h2>
+      <div style={{ fontSize: "1rem", color: "#333", textAlign: "center" }}>
+        {children}
+      </div>
+    </div>
+  );
 };

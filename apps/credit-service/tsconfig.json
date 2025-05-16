@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"target": "ES2020",
+		"esModuleInterop": true,
+		"moduleDetection": "force",
+		"skipLibCheck": true,
+		"strict": true,
+		"outDir": "dist",
+		"noEmit": true,
+		"allowImportingTsExtensions": true
+	},
+	"include": ["src", "../../packages/rabbitmq/src"]
+}

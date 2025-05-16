@@ -1,4 +1,4 @@
-'use client'
-export default function Page(){
-    return (<div>Booking page</div>)
+"use client";
+export default function Page() {
+  return <div>Booking page</div>;
 }
