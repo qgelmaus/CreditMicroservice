@@ -26,6 +26,18 @@ export abstract class CreditAccount {
     return this.id;
   }
 
+  getCreditCode(): string {
+    return this.creditCode;
+  }
+
+  getExpirationDate(): Date {
+    return this.expiresAt;
+  }
+
+  getEmail(): string {
+    return this.email;
+  }
+
   activate() {
     this.isActive = true;
   }
