@@ -1,6 +1,6 @@
 .button {
 	padding: 0.5rem 1rem;
-	background-color: #573abd;
+	background-color: #408da0;
 	color: white;
 	border: none;
 	border-radius: 8px;
@@ -10,5 +10,5 @@
 }
 
 .button:hover {
-	background-color: #333;
+	background-color: #2a5d69;
 }

@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev:api": "pnpm --filter api dev",
 		"dev:demo": "pnpm --filter demo dev",
-		"dev:customerdemo": "pnpm --filter customerdemo dev",
+		"dev:customer": "pnpm --filter customer-web dev",
+		"dev:admin": "pnpm --filter admin-web dev",
 		"dev:test": "pnpm --filter api test",
 		"dev:studio": "pnpm --filter api dev:studio",
 		"dev:credit": "pnpm --filter credit-service dev",

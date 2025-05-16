@@ -9,18 +9,18 @@
 	font-weight: 500;
 }
 
-.input {
+.select {
 	padding: 8px;
-	border: 1px solid #f7f7f7;
-	color: #ccc;
+	border: 1px solid #ccc;
 	border-radius: 6px;
 	font-size: 1rem;
+	background-color: white;
+	color: #111;
 }
 
-.input:focus {
-	border-color: #ffffff;
-	color: white;
+.select:focus {
 	outline: none;
+	border-color: #111;
 }
 
 .error {

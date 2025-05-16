@@ -1,11 +1,1 @@
-export { Button } from "./components/Button/Button";
-export { Input } from "./components/Input/Input";
-export { Card } from "./components/Card/Card";
-export { FormRow } from "./components/FormRow/FormRow";
-export { Section } from "./components/Section/Section";
-export { PageHeader } from "./components/PageHeader/PageHeader";
-export { Grid } from "./components/Grid/Grid";
-export { Badge } from "./components/Badge/Badge";
-export { Tag } from "./components/Tag/Tag";
-export { Container } from "./components/Container/Container";
-export { PageShell } from "./components/PageShell/PageShell";
+export * from "./components";
