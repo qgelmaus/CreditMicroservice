@@ -64,7 +64,7 @@ export class PaymentDetails {
     this.paymentStatus = PaymentStatus.REFUNDED;
   }
 
-  setStatus(newStatus: PaymentStatus): void {
+  setStatus(newStatus: PaymentStatus): PaymentDetails {
     const allowed: PaymentStatus[] = [
       PaymentStatus.PENDING,
       PaymentStatus.COMPLETED,
@@ -81,6 +81,8 @@ export class PaymentDetails {
     if (newStatus === PaymentStatus.COMPLETED) {
       this.paymentDate = new Date();
     }
+
+    return this;
   }
 
   getId(): string {

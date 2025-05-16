@@ -16,6 +16,22 @@ export function toDomain(paymentDetails: PrismaPayment): PaymentDetails {
   });
 }
 
-export function toDTO(domain: PaymentDetails): PaymentDetailsDTO {
-  return domain.toDTO();
+export function toDTO(paymentDetails: PaymentDetails): PaymentDetailsDTO {
+  const id = (paymentDetails as any).id;
+  const createdAt = (paymentDetails as any).createdAt;
+
+  if (!id || !createdAt) {
+    throw new Error("Cannot convert to DTO without id and createdAt");
+  }
+
+  return {
+    id,
+    email: (paymentDetails as any).email,
+    amountMoney: (paymentDetails as any).amountMoney,
+    paymentMethod: (paymentDetails as any).paymentMethod,
+    paymentStatus: (paymentDetails as any).paymentStatus,
+    paymentDate: (paymentDetails as any).paymentDate,
+    reference: (paymentDetails as any).reference,
+    createdAt,
+  };
 }

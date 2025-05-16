@@ -32,7 +32,8 @@ export async function createCreditAccount(
         mutation CreateCreditAccount($input: CreateCreditAccountInput!) {
           createCreditAccount(input: $input) {
             creditCode
-            isActive
+      email
+      originalMoney
           }
         }
       `,

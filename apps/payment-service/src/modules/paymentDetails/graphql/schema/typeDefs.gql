@@ -34,17 +34,16 @@ input CreatePaymentInput {
 	reference: String!
 }
 
-input ChangePaymentStatusInput {
+input ChangeStatusInput {
 	id: String!
-	PaymentStatus: PaymentStatus!
+	status: PaymentStatus!
 }
 
 type Mutation {
 	createPayment(input: CreatePaymentInput!): PaymentDetails!
-	changePaymentStatus(input: ChangePaymentStatusInput!): PaymentDetails!
+	changeStatus(input: ChangeStatusInput!): PaymentDetails!
 }
 
 type Query {
 	allPayments: [PaymentDetails!]!
-	getPayment(id: String!): PaymentDetails!
 }
