@@ -35,3 +35,6 @@
 - [ ] Del skemaer op i steps (type → detaljer → betaling)
 - [ ] Delte valideringsskemaer mellem frontend og backend?
 - [ ] Vis valideringsfejl i UI og blokér navigation/submit ved fejl
+
+## Payment-service
+- Omdøb PaymentDetails til Payment
