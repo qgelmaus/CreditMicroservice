@@ -34,6 +34,7 @@ export async function createCreditAccount(
             creditCode
       email
       originalMoney
+      isActive
           }
         }
       `,
