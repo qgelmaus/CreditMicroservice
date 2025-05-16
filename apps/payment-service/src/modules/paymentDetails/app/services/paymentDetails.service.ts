@@ -27,8 +27,6 @@ export class PaymentDetailsService {
     const payment = PaymentDetailsFactory.createNew(input);
     const saved = await this.repo.create(payment);
 
-    console.log("Saved i service: ", saved);
-
     return toDTO(saved);
   }
 

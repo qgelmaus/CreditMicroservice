@@ -18,5 +18,6 @@ startStandaloneServer(server, {
   context: buildContext,
   listen: { port: 4002 },
 }).then(({ url }) => {
-  console.log(`🚀 Payment service ready at ${url}`);
+  console.log("===============================");
+  console.log(`Payment service ready at ${url}`);
 });

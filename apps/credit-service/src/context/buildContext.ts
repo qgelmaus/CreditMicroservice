@@ -7,7 +7,6 @@ import { CreditTransferRepository } from "../modules/creditaccount/infrastructur
 import { RabbitEventPublisher } from "packages/rabbitmq/src/index.ts";
 
 export const buildContext = async (ctx: any) => {
-  console.log("🧪 ctx.request.body:", ctx?.request?.body);
   const isIntrospection =
     ctx?.request?.body?.query?.includes("__schema") ?? false;
 
@@ -21,7 +20,7 @@ export const buildContext = async (ctx: any) => {
       await eventPublisher.connect();
       console.log("RabbitMQ connected");
     } catch (err) {
-      console.error("❌ RabbitMQ connection failed:", err);
+      console.error("RabbitMQ connection failed:", err);
       throw err;
     }
   }

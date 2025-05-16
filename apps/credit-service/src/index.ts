@@ -18,8 +18,8 @@ const bootstrap = async () => {
     context: buildContext,
     listen: { port: 4001 },
   });
-
-  console.log(`🚀 Credit service ready at ${url}`);
+  console.log("===============================");
+  console.log(` Credit service ready at ${url}`);
 
   try {
     await startConsumer();
