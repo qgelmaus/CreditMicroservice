@@ -11,6 +11,7 @@
 		"dev:credit": "pnpm --filter credit-service dev",
 		"dev:payment": "pnpm --filter payment-service dev",
 		"dev:gateway": "pnpm --filter gateway dev",
+		"dev:notification": "pnpm --filter notification-service dev",
 		"migrate:payment": "pnpm --filter payment-service migrate",
 		"migrate:credit": "pnpm --filter credit-service migrate",
 		"generate:payment": "pnpm --filter payment-service generate",

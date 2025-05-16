@@ -19,6 +19,11 @@ import type { CreditTransactionRepository } from "../../infrastructure/repositor
 import type { CreditTransferRepository } from "../../infrastructure/repository/creditTransfer.repository.ts";
 import type { DomainEventPublisher } from "packages/rabbitmq/src/types.ts";
 import { CreditAccountType } from "apps/credit-service/src/prisma/generated/client/index.js";
+import {
+  GiftAccountCreatedEvent,
+  PrepaidAccountCreatedEvent,
+} from "../../domain/events/creditAccountCreated.ts";
+import type { PrepaidAccount } from "../../domain/CreditAccount.ts";
 
 export class CreditAccountService {
   constructor(
@@ -71,7 +76,20 @@ export class CreditAccountService {
       saved.originalMoney
     );
 
-    return toDTO(toDomain(saved));
+    const newAccount = toDomain(saved);
+
+    await this.eventPublisher.publish(
+      new GiftAccountCreatedEvent({
+        creditCode: newAccount.getCreditCode(),
+        email: newAccount.getEmail(),
+        type: newAccount.getTypeAsString(),
+        originalCredits: newAccount.getOriginalCredits(),
+        originalMoney: newAccount.getOriginalMoney(),
+        expiresAt: newAccount.getExpirationDate(),
+      })
+    );
+
+    return toDTO(newAccount);
   }
 
   async createPrepaidAccount(
@@ -79,8 +97,6 @@ export class CreditAccountService {
     pricePerTreatment: number,
     email: string
   ): Promise<CreditAccountDTO> {
-    const discount = treatmentCount === 5 ? 0.12 : 0.16;
-
     const account = createNewCreditAccount({
       type: CreditAccountType.PREPAID_CARD,
       email,
@@ -95,8 +111,21 @@ export class CreditAccountService {
       saved.originalCredits,
       saved.originalMoney
     );
+    const newAccount = toDomain(saved) as PrepaidAccount;
 
-    return toDTO(toDomain(saved));
+    await this.eventPublisher.publish(
+      new PrepaidAccountCreatedEvent({
+        creditCode: newAccount.getCreditCode(),
+        email: newAccount.getEmail(),
+        type: newAccount.getTypeAsString(),
+        originalCredits: newAccount.getOriginalCredits(),
+        originalMoney: newAccount.getOriginalMoney(),
+        treatmentCount: newAccount.getTreatmentCount(),
+        expiresAt: newAccount.getExpirationDate(),
+      })
+    );
+
+    return toDTO(newAccount);
   }
 
   async activateAccount(creditCode: string): Promise<void> {

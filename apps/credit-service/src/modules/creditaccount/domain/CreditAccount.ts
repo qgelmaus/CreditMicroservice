@@ -26,6 +26,18 @@ export abstract class CreditAccount {
     return this.id;
   }
 
+  getCreditCode(): string {
+    return this.creditCode;
+  }
+
+  getExpirationDate(): Date {
+    return this.expiresAt;
+  }
+
+  getEmail(): string {
+    return this.email;
+  }
+
   activate() {
     this.isActive = true;
   }
@@ -59,6 +71,11 @@ export abstract class CreditAccount {
 
   getOriginalMoney(): number {
     return this.originalMoney.getAmount();
+  }
+
+  getTypeAsString(): string {
+    if (this.type === CreditAccountType.GIFT_CARD) return "GIFT_CARD";
+    return "PREPAID_CARD";
   }
 
   getDataToPersist() {
@@ -185,6 +202,10 @@ export class PrepaidAccount extends CreditAccount {
       expiresAt,
       transactions
     );
+  }
+
+  getTreatmentCount(): number {
+    return this.treatmentCount;
   }
 
   useCredits(cost: number) {
