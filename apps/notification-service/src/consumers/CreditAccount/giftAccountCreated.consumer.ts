@@ -1,5 +1,5 @@
 import type { Channel } from "amqplib";
-import { sendCreditAccountEmail } from "../../email/sendCreditAccountEmail.ts";
+import { sendGiftAccountEmail } from "../../email/sendCreditAccountEmail.ts";
 
 export const setupConsumers = async (channel: Channel) => {
   const exchange = "domain_events";
@@ -12,14 +12,21 @@ export const setupConsumers = async (channel: Channel) => {
   channel.consume(queue, async (msg) => {
     if (msg) {
       const event = JSON.parse(msg.content.toString());
-      console.log("📥 Received event:", event);
+      console.log("📥 Received gift-account event:", event);
 
-      const { email, creditCode, originalMoney, originalCredits, expiresAt } =
-        event.payload;
-
-      await sendCreditAccountEmail(
+      const {
         email,
         creditCode,
+        originalMoney,
+        originalCredits,
+        expiresAt,
+        type,
+      } = event.payload;
+
+      await sendGiftAccountEmail(
+        email,
+        creditCode,
+        type,
         originalCredits,
         originalMoney,
         expiresAt

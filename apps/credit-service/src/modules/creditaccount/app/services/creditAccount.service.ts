@@ -23,6 +23,7 @@ import {
   GiftAccountCreatedEvent,
   PrepaidAccountCreatedEvent,
 } from "../../domain/events/creditAccountCreated.ts";
+import type { PrepaidAccount } from "../../domain/CreditAccount.ts";
 
 export class CreditAccountService {
   constructor(
@@ -81,6 +82,7 @@ export class CreditAccountService {
       new GiftAccountCreatedEvent({
         creditCode: newAccount.getCreditCode(),
         email: newAccount.getEmail(),
+        type: newAccount.getTypeAsString(),
         originalCredits: newAccount.getOriginalCredits(),
         originalMoney: newAccount.getOriginalMoney(),
         expiresAt: newAccount.getExpirationDate(),
@@ -109,20 +111,21 @@ export class CreditAccountService {
       saved.originalCredits,
       saved.originalMoney
     );
+    const newAccount = toDomain(saved) as PrepaidAccount;
 
     await this.eventPublisher.publish(
       new PrepaidAccountCreatedEvent({
-        creditCode: saved.creditCode,
-        email: saved.email,
-        originalCredits: saved.originalCredits,
-        originalMoney: saved.originalMoney,
-        // biome-ignore lint/style/noNonNullAssertion: can't be null on prepaidaccount
-        treatmentCount: saved.treatmentCount!,
-        expiresAt: saved.expiresAt,
+        creditCode: newAccount.getCreditCode(),
+        email: newAccount.getEmail(),
+        type: newAccount.getTypeAsString(),
+        originalCredits: newAccount.getOriginalCredits(),
+        originalMoney: newAccount.getOriginalMoney(),
+        treatmentCount: newAccount.getTreatmentCount(),
+        expiresAt: newAccount.getExpirationDate(),
       })
     );
 
-    return toDTO(toDomain(saved));
+    return toDTO(newAccount);
   }
 
   async activateAccount(creditCode: string): Promise<void> {

@@ -73,6 +73,11 @@ export abstract class CreditAccount {
     return this.originalMoney.getAmount();
   }
 
+  getTypeAsString(): string {
+    if (this.type === CreditAccountType.GIFT_CARD) return "GIFT_CARD";
+    return "PREPAID_CARD";
+  }
+
   getDataToPersist() {
     return {
       creditCode: this.creditCode,
@@ -197,6 +202,10 @@ export class PrepaidAccount extends CreditAccount {
       expiresAt,
       transactions
     );
+  }
+
+  getTreatmentCount(): number {
+    return this.treatmentCount;
   }
 
   useCredits(cost: number) {
