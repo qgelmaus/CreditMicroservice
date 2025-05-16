@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+      "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react",
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmit": false,
+    "declaration": true,
+      "paths": {
+        "@/*": ["./src/*"],
+        "@ui": ["../../packages/ui/src"]
+      }
+    },
+    "include": ["src"]
+  }
+  

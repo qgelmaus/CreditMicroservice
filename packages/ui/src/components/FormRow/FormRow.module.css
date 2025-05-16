@@ -1,0 +1,7 @@
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 1rem;
+  }
+  

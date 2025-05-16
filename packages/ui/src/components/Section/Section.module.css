@@ -1,0 +1,11 @@
+.section {
+    padding: 2rem 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
