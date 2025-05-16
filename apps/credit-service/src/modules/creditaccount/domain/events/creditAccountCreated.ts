@@ -2,7 +2,7 @@ import type { CreditAccountType } from "apps/credit-service/src/prisma/generated
 import type { DomainEvent } from "packages/rabbitmq/src/types.ts";
 
 export class GiftAccountCreatedEvent implements DomainEvent {
-  name = "creditaccount.created";
+  name = "giftaccount.created";
   occurredAt = new Date();
 
   constructor(
@@ -18,7 +18,7 @@ export class GiftAccountCreatedEvent implements DomainEvent {
 }
 
 export class PrepaidAccountCreatedEvent implements DomainEvent {
-  name = "creditaccount.created";
+  name = "prepaidaccount.created";
   occurredAt = new Date();
 
   constructor(
