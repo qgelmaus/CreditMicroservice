@@ -37,4 +37,4 @@
 - [ ] Vis valideringsfejl i UI og blokér navigation/submit ved fejl
 
 ## Payment-service
-- Omdøb PaymentDetails til Payment
+- [ ] Omdøb PaymentDetails til Payment
