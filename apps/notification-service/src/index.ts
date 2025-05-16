@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { connect } from "amqplib";
-import { setupConsumers } from "./consumers/CreditAccount/creditAccountCreated.consumer.ts";
+import { setupConsumers } from "./consumers/CreditAccount/prepaidAccountCreated.consumer.ts";
 
 const start = async () => {
   if (!process.env.RESEND_API_KEY) {
