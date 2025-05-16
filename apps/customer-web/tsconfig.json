@@ -24,6 +24,6 @@
       "@hovedopgave2025/ui": ["../../packages/ui/src"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../../packages/ui/src"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../../packages/ui/src", "src/app/components/Navigation"],
   "exclude": ["node_modules"]
 }

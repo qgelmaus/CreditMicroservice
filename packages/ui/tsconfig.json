@@ -14,6 +14,6 @@
         "@ui": ["../../packages/ui/src"]
       }
     },
-    "include": ["src"]
+    "include": ["src", "../../apps/customer-web/src/app/components/Navigation"]
   }
   

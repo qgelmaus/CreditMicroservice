@@ -12,11 +12,12 @@ import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <PageShell>
+    <div>
+
       <PageHeader
         title="Velkommen til RaskRask Gavekort"
         subtitle="Giv velvære – hurtigt og nemt"
-      />
+        />
 
       <Section>
         <Card>
@@ -41,6 +42,7 @@ export default function LandingPage() {
           <li>3. Betal online – modtageren får en email med gavekort</li>
         </ul>
       </Section>
-    </PageShell>
+        </div>
+    
   );
 }
