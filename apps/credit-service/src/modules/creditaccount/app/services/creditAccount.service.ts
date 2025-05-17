@@ -24,6 +24,10 @@ import {
   PrepaidAccountCreatedEvent,
 } from "../../domain/events/creditAccountCreated.ts";
 import type { PrepaidAccount } from "../../domain/CreditAccount.ts";
+import {
+  CreditAccountTypeEnum,
+  NewCreditAccountInput,
+} from "apps/credit-service/src/shared/types/input.types.ts";
 
 export class CreditAccountService {
   constructor(
@@ -34,28 +38,19 @@ export class CreditAccountService {
   ) {}
 
   async createCreditAccount(
-    email: string,
-    type: CreditAccountType,
-    treatmentCount?: number,
-    pricePerTreatment?: number,
-    purchaseAmount?: number
+    input: NewCreditAccountInput
   ): Promise<CreditAccountDTO> {
-    if (type === CreditAccountType.GIFT_CARD && purchaseAmount != null)
-      return this.createGiftAccount(purchaseAmount, email);
-    if (
-      type === CreditAccountType.PREPAID_CARD &&
-      treatmentCount != null &&
-      pricePerTreatment != null
-    )
+    const { type, email } = input;
+    if (type === CreditAccountType.GIFT_CARD)
+      return this.createGiftAccount(input.purchaseAmount, email);
+    if (type === CreditAccountType.PREPAID_CARD)
       return this.createPrepaidAccount(
-        treatmentCount,
-        pricePerTreatment,
+        input.treatmentCount,
+        input.pricePerTreatment,
         email
       );
 
-    throw new Error(
-      `Ugyldigt input til createCreditAccount. Type: ${type}, purchaseAmount: ${purchaseAmount}, treatmentCount: ${treatmentCount}, pricePerTreatment: ${pricePerTreatment}`
-    );
+    throw new Error(`Ugyldigt input til createCreditAccount. Type: ${type}`);
   }
 
   async createGiftAccount(
@@ -63,9 +58,9 @@ export class CreditAccountService {
     email: string
   ): Promise<CreditAccountDTO> {
     const account = createNewCreditAccount({
-      type: CreditAccountType.GIFT_CARD,
+      type: CreditAccountTypeEnum.GIFT_CARD,
       email,
-      originalAmount: purchaseAmount,
+      purchaseAmount: purchaseAmount,
     });
 
     const saved = await this.accountRepo.create(account.getDataToPersist());
@@ -98,7 +93,7 @@ export class CreditAccountService {
     email: string
   ): Promise<CreditAccountDTO> {
     const account = createNewCreditAccount({
-      type: CreditAccountType.PREPAID_CARD,
+      type: CreditAccountTypeEnum.PREPAID_CARD,
       email,
       pricePerTreatment,
       treatmentCount,

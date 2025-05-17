@@ -1,5 +1,8 @@
+import { NewCreditAccountInput } from "apps/credit-service/src/shared/types/input.types.ts";
 import type { MutationResolvers } from "../../../../../../shared/types/codegen.types.ts";
 import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL.ts";
+import { toInternalEnum } from "../../../../infrastructure/mappers/creditaccount.mapper.ts";
+import { toServiceInput } from "../../../../infrastructure/helpers/mapToNewCreditAccountInput.ts";
 
 export const createGiftAccount: MutationResolvers["createGiftAccount"] = async (
   _parent,
@@ -31,8 +34,6 @@ export const createPrepaidAccount: MutationResolvers["createPrepaidAccount"] =
 
 export const createCreditAccount: MutationResolvers["createCreditAccount"] =
   async (_parent, args, context) => {
-    console.log("📥 args.input:", args.input);
-
     if (!args.input) {
       console.error("❌ FEJL: input er undefined i createCreditAccount!");
       throw new Error("Input mangler");
@@ -41,11 +42,7 @@ export const createCreditAccount: MutationResolvers["createCreditAccount"] =
     const { input } = args;
 
     const account = await context.creditAccountService.createCreditAccount(
-      input.email,
-      input.type,
-      input.treatmentCount,
-      input.pricePerTreatment,
-      input.purchaseAmount
+      toServiceInput(input)
     );
 
     return mapToGraphQL(account);

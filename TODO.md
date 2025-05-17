@@ -1,10 +1,10 @@
 #  TODO
 
 ##  Tests
-- [ ] Opret testsetup (Jest + tsconfig + `test-utils`)
-- [ ] Unit tests for domænemodeller (`Credits`, `Money`, `CreditAccount`)
-- [ ] Service-lag tests med mocks (`CreditAccountService`, `PaymentService`, osv.)
-- [ ] GraphQL integration tests (mutationer og queries)
+- [x] Opret testsetup (Jest + tsconfig + `test-utils`)
+- [x] Unit tests for domænemodeller (`Credits`, `Money`, `CreditAccount`)
+- [x] Service-lag tests med mocks (`CreditAccountService`, `PaymentService`, osv.)
+- [x] GraphQL integration tests (mutationer og queries)
 - [ ] RabbitMQ publisher/consumer tests (evt. med fake channel)
 - [ ] CI-kompatibel testkørsel (lokalt og evt. GitHub Actions)
 

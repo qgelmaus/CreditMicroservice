@@ -42,6 +42,14 @@ export abstract class CreditAccount {
     this.isActive = true;
   }
 
+  getAvailableCredits(): Credits {
+    return this._availableCredits;
+  }
+
+  getAvailableMoney(): Money {
+    return this._availableMoney;
+  }
+
   useCredits(cost: number) {}
   refundCredits(cost: number) {}
   transferCreditsToAccount(amount: number) {}

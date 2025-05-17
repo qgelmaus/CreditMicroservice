@@ -1,3 +1,4 @@
+import { CreditAccountTypeEnum } from "apps/credit-service/src/shared/types/input.types.ts";
 import type {
   CreditTransaction,
   CreditTransfer,
@@ -96,4 +97,10 @@ export function toTransferDTO(entity: CreditTransfer): CreditTransferDTO {
     amount: entity.amount,
     createdAt: entity.createdAt,
   };
+}
+
+export function toInternalEnum(type: string): CreditAccountTypeEnum {
+  if (type === "GIFT_CARD") return CreditAccountTypeEnum.GIFT_CARD;
+  if (type === "PREPAID_CARD") return CreditAccountTypeEnum.PREPAID_CARD;
+  throw new Error(`Ukendt type: ${type}`);
 }
