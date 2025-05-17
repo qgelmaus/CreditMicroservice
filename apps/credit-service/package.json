@@ -10,7 +10,7 @@
 		"studio": "prisma studio --schema=src/prisma/schema.prisma",
 		"codegen": "graphql-codegen --config codegen.ts",
 		"build": "tsc -p tsconfig.json",
-		"test": "jest --config jest.config.ts"
+		"test": "cross-env NODE_ENV=test jest"
 	},
 	"dependencies": {
 		"@apollo/server": "^4.8.1",

@@ -1,21 +1,18 @@
-import { gql } from "graphql-tag";
-import fs from "node:fs";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
-
 import {
   creditAccountResolver,
   flowResolvers,
 } from "../../app/resolvers/index.ts";
-
 import type { Resolvers } from "../../../../shared/types/codegen.types.ts";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let typeDefs;
 
-const typeDefs = gql(
-  fs.readFileSync(path.join(__dirname, "./typeDefs.gql"), "utf8")
-);
+if (process.env.NODE_ENV === "test") {
+  const { loadTypeDefsForTest } = await import("./loadTypeDefsForTest.ts");
+  typeDefs = loadTypeDefsForTest();
+} else {
+  const { loadTypeDefs } = await import("./loadTypeDefs.ts");
+  typeDefs = loadTypeDefs();
+}
 
 export const creditAccountModule = {
   typeDefs,

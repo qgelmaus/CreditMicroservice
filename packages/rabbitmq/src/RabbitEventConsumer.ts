@@ -10,6 +10,10 @@ export class RabbitEventConsumer {
   ) {}
 
   async start() {
+    if (process.env.SKIP_RABBITMQ === "true") {
+      console.log("Skipping RabbitMQ startup (CI mode)");
+      return;
+    }
     const conn = await connect("amqp://guest:guest@localhost");
     const channel = await conn.createChannel();
 

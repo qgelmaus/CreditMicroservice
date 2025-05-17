@@ -13,6 +13,11 @@ export class RabbitEventPublisher implements DomainEventPublisher {
   }
 
   async connect() {
+    if (process.env.SKIP_RABBITMQ === "true") {
+      console.log("🔕 RabbitMQ consumer disabled via SKIP_RABBITMQ");
+      return;
+    }
+
     const conn = await amqp.connect("amqp://guest:guest@localhost");
     const chan = await conn.createChannel();
 

@@ -10,8 +10,8 @@
 
 ## Customer-web
 - [ ] Flow til oprettelse af kreditbeholdning
-  - [ ] Typevalg (GIFT_CARD / PREPAID_CARD)
-  - [ ] Email + evt. validering
+  - [x] Typevalg (GIFT_CARD / PREPAID_CARD)
+  - [x] Email + evt. validering
   - [ ] Udfyldning af klip, pris osv.
   - [ ] Valg og udførsel af betaling
 - [ ] GraphQL-integration via Apollo Client
@@ -22,7 +22,6 @@
 ## Admin-web
 - [ ] Login og autentifikation (evt. hardcoded i første omgang)
 - [ ] Overblik over eksisterende konti
-- [ ] Oprettelse af konti uden betaling
 - [ ] Mulighed for at sende QR-kode / faktura (placeholder funktionalitet)
 - [ ] Mulighed for at refundere (via mutationer)
 - [ ] Intern note-visning og redigering?
