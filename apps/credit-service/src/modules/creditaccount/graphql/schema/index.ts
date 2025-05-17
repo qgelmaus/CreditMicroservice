@@ -10,6 +10,9 @@ import {
 
 import type { Resolvers } from "../../../../shared/types/codegen.types.ts";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const typeDefs = gql(
   fs.readFileSync(path.join(__dirname, "./typeDefs.gql"), "utf8")
 );

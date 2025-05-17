@@ -5,7 +5,7 @@
 - [x] Unit tests for domænemodeller (`Credits`, `Money`, `CreditAccount`)
 - [x] Service-lag tests med mocks (`CreditAccountService`, `PaymentService`, osv.)
 - [x] GraphQL integration tests (mutationer og queries)
-- [ ] RabbitMQ publisher/consumer tests (evt. med fake channel)
+- [x] RabbitMQ publisher/consumer tests (evt. med fake channel)
 - [ ] CI-kompatibel testkørsel (lokalt og evt. GitHub Actions)
 
 ## Customer-web

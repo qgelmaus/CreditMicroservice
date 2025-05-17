@@ -1,8 +1,7 @@
-// apps/credit-service/jest.config.ts
 import type { Config } from "jest";
 
 const config: Config = {
-  preset: "ts-jest/presets/default-esm", // 👈 vigtigt: ESM preset
+  preset: "ts-jest/presets/default-esm",
   testEnvironment: "node",
   transform: {
     "^.+\\.ts$": ["ts-jest", { tsconfig: "./tsconfig.jest.json" }],
