@@ -21,7 +21,7 @@ export class RabbitEventConsumer {
     channel.consume(queue.queue, async (msg) => {
       if (!msg) return;
       const event = JSON.parse(msg.content.toString());
-      await this.handler(event); // kalder brugerens handler
+      await this.handler(event);
       channel.ack(msg);
     });
   }
