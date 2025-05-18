@@ -33,7 +33,7 @@ export async function createStripeCheckoutSession({
       paymentId,
     },
     success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    cancel_url: `${process.env.FRONTEND_URL}/failure`,
   });
 
   return session.url!;
