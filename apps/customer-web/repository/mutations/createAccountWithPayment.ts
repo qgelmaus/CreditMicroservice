@@ -10,6 +10,7 @@ export const CREATE_ACCOUNT_AND_PAYMENT_MUTATION = gql(`
         paymentDetails {
           id
           email
+          stripeUrl
         }
       }
     }

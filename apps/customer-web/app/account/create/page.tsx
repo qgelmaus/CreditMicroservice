@@ -108,9 +108,10 @@ export default function CreateCreditFlow() {
 				purchaseAmount: parseInt(amount),
 				paymentMethod: selectedPaymentOption,
 			});
-			if (result) {
-				console.log("Payment successful:", result);
-				setFlowState("success");
+			
+			if (result.paymentDetails.stripeUrl) {
+				window.location.href = result.paymentDetails.stripeUrl;
+				
 			}
 		} catch (error) {
 			console.error("Error creating account and completing payment:", error);

@@ -224,6 +224,12 @@ importers:
       amqplib:
         specifier: 0.10.6
         version: 0.10.6
+      body-parser:
+        specifier: ^2.2.0
+        version: 2.2.0
+      express:
+        specifier: ^5.1.0
+        version: 5.1.0
       graphql:
         specifier: ^16.7.1
         version: 16.11.0
@@ -240,6 +246,18 @@ importers:
       '@types/amqplib':
         specifier: ^0.10.6
         version: 0.10.6
+      '@types/body-parser':
+        specifier: ^1.19.5
+        version: 1.19.5
+      '@types/cors':
+        specifier: ^2.8.18
+        version: 2.8.18
+      '@types/express':
+        specifier: 4.17.21
+        version: 4.17.21
+      '@types/express-serve-static-core':
+        specifier: 4.19.6
+        version: 4.19.6
       '@types/node':
         specifier: ^20
         version: 20.17.47
@@ -1294,6 +1312,9 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
+
+  '@types/cors@2.8.18':
+    resolution: {integrity: sha512-nX3d0sxJW41CqQvfOzVG1NCTXfFDrDWIghCZncpHeWlVFd81zxB/DLhg7avFg6eHLCRX7ckBmoIIcqa++upvJA==}
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
@@ -5218,6 +5239,10 @@ snapshots:
       '@types/node': 20.17.47
 
   '@types/connect@3.4.38':
+    dependencies:
+      '@types/node': 20.17.47
+
+  '@types/cors@2.8.18':
     dependencies:
       '@types/node': 20.17.47
 
