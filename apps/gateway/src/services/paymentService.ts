@@ -34,6 +34,7 @@ export async function createPaymentDetails(
             email
             paymentStatus
             reference
+            stripeUrl
           }
         }
       `,

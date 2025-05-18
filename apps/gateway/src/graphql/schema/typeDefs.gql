@@ -56,4 +56,5 @@ type RemotePaymentDetails {
   email: String!
   reference: String!
   paymentStatus: PaymentStatus!
+  stripeUrl: String
 }
