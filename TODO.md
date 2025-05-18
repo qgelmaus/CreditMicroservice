@@ -1,5 +1,8 @@
 #  TODO
 
+## Projekt
+ - [ ] Lav et script der starter alle services 
+
 ##  Tests
 - [x] Opret testsetup (Jest + tsconfig + `test-utils`)
 - [x] Unit tests for domænemodeller (`Credits`, `Money`, `CreditAccount`)
