@@ -7,6 +7,8 @@ export const creditMutations = {
     _: unknown,
     { input }: { input: CreateAndCompleteInput }
   ) => {
+    console.log("Payload ind i gateway: ", input);
+
     const creditAccount = await createCreditAccount(input);
 
     const reference = `CREDIT:${creditAccount.creditCode}`;

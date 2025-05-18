@@ -2,58 +2,58 @@ type Query
 type Mutation
 
 enum CreditAccountType {
-	GIFT_CARD
-	PREPAID_CARD
+  GIFT_CARD
+  PREPAID_CARD
 }
 
 enum PaymentMethod {
-	STRIPE
-	MOBILEPAY
+  STRIPE
+  MOBILEPAY
 }
 
 enum PaymentStatus {
-	PENDING
-	COMPLETED
-	FAILED
-	REFUNDED
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }
 
 input CreateAndCompleteInput {
-	email: String!
-	type: CreditAccountType!
-	treatmentCount: Int
-	pricePerTreatment: Float
-	purchaseAmount: Float
-	paymentMethod: PaymentMethod!
+  email: String!
+  type: CreditAccountType!
+  treatmentCount: Int
+  pricePerTreatment: Float
+  purchaseAmount: Float
+  paymentMethod: PaymentMethod!
 }
 
 type CreateAndCompleteResponse {
-	creditAccount: RemoteCreditAccount!
-	paymentDetails: RemotePaymentDetails!
+  creditAccount: RemoteCreditAccount!
+  paymentDetails: RemotePaymentDetails!
 }
 
 type Mutation {
-	createCreditAccountAndCompletePayment(
-		input: CreateAndCompleteInput!
-	): CreateAndCompleteResponse!
+  createCreditAccountAndCompletePayment(
+    input: CreateAndCompleteInput!
+  ): CreateAndCompleteResponse!
 }
 
 type Query {
-	_empty: String
+  _empty: String
 }
 
 # Dummy types for return only – not merged with subschemas
 type RemoteCreditAccount {
-	id: String!
-	email: String!
-	originalMoney: Float!
-	creditCode: String!
-	isActive: Boolean!
+  id: String!
+  email: String!
+  originalMoney: Float!
+  creditCode: String!
+  isActive: Boolean!
 }
 
 type RemotePaymentDetails {
-	id: String!
-	email: String!
-	reference: String!
-	paymentStatus: PaymentStatus!
+  id: String!
+  email: String!
+  reference: String!
+  paymentStatus: PaymentStatus!
 }
