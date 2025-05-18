@@ -7,7 +7,7 @@ interface CreateAndCompleteInput {
   type: "GIFT_CARD" | "PREPAID_CARD";
   treatmentCount?: number;
   pricePerTreatment?: number;
-  purchaseAmount: number;
+  purchaseAmount?: number;
   paymentMethod: "STRIPE" | "MOBILEPAY";
 }
 

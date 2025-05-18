@@ -5,7 +5,7 @@ import {
 	Grid,
 } from "@hovedopgave2025/ui";
 import { useCreateAndCompleteAccount } from "./hook";
-import * as steps from "./steps";
+import {ChooseTypeStep, EmailStep, GiftDetailsStep, PrepaidDetailsStep, SummaryStep, PaymentStep} from "./steps";
 
 
 enum FlowState {
@@ -24,23 +24,24 @@ export default function CreateCreditFlow() {
 	const [selectedType, setSelectedType] = useState<"GIFT_CARD" | "PREPAID_CARD">("GIFT_CARD");
 	const [selectedPaymentOption, setSelectedPaymentOption] = useState<"STRIPE" | "MOBILEPAY">("STRIPE");
 	const [email, setEmail] = useState("");
-	const [amount, setAmount] = useState("");
+	const [amount, setAmount] = useState(0);
 	const [message, setMessage] = useState("");
 	const [treatmentCount, setTreatmentCount] = useState(10);
 	const [pricePerTreatment, setPricePerTreatment] = useState(0);
-	const [submitted, setSubmitted] = useState(false);
 	const [cost, setCost] = useState(0);
 
 	const calculateCost = () => {
 		if (selectedType === "GIFT_CARD") {
-			setCost(parseInt(amount));
+			setCost(amount);
 		}
 		if (selectedType === "PREPAID_CARD") {
 			if (treatmentCount === 5) {
-				setCost(parseInt(amount) * pricePerTreatment * 0.88);
+				setCost(treatmentCount * pricePerTreatment * 0.88);
+				setAmount(treatmentCount * pricePerTreatment);
 			}
 			if (treatmentCount === 10) {
-				setCost(parseInt(amount) * pricePerTreatment * 0.84);
+				setCost(treatmentCount * pricePerTreatment * 0.84)
+				setAmount(treatmentCount * pricePerTreatment)
 			}
 		}
 	};
@@ -53,7 +54,8 @@ export default function CreateCreditFlow() {
 				type: selectedType,
 				treatmentCount: selectedType === "PREPAID_CARD" ? treatmentCount : undefined,
 				pricePerTreatment: selectedType === "PREPAID_CARD" ? pricePerTreatment : undefined,
-				purchaseAmount: parseInt(amount),
+				purchaseAmount: selectedType === "GIFT_CARD" ? amount : undefined,
+				
 				paymentMethod: selectedPaymentOption,
 			});
 			if (result.paymentDetails.stripeUrl) {
@@ -70,32 +72,32 @@ export default function CreateCreditFlow() {
 				<PageHeader title="Ny kreditbeholdning" />
 
 				{flowState === FlowState.ChooseType && (
-					<steps.ChooseTypeStep selectedType={selectedType} setSelectedType={setSelectedType} onContinue={() => setFlowState(FlowState.EnterEmail)} />
+					<ChooseTypeStep selectedType={selectedType} setSelectedType={setSelectedType} onContinue={() => setFlowState(FlowState.EnterEmail)} />
 				)}
 
 				{flowState === FlowState.EnterEmail && (
-					<steps.EmailStep email={email} setEmail={setEmail} onContinue={() => {
+					<EmailStep email={email} setEmail={setEmail} onContinue={() => {
 						if (selectedType === "GIFT_CARD") setFlowState(FlowState.EnterGiftDetails);
 						else setFlowState(FlowState.EnterPrepaidDetails);
 					}} />
 				)}
 
 				{flowState === FlowState.EnterGiftDetails && (
-					<steps.GiftDetailsStep amount={amount} setAmount={setAmount} message={message} setMessage={setMessage} onContinue={() => {
+					<GiftDetailsStep amount={amount} setAmount={setAmount} message={message} setMessage={setMessage} onContinue={() => {
 						calculateCost();
 						setFlowState(FlowState.Summary);
 					}} />
 				)}
 
 				{flowState === FlowState.EnterPrepaidDetails && (
-					<steps.PrepaidDetailsStep treatmentCount={treatmentCount} setTreatmentCount={setTreatmentCount} pricePerTreatment={pricePerTreatment} setPricePerTreatment={setPricePerTreatment} onContinue={() => {
+					<PrepaidDetailsStep treatmentCount={treatmentCount} setTreatmentCount={setTreatmentCount} pricePerTreatment={pricePerTreatment} setPricePerTreatment={setPricePerTreatment} onContinue={() => {
 						calculateCost();
 						setFlowState(FlowState.Summary);
 					}} />
 				)}
 
 				{flowState === FlowState.Summary && (
-					<steps.SummaryStep
+					<SummaryStep
 						selectedType={selectedType}
 						email={email}
 						amount={amount}
@@ -106,7 +108,7 @@ export default function CreateCreditFlow() {
 				)}
 
 				{flowState === FlowState.Payment && (
-					<steps.PaymentStep
+					<PaymentStep
 						email={email}
 						amount={amount}
 						selectedPaymentOption={selectedPaymentOption}

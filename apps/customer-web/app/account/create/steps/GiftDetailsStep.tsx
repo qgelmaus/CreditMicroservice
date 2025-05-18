@@ -3,8 +3,8 @@ import { Button, FormRow, Input, Section, TextArea } from "@ui";
 import type { ChangeEvent } from "react";
 
 interface Props {
-  amount: string;
-  setAmount: (value: string) => void;
+  amount: number;
+  setAmount: (value: number) => void;
   message: string;
   setMessage: (value: string) => void;
   onContinue: () => void;
@@ -31,7 +31,7 @@ export function GiftDetailsStep({ amount, setAmount, message, setMessage, onCont
             type="number"
             label=""
             value={amount}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value))}
             placeholder="F.eks. 500"
           />
         </FormRow>

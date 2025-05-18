@@ -3,7 +3,7 @@ import type { ChangeEvent } from "react";
 
 interface Props {
   email: string;
-  amount: string;
+  amount: number;
   selectedPaymentOption: "STRIPE" | "MOBILEPAY";
   setSelectedPaymentOption: (value: "STRIPE" | "MOBILEPAY") => void;
   onPay: () => void;

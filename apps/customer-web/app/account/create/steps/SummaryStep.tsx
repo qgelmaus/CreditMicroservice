@@ -4,7 +4,7 @@ import { Button, Card, Grid, Section } from "@ui";
 interface Props {
   selectedType: "GIFT_CARD" | "PREPAID_CARD";
   email: string;
-  amount: string;
+  amount: number;
   cost: number;
   message: string;
   onConfirm: () => void;
