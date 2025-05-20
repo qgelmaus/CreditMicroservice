@@ -1,7 +1,7 @@
 #  TODO
 
 ## Projekt
- - [ ] Lav et script der starter alle services 
+ - [x] Lav et script der starter alle services 
 
 ##  Tests
 - [x] Opret testsetup (Jest + tsconfig + `test-utils`)
