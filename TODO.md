@@ -20,7 +20,7 @@
 - [x] GraphQL-integration via Apollo Client
 - [x] UI-feedback (spinners, fejlbeskeder)
 - [x] Tilstandshåndtering (fx state machine eller React context)
-- [ ] Mulighed for at få vist sin kreditkonto?
+- [x] Mulighed for at få vist sin kreditkonto?
 
 ## Admin-web
 - [ ] Login og autentifikation (evt. hardcoded i første omgang)

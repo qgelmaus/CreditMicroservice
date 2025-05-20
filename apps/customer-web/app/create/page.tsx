@@ -27,7 +27,7 @@ export default function CreditAccountPage() {
 				subtitle="Vælg ny kreditbeholdning og følg instruktionerne"
 			/>
 			<Section title="">
-				<Button onClick={() => router.push("/account/new")}>
+				<Button onClick={() => router.push("/create/new")}>
 					Ny beholdning
 				</Button>
 			</Section>

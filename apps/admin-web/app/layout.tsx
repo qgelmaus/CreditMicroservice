@@ -1,8 +1,9 @@
-
+'use client'
 import type { Metadata } from "next";
-
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./lib/apolloClient";
 
 
 
@@ -11,10 +12,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-	title: "Hovedopgave 2025 admin-web",
-	description: "Udforsk admin-web for hovedopgave 2025",
-};
+
 
 
 export default function RootLayout({
@@ -26,9 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-gray-100`}>
+
+      <body className={`${inter.variable}`}>
+      <ApolloProvider client={client}>
         {children}
         {modal}
+      </ApolloProvider>
       </body>
     </html>
   );
