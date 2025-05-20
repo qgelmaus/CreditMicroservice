@@ -1,49 +1,81 @@
-"use client";
-import { Button, Card, PageHeader, Section } from "@ui";
-import { useState } from "react";
+'use client';
+import {
+  Button,
+  Card,
+  FormRow,
+  Grid,
+  Input,
+  PageHeader,
+  Section,
+} from '@ui';
+import { useState } from 'react';
+import { useAllAccountsByEmail } from './hook';
+import Link from 'next/link';
 
-import { useRouter } from "next/navigation";
+export default function AccountPage() {
+  const [email, setEmail] = useState('');
+  const [fetchAccounts, { data, loading, error }] = useAllAccountsByEmail();
 
-export default function CreditAccountPage() {
-	const [modalOpen, setModalOpen] = useState(false);
-	const [submitted, setSubmitted] = useState(false);
-	const [email, setEmail] = useState("");
-	const [amount, setAmount] = useState<number | null>(null);
+  const handleSearch = () => {
+    if (email.trim() !== '') {
+      fetchAccounts({ variables: { email } });
+    }
+  };
 
-	// Eksempel på en callback der kunne komme fra modalen
-	const handleSubmit = (data: { email: string; amount: number }) => {
-		setEmail(data.email);
-		setAmount(data.amount);
-		setSubmitted(true);
-		setModalOpen(false);
-	};
+  return (
+    <div className="p-6">
+      <PageHeader
+        title="Se dine kreditbeholdninger"
+        subtitle="Søg på din oprettelses-email"
+      />
 
-	const router = useRouter();
+      <Section>
+        <FormRow label="Indtast email">
+          <Grid columns={1} maxWidth="400px">
+            <Input
+              label=""
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button onClick={handleSearch}>Søg</Button>
+          </Grid>
+        </FormRow>
+      </Section>
 
-	return (
-		<div className="p-6">
-			<PageHeader
-				title="Opret en ny kreditbeholdning"
-				subtitle="Vælg ny kreditbeholdning og følg instruktionerne"
-			/>
-			<Section title="">
-				<Button onClick={() => router.push("/account/create")}>
-					Ny beholdning
-				</Button>
-			</Section>
+      {loading && <p className="mt-4">🔄 Henter...</p>}
+      {error && <p className="mt-4 text-red-500">⚠️ Der opstod en fejl</p>}
 
-			{submitted && email && amount !== null && (
-				<Section title="Opsummering">
-					<Card>
-						<p>
-							<strong>Email:</strong> {email}
-						</p>
-						<p>
-							<strong>Beløb:</strong> {amount} kr.
-						</p>
-					</Card>
-				</Section>
-			)}
-		</div>
-	);
+      {data?.creditAccountByEmail?.length > 0 && (
+        <Section title="Dine konti">
+          <Grid columns={3} gap="1rem"> 
+           
+            {data.creditAccountByEmail.map((acc) => (
+                <Link key={acc.creditCode} href={`/account/${acc.creditCode}`}>
+                 <Card>
+               <Grid minWidth='250px'>
+                <div key={acc.creditCode} className="border p-4 rounded">
+               
+              
+                
+                <p><strong>Kreditter:</strong> {acc.availableCredits}</p>
+                <p><strong>Saldo:</strong> {acc.availableMoney} DKK</p>
+                <p><strong>Udløber:</strong> {new Date(acc.expiresAt).toLocaleDateString()}</p>
+                <p><strong>Status:</strong> {acc.isActive ? "Aktiv" : "Inaktiv"}</p>
+                {acc.notes && <p><strong>Note:</strong> {acc.notes}</p>}
+              </div>
+              </Grid>
+            </Card>
+              </Link>
+            ))}
+            
+            
+          </Grid>
+        </Section>
+      )}
+
+      {data?.creditAccountByEmail?.length === 0 && !loading && (
+        <p className="mt-4">❌ Ingen konto fundet for denne email</p>
+      )}
+    </div>
+  );
 }

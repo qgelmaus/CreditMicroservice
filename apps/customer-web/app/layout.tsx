@@ -14,8 +14,8 @@ const inter = Inter({
 
 const navLinks = [
 	{ href: "/", label: "Forside" },
-	{ href: "/account", label: "Opret" },
-	{ href: "/klippekort", label: "Administrér" },
+	{ href: "/create", label: "Opret" },
+	{ href: "/account", label: "Administrér" },
 ];
 
 
