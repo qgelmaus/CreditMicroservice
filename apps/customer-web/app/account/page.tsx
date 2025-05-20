@@ -54,9 +54,6 @@ export default function AccountPage() {
                  <Card>
                <Grid minWidth='250px'>
                 <div key={acc.creditCode} className="border p-4 rounded">
-               
-              
-                
                 <p><strong>Kreditter:</strong> {acc.availableCredits}</p>
                 <p><strong>Saldo:</strong> {acc.availableMoney} DKK</p>
                 <p><strong>Udløber:</strong> {new Date(acc.expiresAt).toLocaleDateString()}</p>
