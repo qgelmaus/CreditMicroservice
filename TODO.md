@@ -41,3 +41,8 @@
 
 ## Payment-service
 - [ ] Omdøb PaymentDetails til Payment
+- [ ] Lav admin flag på til payment even hvis en bruger skal have betalings link via email
+
+## Credit-service
+- [ ] Flyt created event til activate
+- [ ] Lav events til ændringer af credits 
