@@ -28,13 +28,13 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
           paymentId,
           "COMPLETED"
         );
-        console.log("✅ Payment completed:", paymentId);
+        console.log("Payment completed:", paymentId);
       }
     }
 
     res.status(200).json({ received: true });
   } catch (err) {
-    console.error("❌ Webhook error:", err);
+    console.error("Webhook error:", err);
     res.status(400).send("Invalid signature");
   }
 };

@@ -1,9 +1,9 @@
 import bodyParser from "body-parser";
 import express from "express";
-import http from "http";
+import http from "node:http";
 import cors from "cors";
 
-import { ApolloServer, BaseContext } from "@apollo/server";
+import { ApolloServer, type BaseContext } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 
 import { graphqlLoggerPlugin } from "./utils/logger/graphqlLoggerPlugin.ts";
