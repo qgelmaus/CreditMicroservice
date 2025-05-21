@@ -1,7 +1,7 @@
 #  TODO
 
 ## Projekt
- - [ ] Lav et script der starter alle services 
+ - [x] Lav et script der starter alle services 
 
 ##  Tests
 - [x] Opret testsetup (Jest + tsconfig + `test-utils`)
@@ -20,7 +20,7 @@
 - [x] GraphQL-integration via Apollo Client
 - [x] UI-feedback (spinners, fejlbeskeder)
 - [x] Tilstandshåndtering (fx state machine eller React context)
-- [ ] Mulighed for at få vist sin kreditkonto?
+- [x] Mulighed for at få vist sin kreditkonto?
 
 ## Admin-web
 - [ ] Login og autentifikation (evt. hardcoded i første omgang)
@@ -41,3 +41,8 @@
 
 ## Payment-service
 - [ ] Omdøb PaymentDetails til Payment
+- [ ] Lav admin flag på til payment even hvis en bruger skal have betalings link via email
+
+## Credit-service
+- [ ] Flyt created event til activate
+- [ ] Lav events til ændringer af credits 

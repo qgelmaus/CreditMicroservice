@@ -11,7 +11,7 @@
 		"dev:studio": "pnpm --filter api dev:studio",
 		"dev:credit": "pnpm --filter credit-service dev",
 		"dev:payment": "pnpm --filter payment-service dev",
-		"dev:gateway": "pnpm --filter gateway dev",
+		"dev:gateway": "wait-on tcp:4001 tcp:4002 && pnpm --filter gateway dev",
 		"dev:notification": "pnpm --filter notification-service dev",
 		"migrate:payment": "pnpm --filter payment-service migrate",
 		"migrate:credit": "pnpm --filter credit-service migrate",
@@ -22,15 +22,18 @@
 		"codegen:payment": "pnpm --filter payment-service codegen",
 		"codegen:credit": "pnpm --filter credit-service codegen",
 		"format": "prettier --write .",
-		"check-format": "prettier --check ."
+		"check-format": "prettier --check .",
+		"dev:all": "concurrently -n credit,payment,notify,gateway -c green,cyan,magenta,blue \"pnpm dev:credit\" \"pnpm dev:payment\" \"pnpm dev:notification\" \"pnpm dev:gateway\""
 	},
 	"dependencies": {
 		"cors": "^2.8.5"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "5.0.5",
+		"concurrently": "^9.1.2",
 		"prettier": "^3.5.3",
 		"ts-node": "^10.9.2",
-		"tsx": "^4.19.4"
+		"tsx": "^4.19.4",
+		"wait-on": "^8.0.3"
 	}
 }
