@@ -1,8 +1,11 @@
+'use client'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { PageShell } from "@ui";
 import { Navigation } from "../components/Navigation/Navigation";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "../lib/apolloClient";
 
 const inter = Inter({
 	variable: "--font-inter-sans",
@@ -11,14 +14,11 @@ const inter = Inter({
 
 const navLinks = [
 	{ href: "/", label: "Forside" },
-	{ href: "/account", label: "Opret" },
-	{ href: "/klippekort", label: "Administrér" },
+	{ href: "/create", label: "Opret" },
+	{ href: "/account", label: "Administrér" },
 ];
 
-export const metadata: Metadata = {
-	title: "Hovedopgave 2025 customer-web",
-	description: "Udforsk customer-web for hovedopgave 2025",
-};
+
 
 export default function RootLayout({
 	children,
@@ -28,9 +28,11 @@ export default function RootLayout({
 	return (
 		<html lang="da">
 			<body className={`${inter.variable}`}>
+			<ApolloProvider client={client}>
 				<PageShell headerContent={<Navigation links={navLinks} />}>
 					{children}
 				</PageShell>
+				</ApolloProvider>
 			</body>
 		</html>
 	);

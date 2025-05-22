@@ -1,23 +1,27 @@
 #  TODO
 
+## Projekt
+ - [x] Lav et script der starter alle services 
+
 ##  Tests
 - [x] Opret testsetup (Jest + tsconfig + `test-utils`)
 - [x] Unit tests for domænemodeller (`Credits`, `Money`, `CreditAccount`)
 - [x] Service-lag tests med mocks (`CreditAccountService`, `PaymentService`, osv.)
 - [x] GraphQL integration tests (mutationer og queries)
-- [x] RabbitMQ publisher/consumer tests (evt. med fake channel)
-- [ ] CI-kompatibel testkørsel (lokalt og evt. GitHub Actions)
+- [x] RabbitMQ publisher/consumer tests (evt. med fake channel
+- [x] CI-kompatibel testkørsel (lokalt og evt. GitHub Actions)
 
 ## Customer-web
-- [ ] Flow til oprettelse af kreditbeholdning
+- [x] Flow til oprettelse af kreditbeholdning
   - [x] Typevalg (GIFT_CARD / PREPAID_CARD)
   - [x] Email + evt. validering
-  - [ ] Udfyldning af klip, pris osv.
-  - [ ] Valg og udførsel af betaling
-- [ ] GraphQL-integration via Apollo Client
-- [ ] UI-feedback (spinners, fejlbeskeder)
-- [ ] Tilstandshåndtering (fx state machine eller React context)
-- [ ] Mulighed for at få vist sin kreditkonto?
+  - [x] Udfyldning af klip, pris osv.
+  - [x] Valg og udførsel af betaling
+- [x] GraphQL-integration via Apollo Client
+- [x] UI-feedback (spinners, fejlbeskeder)
+- [x] Tilstandshåndtering (fx state machine eller React context)
+- [x] Mulighed for at få vist sin kreditkonto?
+
 
 ## Admin-web
 - [ ] Login og autentifikation (evt. hardcoded i første omgang)
@@ -37,3 +41,8 @@
 
 ## Payment-service
 - [ ] Omdøb PaymentDetails til Payment
+- [ ] Lav admin flag på til payment even hvis en bruger skal have betalings link via email
+
+## Credit-service
+- [ ] Flyt created event til activate
+- [ ] Lav events til ændringer af credits 

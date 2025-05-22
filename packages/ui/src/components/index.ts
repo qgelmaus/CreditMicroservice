@@ -10,3 +10,4 @@ export { Tag } from "./Tag";
 export { Container } from "./Container";
 export { PageShell } from "./PageShell";
 export { Dropdown } from "./Dropdown";
+export { TextArea } from "./TextArea";

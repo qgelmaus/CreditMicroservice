@@ -12,4 +12,5 @@ export interface PaymentDetailsDTO {
   paymentDate: Date;
   reference: string;
   createdAt: Date;
+  stripeUrl: string;
 }

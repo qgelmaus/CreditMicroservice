@@ -13,6 +13,7 @@ export interface PaymentDetailsProps {
   paymentDate?: Date;
   reference: string;
   createdAt?: Date;
+  stripeUrl?: string;
 }
 
 export class PaymentDetails {
@@ -24,6 +25,7 @@ export class PaymentDetails {
   private paymentDate: Date;
   private readonly reference: string;
   private readonly createdAt?: Date;
+  private stripeUrl?: string;
 
   private constructor(props: PaymentDetailsProps) {
     this.id = props.id;
@@ -34,6 +36,7 @@ export class PaymentDetails {
     this.paymentDate = props.paymentDate ?? new Date();
     this.reference = props.reference;
     this.createdAt = props.createdAt;
+    this.stripeUrl = props.stripeUrl;
   }
 
   static create(
@@ -62,6 +65,10 @@ export class PaymentDetails {
 
   refundPayment() {
     this.paymentStatus = PaymentStatus.REFUNDED;
+  }
+
+  setStripeUrl(url: string): void {
+    this.stripeUrl = url;
   }
 
   setStatus(newStatus: PaymentStatus): PaymentDetails {
@@ -159,6 +166,7 @@ export class PaymentDetails {
       reference: this.reference,
       paymentDate: this.paymentDate,
       createdAt: this.createdAt ?? new Date(),
+      stripeUrl: this.stripeUrl ?? "",
     };
   }
 

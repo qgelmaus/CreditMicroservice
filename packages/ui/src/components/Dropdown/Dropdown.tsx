@@ -3,13 +3,13 @@ import styles from "./Dropdown.module.css";
 
 interface Option {
 	label: string;
-	value: string;
+	value: string | number;
 }
 
 interface DropdownProps {
 	label: string;
 	options: Option[];
-	value: string;
+	value: string | number;
 	onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 	id?: string;
 	error?: string;
