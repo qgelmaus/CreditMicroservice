@@ -4,8 +4,6 @@ import {
 } from "../../app/resolvers/index.ts";
 import type { Resolvers } from "../../../../shared/types/codegen.types.ts";
 
-let typeDefs;
-
 export async function loadCreditAccountModule() {
   let typeDefs;
 
