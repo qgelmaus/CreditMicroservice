@@ -26,7 +26,7 @@ jobs:
           node-version: 16.14
 
       - name: Install deps
-        run: pnpm install
+        run: pnpm install --include-optional
 
       - name: Run tests
         run: |
