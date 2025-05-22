@@ -3,8 +3,8 @@ import { ApolloServer } from "@apollo/server";
 
 import { mock } from "jest-mock-extended";
 import { CreditAccountService } from "../../app/services/creditAccount.service.ts";
-import { creditAccountModule } from "../schema/index.ts";
 import { TestContext } from "apps/credit-service/src/context/context.types.ts";
+import { loadCreditAccountModule } from "../schema/index.ts";
 
 const CREATE_MUTATION = `
   mutation CreateCreditAccount($input: CreateCreditAccountInput!) {
@@ -84,6 +84,8 @@ describe("GraphQL API", () => {
       isActive: true,
     });
 
+    const creditAccountModule = await loadCreditAccountModule();
+
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,
       resolvers: creditAccountModule.resolvers,
@@ -146,6 +148,7 @@ describe("GraphQL API", () => {
       isActive: true,
     });
 
+    const creditAccountModule = await loadCreditAccountModule();
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,
       resolvers: creditAccountModule.resolvers,
@@ -204,6 +207,8 @@ describe("GraphQL API", () => {
       isActive: true,
     });
 
+    const creditAccountModule = await loadCreditAccountModule();
+
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,
       resolvers: creditAccountModule.resolvers,
@@ -254,6 +259,7 @@ describe("GraphQL API", () => {
       createdAt: new Date(),
     });
 
+    const creditAccountModule = await loadCreditAccountModule();
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,
       resolvers: creditAccountModule.resolvers,
@@ -315,6 +321,8 @@ describe("GraphQL API", () => {
       isActive: true,
     });
 
+    const creditAccountModule = await loadCreditAccountModule();
+
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,
       resolvers: creditAccountModule.resolvers,
@@ -372,6 +380,7 @@ describe("GraphQL API", () => {
       isActive: true,
     });
 
+    const creditAccountModule = await loadCreditAccountModule();
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,
       resolvers: creditAccountModule.resolvers,
@@ -442,6 +451,7 @@ describe("GraphQL API", () => {
         isActive: true,
       },
     ]);
+    const creditAccountModule = await loadCreditAccountModule();
 
     const server = new ApolloServer<TestContext>({
       typeDefs: creditAccountModule.typeDefs,

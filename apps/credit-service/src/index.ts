@@ -2,9 +2,11 @@
 import { ApolloServer, type BaseContext } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildContext } from "./context/buildContext.ts";
-import { creditAccountModule } from "./modules/creditaccount/graphql/schema/index.ts";
 import { graphqlLoggerPlugin } from "./utils/logger/graphqlLoggerPlugin.ts";
 import { startConsumer } from "./modules/creditaccount/domain/events/startConsumer.ts";
+import { loadCreditAccountModule } from "./modules/creditaccount/graphql/schema/index.ts";
+
+const creditAccountModule = await loadCreditAccountModule();
 
 const server = new ApolloServer<BaseContext>({
   typeDefs: creditAccountModule.typeDefs,
