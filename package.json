@@ -25,7 +25,7 @@
 		"check-format": "prettier --check .",
 
 		"test": "pnpm recursive run test",
-		"test:ci": "cross-env SKIP_RABBITMQ=true pnpm test"
+		"test:ci": "cross-env SKIP_RABBITMQ=true pnpm test",
 
 		"dev:all": "concurrently -n credit,payment,notify,gateway -c green,cyan,magenta,blue \"pnpm dev:credit\" \"pnpm dev:payment\" \"pnpm dev:notification\" \"pnpm dev:gateway\""
 
