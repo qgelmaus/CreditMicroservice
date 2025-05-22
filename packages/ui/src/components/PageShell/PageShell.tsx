@@ -24,7 +24,7 @@ export const PageShell = ({
 					{headerContent ?? (
 						<h1 style={{ fontSize: "1.25rem" }}>
 							{" "}
-							Hovedopgave 2025 - Customer-web{" "}
+							Hovedopgave 2025{" "}
 						</h1>
 					)}
 				</Container>

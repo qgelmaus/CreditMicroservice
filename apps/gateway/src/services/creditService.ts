@@ -35,6 +35,7 @@ export async function createCreditAccount(
       email
       originalMoney
       isActive
+      
           }
         }
       `,
@@ -43,6 +44,8 @@ export async function createCreditAccount(
           email: input.email,
           purchaseAmount: input.purchaseAmount,
           type: input.type,
+          treatmentCount: input.treatmentCount,
+          pricePerTreatment: input.pricePerTreatment,
         },
       },
     }),

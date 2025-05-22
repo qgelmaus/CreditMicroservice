@@ -15,5 +15,6 @@ export function mapToGraphQL(dto: PaymentDetailsDTO): PaymentDetails {
     reference: dto.reference,
     paymentStatus: dto.paymentStatus as PaymentStatus,
     createdAt: dto.createdAt,
+    stripeUrl: dto.stripeUrl,
   };
 }
