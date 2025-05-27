@@ -6,21 +6,7 @@ import { GiftAccount, PrepaidAccount } from "./CreditAccount.ts";
 import { generateDateExpired } from "../../../utils/Generators/expirationDateGenerator.ts";
 import { generateCreditCode } from "../../../utils/Generators/creditCodeGenerator.ts";
 import { CreditAccountType } from "apps/credit-service/src/prisma/generated/client/index.js";
-
-type NewGiftInput = {
-  type: "GIFT_CARD";
-  email: string;
-  originalAmount: number;
-};
-
-type NewPrepaidInput = {
-  type: "PREPAID_CARD";
-  email: string;
-  pricePerTreatment: number;
-  treatmentCount: number;
-};
-
-export type NewCreditAccountInput = NewGiftInput | NewPrepaidInput;
+import { NewCreditAccountInput } from "apps/credit-service/src/shared/types/input.types.ts";
 
 export function createNewCreditAccount(
   input: NewCreditAccountInput
@@ -30,8 +16,8 @@ export function createNewCreditAccount(
   const code = generateCreditCode();
 
   if (input.type === CreditAccountType.GIFT_CARD) {
-    const credits = new Credits(input.originalAmount);
-    const money = new Money(input.originalAmount);
+    const credits = new Credits(input.purchaseAmount);
+    const money = new Money(input.purchaseAmount);
     return new GiftAccount(
       0,
       code,

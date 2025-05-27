@@ -23,15 +23,30 @@
 		"codegen:credit": "pnpm --filter credit-service codegen",
 		"format": "prettier --write .",
 		"check-format": "prettier --check .",
+
+		"test": "pnpm recursive run test",
+		"test:ci": "cross-env SKIP_RABBITMQ=true pnpm test",
+
 		"dev:all": "concurrently -n credit,payment,notify,gateway -c green,cyan,magenta,blue \"pnpm dev:credit\" \"pnpm dev:payment\" \"pnpm dev:notification\" \"pnpm dev:gateway\""
+
 	},
 	"dependencies": {
+		"@types/node": "^20",
 		"cors": "^2.8.5"
+		
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "5.0.5",
+
+		"@types/jest": "^29.5.14",
+		"cross-env": "^7.0.3",
+		"jest": "^29.7.0",
+		"jest-mock-extended": "4.0.0-beta1",
+
 		"concurrently": "^9.1.2",
+
 		"prettier": "^3.5.3",
+		"ts-jest": "^29.3.4",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.19.4",
 		"wait-on": "^8.0.3"
