@@ -31,10 +31,7 @@ export const createPrepaidAccount: MutationResolvers["createPrepaidAccount"] =
 
 export const createCreditAccount: MutationResolvers["createCreditAccount"] =
   async (_parent, args, context) => {
-    console.log("📥 args.input:", args.input);
-
     if (!args.input) {
-      console.error("❌ FEJL: input er undefined i createCreditAccount!");
       throw new Error("Input mangler");
     }
 
