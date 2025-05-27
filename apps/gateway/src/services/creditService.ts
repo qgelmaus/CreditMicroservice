@@ -13,17 +13,8 @@ export async function loadCreditSchema() {
 }
 
 export async function createCreditAccount(
-  input: CreateCreditAccountInput,
+  input: CreateCreditAccountInput
 ): Promise<CreditAccount> {
-  console.log("➡️ Payload til credit-service:", {
-    input: {
-      email: input.email,
-      type: input.type,
-      purchaseAmount: input.purchaseAmount,
-      treatmentCount: input.treatmentCount,
-      pricePerTreatment: input.pricePerTreatment,
-    },
-  });
   const res = await fetch("http://localhost:4001/graphql", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -54,9 +45,7 @@ export async function createCreditAccount(
   const json = (await res.json()) as CreateAccountResponse;
 
   if (!json.data) {
-    console.error("❌ Ingen data fra credit-service:");
-    console.dir(json, { depth: null });
-    throw new Error("createCreditAccount fejlede – se log");
+    throw new Error("createCreditAccount failed");
   }
 
   return json.data.createCreditAccount;

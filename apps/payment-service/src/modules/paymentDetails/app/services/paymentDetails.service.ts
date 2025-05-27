@@ -21,7 +21,7 @@ type PaymentInput = {
 export class PaymentDetailsService {
   constructor(
     private readonly repo: PaymentDetailsRepository,
-    private readonly evenPublisher: RabbitEventPublisher,
+    private readonly evenPublisher: RabbitEventPublisher
   ) {}
 
   async create(input: PaymentInput): Promise<PaymentDetailsDTO> {
@@ -36,8 +36,6 @@ export class PaymentDetailsService {
         purchaseAmount: saved.getAmount(),
       });
 
-      console.log("🔗 Stripe session:", session);
-
       saved.setStripeUrl(session);
     }
 
@@ -48,7 +46,7 @@ export class PaymentDetailsService {
 
   async changePaymentStatus(
     id: string,
-    newStatus: "PENDING" | "COMPLETED" | "FAILED",
+    newStatus: "PENDING" | "COMPLETED" | "FAILED"
   ): Promise<PaymentDetailsDTO> {
     const existing = await this.repo.findById(id);
     if (!existing) throw new Error("PaymentDetails not found");
@@ -67,7 +65,7 @@ export class PaymentDetailsService {
           paymentId: payment.getId(),
           reference: payment.getReference(),
           amountMoney: payment.getAmount(),
-        }),
+        })
       );
     }
 

@@ -1,4 +1,3 @@
-// apps/credit-service/src/index.ts
 import { ApolloServer, type BaseContext } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildContext } from "./context/buildContext.ts";

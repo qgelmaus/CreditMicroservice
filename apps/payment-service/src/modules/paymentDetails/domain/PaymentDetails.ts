@@ -43,10 +43,10 @@ export class PaymentDetails {
     props: Omit<
       PaymentDetailsProps,
       "paymentDate" | "id" | "createdAt" | "paymentStatus"
-    >,
+    >
   ): PaymentDetails {
     if (!props.reference || props.reference.trim() === "") {
-      throw new Error("Reference er påkrævet");
+      throw new Error("Reference required");
     }
 
     return new PaymentDetails({
@@ -80,7 +80,7 @@ export class PaymentDetails {
     ];
 
     if (!allowed.includes(newStatus)) {
-      throw new Error(`Ugyldig status: ${newStatus}`);
+      throw new Error(`Invalid status: ${newStatus}`);
     }
 
     this.paymentStatus = newStatus;
@@ -154,7 +154,7 @@ export class PaymentDetails {
 
   toDTO(): PaymentDetailsDTO {
     if (!this.id) {
-      throw new Error("Kan ikke mappe PaymentDetails til DTO uden id.");
+      throw new Error("Can't map to DTO without id");
     }
 
     return {

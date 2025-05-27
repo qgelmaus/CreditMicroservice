@@ -42,7 +42,7 @@ type Query {
   _empty: String
 }
 
-# Dummy types for return only – not merged with subschemas
+# Dummy types for return only
 type RemoteCreditAccount {
   id: String!
   email: String!
