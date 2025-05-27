@@ -1,7 +1,7 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-      "target": "esnext",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "react",
@@ -9,11 +9,10 @@
     "rootDir": "src",
     "noEmit": false,
     "declaration": true,
-      "paths": {
-        "@/*": ["./src/*"],
-        "@ui": ["../../packages/ui/src"]
-      }
-    },
-    "include": ["src", "../../apps/customer-web/src/app/components/Navigation"]
-  }
-  
+    "paths": {
+      "@/*": ["./src/*"],
+      "@ui": ["../../packages/ui/src"]
+    }
+  },
+  "include": ["src", "../../apps/customer-web/src/app/components/Navigation"]
+}

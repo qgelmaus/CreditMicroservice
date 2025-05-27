@@ -3,13 +3,13 @@ import type { MutationResolvers } from "../../../../../../shared/types/codegen.t
 export const transferCredits: MutationResolvers["transferCredits"] = async (
   _parent,
   { input },
-  context
+  context,
 ) => {
   const { fromCreditCode, toCreditCode, amount, note } = input;
   return await context.creditAccountService.transferCredits(
     fromCreditCode,
     toCreditCode,
     amount,
-    note ?? ""
+    note ?? "",
   );
 };

@@ -5,7 +5,7 @@ import type { CreditAccountDTO } from "../../../dto/creditaccount.types.ts";
 export const allCreditAccounts: QueryResolvers["allCreditAccounts"] = async (
   _parent,
   _args,
-  context
+  context,
 ) => {
   const accounts = await context.creditAccountService.findAll();
   return accounts.map((a: CreditAccountDTO) => mapToGraphQL(a));

@@ -6,7 +6,7 @@ export type EventHandler = (event: DomainEvent) => Promise<void>;
 export class RabbitEventConsumer {
   constructor(
     private routingKey: string,
-    private handler: EventHandler
+    private handler: EventHandler,
   ) {}
 
   async start() {

@@ -16,7 +16,7 @@ export const startConsumer = async () => {
     accountRepo,
     transactionRepo,
     transferRepo,
-    dummyPublisher
+    dummyPublisher,
   );
 
   const consumer = new RabbitEventConsumer(
@@ -29,7 +29,7 @@ export const startConsumer = async () => {
       const creditCode = reference.replace("CREDIT:", "");
 
       await accountService.activateAccount(creditCode);
-    }
+    },
   );
 
   await consumer.start();

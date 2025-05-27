@@ -1,19 +1,17 @@
-import { NewCreditAccountInput } from "apps/credit-service/src/shared/types/input.types.ts";
 import type { MutationResolvers } from "../../../../../../shared/types/codegen.types.ts";
 import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL.ts";
-import { toInternalEnum } from "../../../../infrastructure/mappers/creditaccount.mapper.ts";
 import { toServiceInput } from "../../../../infrastructure/helpers/mapToNewCreditAccountInput.ts";
 
 export const createGiftAccount: MutationResolvers["createGiftAccount"] = async (
   _parent,
   args,
-  context
+  context,
 ) => {
   const { input } = args;
 
   const account = await context.creditAccountService.createGiftAccount(
     input.purchaseAmount,
-    input.email
+    input.email,
   );
 
   return mapToGraphQL(account);
@@ -26,7 +24,7 @@ export const createPrepaidAccount: MutationResolvers["createPrepaidAccount"] =
     const account = await context.creditAccountService.createPrepaidAccount(
       input.treatmentCount,
       input.pricePerTreatment,
-      input.email
+      input.email,
     );
 
     return mapToGraphQL(account);
@@ -41,7 +39,7 @@ export const createCreditAccount: MutationResolvers["createCreditAccount"] =
     const { input } = args;
 
     const account = await context.creditAccountService.createCreditAccount(
-      toServiceInput(input)
+      toServiceInput(input),
     );
 
     return mapToGraphQL(account);

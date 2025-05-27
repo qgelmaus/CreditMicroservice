@@ -36,7 +36,9 @@ export function PaymentStep({
               label="Vælg betalingsmetode"
               value={selectedPaymentOption}
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                setSelectedPaymentOption(e.target.value as "STRIPE" | "MOBILEPAY")
+                setSelectedPaymentOption(
+                  e.target.value as "STRIPE" | "MOBILEPAY",
+                )
               }
               options={paymentOptions}
             />

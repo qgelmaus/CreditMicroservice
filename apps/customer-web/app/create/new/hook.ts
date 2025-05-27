@@ -13,7 +13,7 @@ interface CreateAndCompleteInput {
 
 export const useCreateAndCompleteAccount = () => {
   const [mutate, { data, loading, error }] = useMutation(
-    CREATE_ACCOUNT_AND_PAYMENT_MUTATION
+    CREATE_ACCOUNT_AND_PAYMENT_MUTATION,
   );
 
   const createAndComplete = async (input: CreateAndCompleteInput) => {

@@ -37,7 +37,7 @@ describe("createNewCreditAccount (factory)", () => {
         type: "UNKNOWN_TYPE",
         email: "ugyldig@kunde.dk",
         originalAmount: 100,
-      } as any)
+      } as any),
     ).toThrow("Unknown CreditAccountType");
   });
 });

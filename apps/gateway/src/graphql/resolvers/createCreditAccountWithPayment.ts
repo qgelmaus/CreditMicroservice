@@ -5,7 +5,7 @@ import type { CreateAndCompleteInput } from "../../shared/types/types.ts";
 export const creditMutations = {
   createCreditAccountAndCompletePayment: async (
     _: unknown,
-    { input }: { input: CreateAndCompleteInput }
+    { input }: { input: CreateAndCompleteInput },
   ) => {
     console.log("Payload ind i gateway: ", input);
 

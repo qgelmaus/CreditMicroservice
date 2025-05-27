@@ -13,7 +13,7 @@ export async function loadPaymentSchema() {
 }
 
 export async function createPaymentDetails(
-  input: CreatePaymentDetailsInput
+  input: CreatePaymentDetailsInput,
 ): Promise<PaymentDetails> {
   console.log("➡️ Payload til payment-service:", {
     input: {

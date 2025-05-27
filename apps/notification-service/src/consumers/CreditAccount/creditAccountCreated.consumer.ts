@@ -36,7 +36,7 @@ export const setupConsumers = async (channel: Channel) => {
           type,
           originalCredits,
           originalMoney,
-          expiresAt
+          expiresAt,
         );
         break;
 
@@ -48,7 +48,7 @@ export const setupConsumers = async (channel: Channel) => {
           originalCredits,
           originalMoney,
           treatmentCount,
-          expiresAt
+          expiresAt,
         );
         break;
 

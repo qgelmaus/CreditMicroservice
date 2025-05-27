@@ -4,7 +4,7 @@ import { mapToGraphQL } from "../../graphql/mapper/toGraphQL.ts";
 export const createPayment: MutationResolvers["createPayment"] = async (
   _parent,
   args,
-  context
+  context,
 ) => {
   const { input } = args;
 

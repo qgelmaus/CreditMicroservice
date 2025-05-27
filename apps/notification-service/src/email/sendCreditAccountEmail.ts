@@ -8,7 +8,7 @@ export const sendGiftAccountEmail = async (
   type: string,
   originalCredits: number,
   amount: number,
-  expiresAt: string
+  expiresAt: string,
 ) => {
   const readableDate = new Date(expiresAt).toLocaleDateString("da-DK", {
     year: "numeric",
@@ -40,7 +40,7 @@ export const sendPrepaidAccountEmail = async (
   originalCredits: number,
   amount: number,
   treatmentCount: number,
-  expiresAt: string
+  expiresAt: string,
 ) => {
   const readableDate = new Date(expiresAt).toLocaleDateString("da-DK", {
     year: "numeric",

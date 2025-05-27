@@ -18,7 +18,7 @@ import { Money } from "../../domain/valueobjects/Money.ts";
 import { toTransactionDTO } from "./transaction.mapper.ts";
 
 export function toDomain(
-  account: PrismaAccount & { transactions?: CreditTransaction[] }
+  account: PrismaAccount & { transactions?: CreditTransaction[] },
 ) {
   const originalCredits = new Credits(account.originalCredits);
   const originalMoney = new Money(account.originalMoney);
@@ -38,7 +38,7 @@ export function toDomain(
       account.isActive,
       account.createdAt,
       account.expiresAt,
-      transactions
+      transactions,
     );
   }
 
@@ -56,7 +56,7 @@ export function toDomain(
       account.expiresAt,
       account.treatmentCount ?? 0,
       account.discountPercentage ?? 0,
-      transactions
+      transactions,
     );
   }
 

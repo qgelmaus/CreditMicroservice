@@ -1,18 +1,18 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"target": "ES2020",
-		"strict": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"skipLibCheck": true,
-		"resolveJsonModule": true,
-		"outDir": "dist",
-		"types": ["node"],
-		"noEmit": true,
-		"allowImportingTsExtensions": true
-	},
-	"include": ["src", "../../packages/rabbitmq/src"]
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "types": ["node"],
+    "noEmit": true,
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src", "../../packages/rabbitmq/src"]
 }

@@ -1,9 +1,11 @@
-#  TODO
+# TODO
 
 ## Projekt
- - [x] Lav et script der starter alle services 
 
-##  Tests
+- [x] Lav et script der starter alle services
+
+## Tests
+
 - [x] Opret testsetup (Jest + tsconfig + `test-utils`)
 - [x] Unit tests for domænemodeller (`Credits`, `Money`, `CreditAccount`)
 - [x] Service-lag tests med mocks (`CreditAccountService`, `PaymentService`, osv.)
@@ -12,6 +14,7 @@
 - [x] CI-kompatibel testkørsel (lokalt og evt. GitHub Actions)
 
 ## Customer-web
+
 - [x] Flow til oprettelse af kreditbeholdning
   - [x] Typevalg (GIFT_CARD / PREPAID_CARD)
   - [x] Email + evt. validering
@@ -22,8 +25,8 @@
 - [x] Tilstandshåndtering (fx state machine eller React context)
 - [x] Mulighed for at få vist sin kreditkonto?
 
-
 ## Admin-web
+
 - [ ] Login og autentifikation (evt. hardcoded i første omgang)
 - [ ] Overblik over eksisterende konti
 - [ ] Mulighed for at sende QR-kode / faktura (placeholder funktionalitet)
@@ -31,6 +34,7 @@
 - [ ] Intern note-visning og redigering?
 
 ## Zod eller anden form for validering
+
 - [ ] Brug Zod til inputvalidering i customer-web og admin-web
   - [ ] Email validering
   - [ ] Antal credits ≥ 1
@@ -40,9 +44,11 @@
 - [ ] Vis valideringsfejl i UI og blokér navigation/submit ved fejl
 
 ## Payment-service
+
 - [ ] Omdøb PaymentDetails til Payment
 - [ ] Lav admin flag på til payment even hvis en bruger skal have betalings link via email
 
 ## Credit-service
+
 - [ ] Flyt created event til activate
-- [ ] Lav events til ændringer af credits 
+- [ ] Lav events til ændringer af credits

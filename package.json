@@ -1,54 +1,47 @@
 {
-	"name": "creditaccount",
-	"version": "1.0.0",
-	"type": "module",
-	"scripts": {
-		"dev:api": "pnpm --filter api dev",
-		"dev:demo": "pnpm --filter demo dev",
-		"dev:customer": "pnpm --filter customer-web dev",
-		"dev:admin": "pnpm --filter admin-web dev",
-		"dev:test": "pnpm --filter api test",
-		"dev:studio": "pnpm --filter api dev:studio",
-		"dev:credit": "pnpm --filter credit-service dev",
-		"dev:payment": "pnpm --filter payment-service dev",
-		"dev:gateway": "wait-on tcp:4001 tcp:4002 && pnpm --filter gateway dev",
-		"dev:notification": "pnpm --filter notification-service dev",
-		"migrate:payment": "pnpm --filter payment-service migrate",
-		"migrate:credit": "pnpm --filter credit-service migrate",
-		"generate:payment": "pnpm --filter payment-service generate",
-		"generate:credit": "pnpm --filter credit-service generate",
-		"studio:payment": "pnpm --filter payment-service studio",
-		"studio:credit": "pnpm --filter credit-service studio",
-		"codegen:payment": "pnpm --filter payment-service codegen",
-		"codegen:credit": "pnpm --filter credit-service codegen",
-		"format": "prettier --write .",
-		"check-format": "prettier --check .",
-
-		"test": "pnpm recursive run test",
-		"test:ci": "cross-env SKIP_RABBITMQ=true pnpm test",
-
-		"dev:all": "concurrently -n credit,payment,notify,gateway -c green,cyan,magenta,blue \"pnpm dev:credit\" \"pnpm dev:payment\" \"pnpm dev:notification\" \"pnpm dev:gateway\""
-
-	},
-	"dependencies": {
-		"@types/node": "^20",
-		"cors": "^2.8.5"
-		
-	},
-	"devDependencies": {
-		"@graphql-codegen/cli": "5.0.5",
-
-		"@types/jest": "^29.5.14",
-		"cross-env": "^7.0.3",
-		"jest": "^29.7.0",
-		"jest-mock-extended": "4.0.0-beta1",
-
-		"concurrently": "^9.1.2",
-
-		"prettier": "^3.5.3",
-		"ts-jest": "^29.3.4",
-		"ts-node": "^10.9.2",
-		"tsx": "^4.19.4",
-		"wait-on": "^8.0.3"
-	}
+  "name": "creditaccount",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev:api": "pnpm --filter api dev",
+    "dev:demo": "pnpm --filter demo dev",
+    "dev:customer": "pnpm --filter customer-web dev",
+    "dev:admin": "pnpm --filter admin-web dev",
+    "dev:test": "pnpm --filter api test",
+    "dev:studio": "pnpm --filter api dev:studio",
+    "dev:credit": "pnpm --filter credit-service dev",
+    "dev:payment": "pnpm --filter payment-service dev",
+    "dev:gateway": "wait-on tcp:4001 tcp:4002 && pnpm --filter gateway dev",
+    "dev:notification": "pnpm --filter notification-service dev",
+    "migrate:payment": "pnpm --filter payment-service migrate",
+    "migrate:credit": "pnpm --filter credit-service migrate",
+    "generate:payment": "pnpm --filter payment-service generate",
+    "generate:credit": "pnpm --filter credit-service generate",
+    "studio:payment": "pnpm --filter payment-service studio",
+    "studio:credit": "pnpm --filter credit-service studio",
+    "codegen:payment": "pnpm --filter payment-service codegen",
+    "codegen:credit": "pnpm --filter credit-service codegen",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "test": "pnpm recursive run test",
+    "test:ci": "cross-env SKIP_RABBITMQ=true pnpm test",
+    "dev:all": "concurrently -n credit,payment,notify,gateway -c green,cyan,magenta,blue \"pnpm dev:credit\" \"pnpm dev:payment\" \"pnpm dev:notification\" \"pnpm dev:gateway\""
+  },
+  "dependencies": {
+    "@types/node": "^20",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "5.0.5",
+    "@types/jest": "^29.5.14",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "jest-mock-extended": "4.0.0-beta1",
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.3.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
+    "wait-on": "^8.0.3"
+  }
 }

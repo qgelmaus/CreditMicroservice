@@ -29,11 +29,11 @@ export const buildContext = async (ctx: any) => {
     accountRepo,
     transactionRepo,
     transferRepo,
-    eventPublisher
+    eventPublisher,
   );
 
   const creditTransactionService = new CreditTransactionService(
-    transactionRepo
+    transactionRepo,
   );
 
   return {

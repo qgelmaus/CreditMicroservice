@@ -40,7 +40,7 @@ describe("CreditAccountService", () => {
       accountRepo,
       transactionRepo,
       transferRepo,
-      publisher
+      publisher,
     );
 
     const result = await service.createGiftAccount(100, "test@kunde.dk");
@@ -53,7 +53,7 @@ describe("CreditAccountService", () => {
           type: "GIFT_CARD",
           email: "test@kunde.dk",
         }),
-      })
+      }),
     );
 
     expect(result.originalCredits).toBe(100);
@@ -99,7 +99,7 @@ it("should use credits and log transaction", async () => {
     accountRepo,
     transactionRepo,
     transferRepo,
-    publisher
+    publisher,
   );
 
   const result = await service.useCredits("RR1234567", 20, "test note");
@@ -110,7 +110,7 @@ it("should use credits and log transaction", async () => {
     1,
     20,
     20,
-    "test note"
+    "test note",
   );
   expect(result.availableCredits).toBe(80);
 });
@@ -153,7 +153,7 @@ it("should refund credits and log transaction", async () => {
     accountRepo,
     transactionRepo,
     transferRepo,
-    publisher
+    publisher,
   );
 
   const result = await service.refundCredits("RR7654321", 10, "refunderet");
@@ -164,7 +164,7 @@ it("should refund credits and log transaction", async () => {
     1,
     10,
     10,
-    "refunderet"
+    "refunderet",
   );
   expect(result.availableCredits).toBe(90);
 });
@@ -206,7 +206,7 @@ it("should transfer credits between accounts and log transactions", async () => 
   };
 
   accountRepo.findByCreditCode.mockImplementation(async (code) =>
-    code === "RRFROM" ? fromAccount : toAccount
+    code === "RRFROM" ? fromAccount : toAccount,
   );
 
   accountRepo.updateState
@@ -245,14 +245,14 @@ it("should transfer credits between accounts and log transactions", async () => 
     accountRepo,
     transactionRepo,
     transferRepo,
-    publisher
+    publisher,
   );
 
   const result = await service.transferCredits(
     "RRFROM",
     "RRTO",
     20,
-    "overførsel"
+    "overførsel",
   );
 
   expect(accountRepo.findByCreditCode).toHaveBeenCalledWith("RRFROM");
@@ -262,13 +262,13 @@ it("should transfer credits between accounts and log transactions", async () => 
     1,
     20,
     20,
-    "overførsel"
+    "overførsel",
   );
   expect(transactionRepo.logCreditTransferIn).toHaveBeenCalledWith(
     2,
     20,
     20,
-    "overførsel"
+    "overførsel",
   );
   expect(transferRepo.saveCreditTransfer).toHaveBeenCalledWith(101, 102, 20);
   expect(result.amount).toBe(20);
@@ -312,7 +312,7 @@ it("should refund money and log transaction", async () => {
     accountRepo,
     transactionRepo,
     transferRepo,
-    publisher
+    publisher,
   );
 
   const result = await service.refundMoney("RR9999999", 20, "tilbageført");
@@ -323,7 +323,7 @@ it("should refund money and log transaction", async () => {
     1,
     0,
     20,
-    "tilbageført"
+    "tilbageført",
   );
   expect(result.availableMoney).toBe(60);
 });
@@ -367,7 +367,7 @@ it("should nullify account and log removed credits and money", async () => {
     accountRepo,
     transactionRepo,
     transferRepo,
-    publisher
+    publisher,
   );
 
   const result = await service.nullifyAccount("RRNULL00", "anmodning");
@@ -378,7 +378,7 @@ it("should nullify account and log removed credits and money", async () => {
     1,
     50,
     40,
-    "anmodning"
+    "anmodning",
   );
   expect(result.availableCredits).toBe(0);
   expect(result.availableMoney).toBe(0);

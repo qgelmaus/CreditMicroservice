@@ -11,6 +11,6 @@ export class PaymentCompletedEvent implements DomainEvent {
       paymentId: string;
       reference: string;
       amountMoney: number;
-    }
+    },
   ) {}
 }

@@ -19,12 +19,12 @@ describe("RabbitEventPublisher", () => {
     expect(channel.assertExchange).toHaveBeenCalledWith(
       "domain_events",
       "topic",
-      { durable: true }
+      { durable: true },
     );
     expect(channel.publish).toHaveBeenCalledWith(
       "domain_events",
       "test.event",
-      expect.any(Buffer)
+      expect.any(Buffer),
     );
   });
 });

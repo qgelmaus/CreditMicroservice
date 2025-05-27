@@ -1,23 +1,15 @@
-'use client';
-import {
-  Button,
-  Card,
-  FormRow,
-  Grid,
-  Input,
-  PageHeader,
-  Section,
-} from '@ui';
-import { useState } from 'react';
-import { useAllAccountsByEmail } from './hook';
-import Link from 'next/link';
+"use client";
+import { Button, Card, FormRow, Grid, Input, PageHeader, Section } from "@ui";
+import { useState } from "react";
+import { useAllAccountsByEmail } from "./hook";
+import Link from "next/link";
 
 export default function AccountPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [fetchAccounts, { data, loading, error }] = useAllAccountsByEmail();
 
   const handleSearch = () => {
-    if (email.trim() !== '') {
+    if (email.trim() !== "") {
       fetchAccounts({ variables: { email } });
     }
   };
@@ -47,25 +39,36 @@ export default function AccountPage() {
 
       {data?.creditAccountByEmail?.length > 0 && (
         <Section title="Dine konti">
-          <Grid columns={3} gap="1rem"> 
-           
+          <Grid columns={3} gap="1rem">
             {data.creditAccountByEmail.map((acc) => (
-                <Link key={acc.creditCode} href={`/account/${acc.creditCode}`}>
-                 <Card>
-               <Grid minWidth='250px'>
-                <div key={acc.creditCode} className="border p-4 rounded">
-                <p><strong>Kreditter:</strong> {acc.availableCredits}</p>
-                <p><strong>Saldo:</strong> {acc.availableMoney} DKK</p>
-                <p><strong>Udløber:</strong> {new Date(acc.expiresAt).toLocaleDateString()}</p>
-                <p><strong>Status:</strong> {acc.isActive ? "Aktiv" : "Inaktiv"}</p>
-                {acc.notes && <p><strong>Note:</strong> {acc.notes}</p>}
-              </div>
-              </Grid>
-            </Card>
+              <Link key={acc.creditCode} href={`/account/${acc.creditCode}`}>
+                <Card>
+                  <Grid minWidth="250px">
+                    <div key={acc.creditCode} className="border p-4 rounded">
+                      <p>
+                        <strong>Kreditter:</strong> {acc.availableCredits}
+                      </p>
+                      <p>
+                        <strong>Saldo:</strong> {acc.availableMoney} DKK
+                      </p>
+                      <p>
+                        <strong>Udløber:</strong>{" "}
+                        {new Date(acc.expiresAt).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <strong>Status:</strong>{" "}
+                        {acc.isActive ? "Aktiv" : "Inaktiv"}
+                      </p>
+                      {acc.notes && (
+                        <p>
+                          <strong>Note:</strong> {acc.notes}
+                        </p>
+                      )}
+                    </div>
+                  </Grid>
+                </Card>
               </Link>
             ))}
-            
-            
           </Grid>
         </Section>
       )}

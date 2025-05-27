@@ -9,7 +9,7 @@ import {
 import { toInternalEnum } from "../mappers/creditaccount.mapper.ts";
 
 export function toServiceInput(
-  input: CreateCreditAccountInput
+  input: CreateCreditAccountInput,
 ): NewCreditAccountInput {
   const type = toInternalEnum(input.type);
 
@@ -27,7 +27,7 @@ export function toServiceInput(
 
   if (input.treatmentCount == null || input.pricePerTreatment == null) {
     throw new Error(
-      "treatmentCount eller pricePerTreatment mangler for PREPAID_CARD"
+      "treatmentCount eller pricePerTreatment mangler for PREPAID_CARD",
     );
   }
 

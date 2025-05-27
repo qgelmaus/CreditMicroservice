@@ -1,10 +1,10 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-      "module": "CommonJS",
-      "moduleResolution": "node",
-      "isolatedModules": false,
-      "allowImportingTsExtensions": true
-    },
-    "include": ["src"]
-  }
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "isolatedModules": false,
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src"]
+}

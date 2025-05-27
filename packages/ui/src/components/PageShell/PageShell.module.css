@@ -1,22 +1,18 @@
 .shell {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background-color: #ececec;
-	color: #111;
-	
-	
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
+  color: #111;
 }
 
 .main {
-	flex: 1;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
-	
+  flex: 1;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .top {
-	color: #ffffff;
-	background-color: #408da0;
-	
+  color: #ffffff;
+  background-color: #408da0;
 }

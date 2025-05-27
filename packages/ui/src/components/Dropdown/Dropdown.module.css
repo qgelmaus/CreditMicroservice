@@ -1,29 +1,29 @@
 .wrapper {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .label {
-	font-size: 0.9rem;
-	font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .select {
-	padding: 8px;
-	border: 1px solid #ccc;
-	border-radius: 6px;
-	font-size: 1rem;
-	background-color: white;
-	color: #111;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: white;
+  color: #111;
 }
 
 .select:focus {
-	outline: none;
-	border-color: #111;
+  outline: none;
+  border-color: #111;
 }
 
 .error {
-	color: #c00;
-	font-size: 0.8rem;
+  color: #c00;
+  font-size: 0.8rem;
 }

@@ -21,7 +21,7 @@ async function startServer() {
   app.use(
     "/webhook/stripe",
     raw({ type: "application/json" }),
-    stripeWebhookRouter
+    stripeWebhookRouter,
   );
 
   const server = new ApolloServer<BaseContext>({
@@ -40,14 +40,14 @@ async function startServer() {
     json(),
     expressMiddleware(server, {
       context: buildContext,
-    })
+    }),
   );
 
   const PORT = 4002;
   httpServer.listen(PORT, () => {
     console.log("🚀 Payment-service kører på http://localhost:4002/graphql");
     console.log(
-      "📬 Webhook endpoint kører på http://localhost:4002/webhook/stripe"
+      "📬 Webhook endpoint kører på http://localhost:4002/webhook/stripe",
     );
   });
 }

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Button, Card, Grid, Section } from "@ui";
 
 interface Props {

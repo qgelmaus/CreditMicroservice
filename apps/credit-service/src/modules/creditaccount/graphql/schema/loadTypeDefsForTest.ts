@@ -6,7 +6,7 @@ export function loadTypeDefsForTest() {
   return gql(
     fs.readFileSync(
       path.resolve("src/modules/creditaccount/graphql/schema/typeDefs.gql"),
-      "utf8"
-    )
+      "utf8",
+    ),
   );
 }

@@ -12,7 +12,7 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
     const event = stripe.webhooks.constructEvent(
       rawBody,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET!,
     );
 
     console.log("📦 Event-type:", event.type);
@@ -26,7 +26,7 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
 
         await services.paymentDetailsService.changePaymentStatus(
           paymentId,
-          "COMPLETED"
+          "COMPLETED",
         );
         console.log("Payment completed:", paymentId);
       }

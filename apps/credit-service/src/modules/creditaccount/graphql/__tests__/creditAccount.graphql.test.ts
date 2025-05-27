@@ -106,7 +106,7 @@ describe("GraphQL API", () => {
         contextValue: {
           creditAccountService: service,
         },
-      }
+      },
     );
 
     expect(result.body.kind).toBe("single");
@@ -167,7 +167,7 @@ describe("GraphQL API", () => {
       },
       {
         contextValue: { creditAccountService: service },
-      }
+      },
     );
 
     if (result.body.kind === "single") {
@@ -181,7 +181,7 @@ describe("GraphQL API", () => {
       expect(service.useCredits).toHaveBeenCalledWith(
         "RRUSE123",
         25,
-        "Booking"
+        "Booking",
       );
       expect(data.useCredits.creditCode).toBe("RRUSE123");
       expect(data.useCredits.availableCredits).toBe(75);
@@ -227,7 +227,7 @@ describe("GraphQL API", () => {
       },
       {
         contextValue: { creditAccountService: service },
-      }
+      },
     );
 
     if (result.body.kind === "single") {
@@ -241,7 +241,7 @@ describe("GraphQL API", () => {
       expect(service.refundCredits).toHaveBeenCalledWith(
         "RR1111",
         10,
-        "refunderet"
+        "refunderet",
       );
       expect(data.refundCredits.creditCode).toBe("RR1111");
       expect(data.refundCredits.availableCredits).toBe(90);
@@ -279,7 +279,7 @@ describe("GraphQL API", () => {
       },
       {
         contextValue: { creditAccountService: service },
-      }
+      },
     );
 
     if (result.body.kind === "single") {
@@ -295,7 +295,7 @@ describe("GraphQL API", () => {
         "RRFROM",
         "RRTO",
         20,
-        "overførsel"
+        "overførsel",
       );
       expect(data.transferCredits.amount).toBe(20);
       expect(data.transferCredits.fromTransactionId).toBe(101);
@@ -341,7 +341,7 @@ describe("GraphQL API", () => {
       },
       {
         contextValue: { creditAccountService: service },
-      }
+      },
     );
 
     if (result.body.kind === "single") {
@@ -355,7 +355,7 @@ describe("GraphQL API", () => {
       expect(service.refundMoney).toHaveBeenCalledWith(
         "RRMONEY",
         20,
-        "kunde fik refunderet"
+        "kunde fik refunderet",
       );
       expect(data.refundMoney.creditCode).toBe("RRMONEY");
       expect(data.refundMoney.availableMoney).toBe(80);
@@ -395,7 +395,7 @@ describe("GraphQL API", () => {
       },
       {
         contextValue: { creditAccountService: service },
-      }
+      },
     );
 
     if (result.body.kind === "single") {
@@ -467,7 +467,7 @@ describe("GraphQL API", () => {
       },
       {
         contextValue: { creditAccountService: service },
-      }
+      },
     );
 
     if (result.body.kind === "single") {

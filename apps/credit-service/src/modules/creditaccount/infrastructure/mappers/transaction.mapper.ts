@@ -2,7 +2,7 @@ import type { CreditTransaction } from "apps/credit-service/src/prisma/generated
 import type { TransactionDTO } from "../../app/dto/creditaccount.types.ts";
 
 export function toTransactionDTO(
-  tx: CreditTransaction & { creditAccount?: { creditCode: string } }
+  tx: CreditTransaction & { creditAccount?: { creditCode: string } },
 ): TransactionDTO {
   return {
     id: tx.id,

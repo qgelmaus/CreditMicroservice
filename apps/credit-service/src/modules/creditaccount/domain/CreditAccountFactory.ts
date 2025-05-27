@@ -9,7 +9,7 @@ import { CreditAccountType } from "apps/credit-service/src/prisma/generated/clie
 import { NewCreditAccountInput } from "apps/credit-service/src/shared/types/input.types.ts";
 
 export function createNewCreditAccount(
-  input: NewCreditAccountInput
+  input: NewCreditAccountInput,
 ): GiftAccount | PrepaidAccount {
   const now = new Date();
   const expires = generateDateExpired();
@@ -29,7 +29,7 @@ export function createNewCreditAccount(
       false,
       now,
       expires,
-      []
+      [],
     );
   }
 
@@ -54,7 +54,7 @@ export function createNewCreditAccount(
       expires,
       input.treatmentCount,
       discountPercentage,
-      []
+      [],
     );
   }
 

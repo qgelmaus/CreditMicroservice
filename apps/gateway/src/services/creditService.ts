@@ -13,7 +13,7 @@ export async function loadCreditSchema() {
 }
 
 export async function createCreditAccount(
-  input: CreateCreditAccountInput
+  input: CreateCreditAccountInput,
 ): Promise<CreditAccount> {
   console.log("➡️ Payload til credit-service:", {
     input: {

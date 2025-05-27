@@ -43,7 +43,7 @@ export class PaymentDetails {
     props: Omit<
       PaymentDetailsProps,
       "paymentDate" | "id" | "createdAt" | "paymentStatus"
-    >
+    >,
   ): PaymentDetails {
     if (!props.reference || props.reference.trim() === "") {
       throw new Error("Reference er påkrævet");
