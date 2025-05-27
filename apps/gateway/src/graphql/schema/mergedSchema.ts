@@ -21,7 +21,7 @@ export async function buildGatewaySchema() {
 
   const localTypeDefs = fs.readFileSync(
     path.join(__dirname, "../schema/typedefs.gql"),
-    "utf8"
+    "utf8",
   );
 
   const customSchema = makeExecutableSchema({

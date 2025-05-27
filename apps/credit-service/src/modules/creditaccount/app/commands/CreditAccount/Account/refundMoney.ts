@@ -4,14 +4,14 @@ import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL.ts";
 export const refundMoney: MutationResolvers["refundMoney"] = async (
   _parent,
   { input },
-  context
+  context,
 ) => {
   const { creditCode, money, note } = input;
 
   const account = await context.creditAccountService.refundMoney(
     creditCode,
     money,
-    note ?? ""
+    note ?? "",
   );
 
   return mapToGraphQL(account);

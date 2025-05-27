@@ -13,7 +13,7 @@ export class GiftAccountCreatedEvent implements DomainEvent {
       originalCredits: number;
       originalMoney: number;
       expiresAt: Date;
-    }
+    },
   ) {}
 }
 
@@ -30,6 +30,6 @@ export class PrepaidAccountCreatedEvent implements DomainEvent {
       originalMoney: number;
       treatmentCount: number;
       expiresAt: Date;
-    }
+    },
   ) {}
 }

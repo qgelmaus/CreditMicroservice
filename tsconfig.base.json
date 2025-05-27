@@ -1,17 +1,18 @@
 {
-	"compilerOptions": {
-		"target": "ES2020",
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"lib": ["ES2020"],
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"strict": true,
-		"skipLibCheck": true,
-		"baseUrl": ".",
-		"paths": {
-			"@hovedopgave2025/rabbitmq": ["packages/rabbitmq/src"]
-		},
-		"outDir": "dist"
-	}
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2020"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@hovedopgave2025/rabbitmq": ["packages/rabbitmq/src"]
+    },
+    "outDir": "dist"
+  }
 }

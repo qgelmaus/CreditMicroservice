@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const typeDefs = gql(
-  fs.readFileSync(path.join(__dirname, "typeDefs.gql"), "utf8")
+  fs.readFileSync(path.join(__dirname, "typeDefs.gql"), "utf8"),
 );
 
 export const paymentDetailsModule = {

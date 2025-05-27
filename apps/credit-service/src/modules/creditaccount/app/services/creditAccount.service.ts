@@ -24,48 +24,43 @@ import {
   PrepaidAccountCreatedEvent,
 } from "../../domain/events/creditAccountCreated.ts";
 import type { PrepaidAccount } from "../../domain/CreditAccount.ts";
+import {
+  CreditAccountTypeEnum,
+  NewCreditAccountInput,
+} from "apps/credit-service/src/shared/types/input.types.ts";
 
 export class CreditAccountService {
   constructor(
     private accountRepo: CreditAccountRepository,
     private transactionRepo: CreditTransactionRepository,
     private transferRepo: CreditTransferRepository,
-    private eventPublisher: DomainEventPublisher
+    private eventPublisher: DomainEventPublisher,
   ) {}
 
   async createCreditAccount(
-    email: string,
-    type: CreditAccountType,
-    treatmentCount?: number,
-    pricePerTreatment?: number,
-    purchaseAmount?: number
+    input: NewCreditAccountInput,
   ): Promise<CreditAccountDTO> {
-    if (type === CreditAccountType.GIFT_CARD && purchaseAmount != null)
-      return this.createGiftAccount(purchaseAmount, email);
-    if (
-      type === CreditAccountType.PREPAID_CARD &&
-      treatmentCount != null &&
-      pricePerTreatment != null
-    )
+    const { type, email } = input;
+    if (type === CreditAccountType.GIFT_CARD)
+      return this.createGiftAccount(input.purchaseAmount, email);
+    if (type === CreditAccountType.PREPAID_CARD)
       return this.createPrepaidAccount(
-        treatmentCount,
-        pricePerTreatment,
-        email
+        input.treatmentCount,
+        input.pricePerTreatment,
+        email,
       );
 
-    throw new Error(
-      `Ugyldigt input til createCreditAccount. Type: ${type}, purchaseAmount: ${purchaseAmount}, treatmentCount: ${treatmentCount}, pricePerTreatment: ${pricePerTreatment}`
-    );
+    throw new Error(`Ugyldigt input til createCreditAccount. Type: ${type}`);
   }
 
   async createGiftAccount(
     purchaseAmount: number,
-    email: string
+    email: string,
   ): Promise<CreditAccountDTO> {
     const account = createNewCreditAccount({
-      type: CreditAccountType.GIFT_CARD,
+      type: CreditAccountTypeEnum.GIFT_CARD,
       email,
-      originalAmount: purchaseAmount,
+      purchaseAmount: purchaseAmount,
     });
 
     const saved = await this.accountRepo.create(account.getDataToPersist());
@@ -73,7 +68,7 @@ export class CreditAccountService {
     await this.transactionRepo.logPurchase(
       saved.id,
       saved.originalCredits,
-      saved.originalMoney
+      saved.originalMoney,
     );
 
     const newAccount = toDomain(saved);
@@ -86,7 +81,7 @@ export class CreditAccountService {
         originalCredits: newAccount.getOriginalCredits(),
         originalMoney: newAccount.getOriginalMoney(),
         expiresAt: newAccount.getExpirationDate(),
-      })
+      }),
     );
 
     return toDTO(newAccount);
@@ -95,10 +90,10 @@ export class CreditAccountService {
   async createPrepaidAccount(
     treatmentCount: number,
     pricePerTreatment: number,
-    email: string
+    email: string,
   ): Promise<CreditAccountDTO> {
     const account = createNewCreditAccount({
-      type: CreditAccountType.PREPAID_CARD,
+      type: CreditAccountTypeEnum.PREPAID_CARD,
       email,
       pricePerTreatment,
       treatmentCount,
@@ -109,7 +104,7 @@ export class CreditAccountService {
     await this.transactionRepo.logPurchase(
       saved.id,
       saved.originalCredits,
-      saved.originalMoney
+      saved.originalMoney,
     );
     const newAccount = toDomain(saved) as PrepaidAccount;
 
@@ -122,7 +117,7 @@ export class CreditAccountService {
         originalMoney: newAccount.getOriginalMoney(),
         treatmentCount: newAccount.getTreatmentCount(),
         expiresAt: newAccount.getExpirationDate(),
-      })
+      }),
     );
 
     return toDTO(newAccount);
@@ -140,7 +135,7 @@ export class CreditAccountService {
   async useCredits(
     creditCode: string,
     cost: number,
-    note?: string
+    note?: string,
   ): Promise<CreditAccountDTO> {
     const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
     if (!dbAccount) throw new Error("Account not found");
@@ -153,7 +148,7 @@ export class CreditAccountService {
       updated.id,
       cost,
       cost,
-      note ?? ""
+      note ?? "",
     );
 
     return toDTO(toDomain(updated));
@@ -162,7 +157,7 @@ export class CreditAccountService {
   async refundCredits(
     creditCode: string,
     cost: number,
-    note?: string
+    note?: string,
   ): Promise<CreditAccountDTO> {
     const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
     if (!dbAccount) throw new Error("Account not found");
@@ -176,7 +171,7 @@ export class CreditAccountService {
       updated.id,
       cost,
       cost,
-      note ?? ""
+      note ?? "",
     );
 
     return toDTO(toDomain(updated));
@@ -186,7 +181,7 @@ export class CreditAccountService {
     fromCode: string,
     toCode: string,
     amount: number,
-    note?: string
+    note?: string,
   ): Promise<CreditTransferDTO> {
     const dbFromAccount = await this.accountRepo.findByCreditCode(fromCode);
     const dbToAccount = await this.accountRepo.findByCreditCode(toCode);
@@ -208,19 +203,19 @@ export class CreditAccountService {
       updatedFromAccount.id,
       amount,
       amount,
-      note ?? ""
+      note ?? "",
     );
 
     const toTransaction = await this.transactionRepo.logCreditTransferIn(
       updatedToAccount.id,
       amount,
       amount,
-      note ?? ""
+      note ?? "",
     );
     const transfer = await this.transferRepo.saveCreditTransfer(
       fromTransaction.id,
       toTransaction.id,
-      amount
+      amount,
     );
 
     return toTransferDTO(transfer);
@@ -229,7 +224,7 @@ export class CreditAccountService {
   async refundMoney(
     creditCode: string,
     money: number,
-    note?: string
+    note?: string,
   ): Promise<CreditAccountDTO> {
     const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
     if (!dbAccount) throw new Error("Account not found");
@@ -246,7 +241,7 @@ export class CreditAccountService {
 
   async nullifyAccount(
     creditCode: string,
-    note?: string
+    note?: string,
   ): Promise<CreditAccountDTO> {
     const dbAccount = await this.accountRepo.findByCreditCode(creditCode);
     if (!dbAccount) throw new Error("Account not found");
@@ -262,7 +257,7 @@ export class CreditAccountService {
       updated.id,
       removedCredits,
       removedMoney,
-      note ?? ""
+      note ?? "",
     );
 
     return toDTO(toDomain(updated));
@@ -303,7 +298,7 @@ export class CreditAccountService {
     const account = await this.accountRepo.findByCreditCode(creditCode);
     if (!account) throw new Error("Account not found");
     const transactions = await this.transactionRepo.getTransactionsForAccount(
-      account.id
+      account.id,
     );
 
     return transactions.map(toTransactionDTO);

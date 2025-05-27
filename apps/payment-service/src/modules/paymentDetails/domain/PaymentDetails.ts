@@ -13,6 +13,7 @@ export interface PaymentDetailsProps {
   paymentDate?: Date;
   reference: string;
   createdAt?: Date;
+  stripeUrl?: string;
 }
 
 export class PaymentDetails {
@@ -24,6 +25,7 @@ export class PaymentDetails {
   private paymentDate: Date;
   private readonly reference: string;
   private readonly createdAt?: Date;
+  private stripeUrl?: string;
 
   private constructor(props: PaymentDetailsProps) {
     this.id = props.id;
@@ -34,6 +36,7 @@ export class PaymentDetails {
     this.paymentDate = props.paymentDate ?? new Date();
     this.reference = props.reference;
     this.createdAt = props.createdAt;
+    this.stripeUrl = props.stripeUrl;
   }
 
   static create(
@@ -43,7 +46,7 @@ export class PaymentDetails {
     >
   ): PaymentDetails {
     if (!props.reference || props.reference.trim() === "") {
-      throw new Error("Reference er påkrævet");
+      throw new Error("Reference required");
     }
 
     return new PaymentDetails({
@@ -64,6 +67,10 @@ export class PaymentDetails {
     this.paymentStatus = PaymentStatus.REFUNDED;
   }
 
+  setStripeUrl(url: string): void {
+    this.stripeUrl = url;
+  }
+
   setStatus(newStatus: PaymentStatus): PaymentDetails {
     const allowed: PaymentStatus[] = [
       PaymentStatus.PENDING,
@@ -73,7 +80,7 @@ export class PaymentDetails {
     ];
 
     if (!allowed.includes(newStatus)) {
-      throw new Error(`Ugyldig status: ${newStatus}`);
+      throw new Error(`Invalid status: ${newStatus}`);
     }
 
     this.paymentStatus = newStatus;
@@ -147,7 +154,7 @@ export class PaymentDetails {
 
   toDTO(): PaymentDetailsDTO {
     if (!this.id) {
-      throw new Error("Kan ikke mappe PaymentDetails til DTO uden id.");
+      throw new Error("Can't map to DTO without id");
     }
 
     return {
@@ -159,6 +166,7 @@ export class PaymentDetails {
       reference: this.reference,
       paymentDate: this.paymentDate,
       createdAt: this.createdAt ?? new Date(),
+      stripeUrl: this.stripeUrl ?? "",
     };
   }
 

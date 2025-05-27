@@ -15,7 +15,7 @@ async function start() {
     listen: { port: 4000 },
   });
 
-  console.log(`Gateway kører på ${url}`);
+  console.log(`Gateway running at ${url}`);
 }
 
 start();

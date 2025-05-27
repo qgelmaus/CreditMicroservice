@@ -12,9 +12,9 @@ const start = async () => {
 
   await setupConsumers(channel);
 
-  console.log("📨 Notification service is listening for events...");
+  console.log("Notification service is listening for events...");
 };
 
 start().catch((err) => {
-  console.error("❌ Failed to start notification service", err);
+  console.error("Failed to start notification service", err);
 });

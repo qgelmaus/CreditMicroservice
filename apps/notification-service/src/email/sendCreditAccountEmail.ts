@@ -16,7 +16,7 @@ export const sendGiftAccountEmail = async (
     day: "numeric",
   });
 
-  const response = await resend.emails.send({
+  await resend.emails.send({
     from: "Gavekort <onboarding@resend.dev>",
     to,
     subject: "Tak for din bestilling – her er dit gavekort",
@@ -29,8 +29,6 @@ export const sendGiftAccountEmail = async (
         <p>Brug kreditkoden under betaling.</p>
       `,
   });
-
-  console.log("📧 Email sendt:", response);
 };
 
 export const sendPrepaidAccountEmail = async (
@@ -48,10 +46,10 @@ export const sendPrepaidAccountEmail = async (
     day: "numeric",
   });
 
-  const response = await resend.emails.send({
+  await resend.emails.send({
     from: "Gavekort <onboarding@resend.dev>",
     to,
-    subject: "Tak for din bestilling – her er dit gavekort",
+    subject: "Tak for din bestilling – her er dit klippekort",
     html: `
           <h2>Her er dit klippekort</h2>
           <p><strong>Kreditkode:</strong> ${creditCode}</p>
@@ -61,6 +59,4 @@ export const sendPrepaidAccountEmail = async (
           <p>Brug kreditkoden under betaling.</p>
         `,
   });
-
-  console.log("📧 Email sendt:", response);
 };

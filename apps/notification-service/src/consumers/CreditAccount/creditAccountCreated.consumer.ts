@@ -53,7 +53,7 @@ export const setupConsumers = async (channel: Channel) => {
         break;
 
       default:
-        console.warn("⚠️ Ukendt event-type:", event.name);
+        console.warn("Unknown event-type:", event.name);
         break;
     }
 

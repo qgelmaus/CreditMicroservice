@@ -1,0 +1,26 @@
+.nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.link {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.link:hover {
+  border-color: currentColor;
+}
+
+.active {
+  border-color: currentColor;
+  font-weight: 600;
+}
+
+.body {
+  color: #140909;
+}

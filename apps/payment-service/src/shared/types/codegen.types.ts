@@ -73,6 +73,7 @@ export type PaymentDetails = {
   paymentMethod: PaymentMethod;
   paymentStatus: PaymentStatus;
   reference: Scalars["String"]["output"];
+  stripeUrl?: Maybe<Scalars["String"]["output"]>;
 };
 
 export enum PaymentMethod {
@@ -272,6 +273,11 @@ export type PaymentDetailsResolvers<
     ContextType
   >;
   reference?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  stripeUrl?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

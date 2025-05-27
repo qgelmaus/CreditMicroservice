@@ -15,14 +15,6 @@ export async function loadPaymentSchema() {
 export async function createPaymentDetails(
   input: CreatePaymentDetailsInput
 ): Promise<PaymentDetails> {
-  console.log("➡️ Payload til payment-service:", {
-    input: {
-      email: input.email,
-      purchaseAmount: input.purchaseAmount,
-      reference: input.reference,
-      paymentMethod: input.paymentMethod,
-    },
-  });
   const res = await fetch("http://localhost:4002/graphql", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -31,8 +23,10 @@ export async function createPaymentDetails(
         mutation CreatePayment($input: CreatePaymentInput!) {
           createPayment(input: $input) {
             id
-      email
-      paymentStatus
+            email
+            paymentStatus
+            reference
+            stripeUrl
           }
         }
       `,
@@ -50,9 +44,7 @@ export async function createPaymentDetails(
   const json = (await res.json()) as CreatePaymentResponse;
 
   if (!json.data) {
-    console.error("❌ Ingen data fra credit-service:");
-    console.dir(json, { depth: null });
-    throw new Error("createCreditAccount fejlede – se log");
+    throw new Error("createCreditAccount failed");
   }
 
   return json.data.createPayment;

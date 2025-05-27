@@ -5,10 +5,11 @@ import {
 import type { PaymentDetailsRepository } from "../../infrastructure/repository/paymentDetails.repository.ts";
 import type { PaymentDetailsDTO } from "../dto/paymentDetails.types.ts";
 import { PaymentDetailsFactory } from "../../domain/PaymentDetailsFactory.ts";
-import type { PaymentMethod } from "../../../../shared/types/codegen.types.ts";
+import { PaymentMethod } from "../../../../shared/types/codegen.types.ts";
 
 import { PaymentCompletedEvent } from "../../domain/events/PaymentCompleted.ts";
 import type { RabbitEventPublisher } from "packages/rabbitmq/src/index.ts";
+import { createStripeCheckoutSession } from "apps/payment-service/src/lib/stripe/stripe.ts";
 
 type PaymentInput = {
   email: string;
@@ -25,9 +26,18 @@ export class PaymentDetailsService {
 
   async create(input: PaymentInput): Promise<PaymentDetailsDTO> {
     const payment = PaymentDetailsFactory.createNew(input);
+
     const saved = await this.repo.create(payment);
 
-    console.log("Saved i service: ", saved);
+    if (input.paymentMethod === PaymentMethod.Stripe) {
+      const session = await createStripeCheckoutSession({
+        email: saved.getEmail(),
+        paymentId: saved.getId(),
+        purchaseAmount: saved.getAmount(),
+      });
+
+      saved.setStripeUrl(session);
+    }
 
     return toDTO(saved);
   }

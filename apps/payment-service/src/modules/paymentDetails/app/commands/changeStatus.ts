@@ -4,13 +4,13 @@ import { mapToGraphQL } from "../../graphql/mapper/toGraphQL.ts";
 export const changeStatus: MutationResolvers["changeStatus"] = async (
   _parent,
   args,
-  context
+  context,
 ) => {
   const { id, status } = args.input;
 
   const updated = await context.paymentDetailsService.changePaymentStatus(
     id,
-    status
+    status,
   );
 
   return mapToGraphQL(updated);

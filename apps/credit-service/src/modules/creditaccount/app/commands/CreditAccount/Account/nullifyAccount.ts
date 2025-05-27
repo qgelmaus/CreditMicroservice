@@ -4,7 +4,7 @@ import { mapToGraphQL } from "../../../../graphql/mapper/toGraphQL.ts";
 export const nullifyAccount: MutationResolvers["nullifyAccount"] = async (
   _parent,
   { input },
-  context
+  context,
 ) => {
   if (!input) throw new Error("Input is undefined");
   const creditCode = input.creditCode;
@@ -12,7 +12,7 @@ export const nullifyAccount: MutationResolvers["nullifyAccount"] = async (
 
   const account = await context.creditAccountService.nullifyAccount(
     creditCode,
-    note
+    note,
   );
   return mapToGraphQL(account);
 };

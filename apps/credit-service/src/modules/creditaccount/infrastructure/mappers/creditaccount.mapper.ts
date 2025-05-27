@@ -1,3 +1,4 @@
+import { CreditAccountTypeEnum } from "apps/credit-service/src/shared/types/input.types.ts";
 import type {
   CreditTransaction,
   CreditTransfer,
@@ -17,7 +18,7 @@ import { Money } from "../../domain/valueobjects/Money.ts";
 import { toTransactionDTO } from "./transaction.mapper.ts";
 
 export function toDomain(
-  account: PrismaAccount & { transactions?: CreditTransaction[] }
+  account: PrismaAccount & { transactions?: CreditTransaction[] },
 ) {
   const originalCredits = new Credits(account.originalCredits);
   const originalMoney = new Money(account.originalMoney);
@@ -37,7 +38,7 @@ export function toDomain(
       account.isActive,
       account.createdAt,
       account.expiresAt,
-      transactions
+      transactions,
     );
   }
 
@@ -55,7 +56,7 @@ export function toDomain(
       account.expiresAt,
       account.treatmentCount ?? 0,
       account.discountPercentage ?? 0,
-      transactions
+      transactions,
     );
   }
 
@@ -96,4 +97,10 @@ export function toTransferDTO(entity: CreditTransfer): CreditTransferDTO {
     amount: entity.amount,
     createdAt: entity.createdAt,
   };
+}
+
+export function toInternalEnum(type: string): CreditAccountTypeEnum {
+  if (type === "GIFT_CARD") return CreditAccountTypeEnum.GIFT_CARD;
+  if (type === "PREPAID_CARD") return CreditAccountTypeEnum.PREPAID_CARD;
+  throw new Error(`Ukendt type: ${type}`);
 }

@@ -6,10 +6,14 @@ export type EventHandler = (event: DomainEvent) => Promise<void>;
 export class RabbitEventConsumer {
   constructor(
     private routingKey: string,
-    private handler: EventHandler
+    private handler: EventHandler,
   ) {}
 
   async start() {
+    if (process.env.SKIP_RABBITMQ === "true") {
+      console.log("Skipping RabbitMQ startup (CI mode)");
+      return;
+    }
     const conn = await connect("amqp://guest:guest@localhost");
     const channel = await conn.createChannel();
 
@@ -21,7 +25,7 @@ export class RabbitEventConsumer {
     channel.consume(queue.queue, async (msg) => {
       if (!msg) return;
       const event = JSON.parse(msg.content.toString());
-      await this.handler(event); // kalder brugerens handler
+      await this.handler(event);
       channel.ack(msg);
     });
   }

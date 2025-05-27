@@ -33,5 +33,6 @@ export function toDTO(paymentDetails: PaymentDetails): PaymentDetailsDTO {
     paymentDate: (paymentDetails as any).paymentDate,
     reference: (paymentDetails as any).reference,
     createdAt,
+    stripeUrl: (paymentDetails as any).stripeUrl,
   };
 }

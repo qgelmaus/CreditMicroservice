@@ -11,6 +11,6 @@ export function toTransactionDTO(
     money: tx.money,
     note: tx.note ?? undefined,
     createdAt: tx.createdAt,
-    creditCode: tx.creditAccount?.creditCode ?? "Noget gik galt",
+    creditCode: tx.creditAccount?.creditCode ?? "Something went wrong",
   };
 }
