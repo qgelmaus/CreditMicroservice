@@ -19,7 +19,7 @@ export abstract class CreditAccount {
     public isActive: boolean,
     public readonly createdAt: Date,
     public readonly expiresAt: Date,
-    public readonly transactions: CreditTransaction[] = [],
+    public readonly transactions: CreditTransaction[] = []
   ) {}
 
   getId(): number {
@@ -141,7 +141,7 @@ export class GiftAccount extends CreditAccount {
     isActive: boolean,
     createdAt: Date,
     expiresAt: Date,
-    transactions: CreditTransaction[] = [],
+    transactions: CreditTransaction[] = []
   ) {
     super(
       id,
@@ -155,26 +155,30 @@ export class GiftAccount extends CreditAccount {
       isActive,
       createdAt,
       expiresAt,
-      transactions,
+      transactions
     );
   }
 
   useCredits(cost: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.subtract(cost);
     this._availableMoney = this._availableMoney.subtract(cost);
   }
 
   refundCredits(cost: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.add(cost);
     this._availableMoney = this._availableMoney.add(cost);
   }
 
   transferCreditsFromAccount(amount: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.subtract(amount);
     this._availableMoney = this._availableMoney.subtract(amount);
   }
 
   transferCreditsToAccount(amount: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.add(amount);
     this._availableMoney = this._availableMoney.add(amount);
   }
@@ -194,7 +198,7 @@ export class PrepaidAccount extends CreditAccount {
     expiresAt: Date,
     public treatmentCount: number,
     public readonly discountPercentage: number,
-    transactions: CreditTransaction[] = [],
+    transactions: CreditTransaction[] = []
   ) {
     super(
       id,
@@ -208,7 +212,7 @@ export class PrepaidAccount extends CreditAccount {
       isActive,
       createdAt,
       expiresAt,
-      transactions,
+      transactions
     );
   }
 
@@ -217,6 +221,7 @@ export class PrepaidAccount extends CreditAccount {
   }
 
   useCredits(cost: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.subtract(cost);
     const discountedAmount = cost * (1 - this.discountPercentage / 100);
     this._availableMoney = this._availableMoney.subtract(discountedAmount);
@@ -224,6 +229,7 @@ export class PrepaidAccount extends CreditAccount {
   }
 
   refundCredits(cost: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.add(cost);
     const discountedAmount = cost * (1 - this.discountPercentage / 100);
     this._availableMoney = this._availableMoney.add(discountedAmount);
@@ -231,12 +237,14 @@ export class PrepaidAccount extends CreditAccount {
   }
 
   transferCreditsFromAccount(amount: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.subtract(amount);
     const discountedAmount = amount * (1 - this.discountPercentage / 100);
     this._availableMoney = this._availableMoney.subtract(discountedAmount);
   }
 
   transferCreditsToAccount(amount: number) {
+    if (!this.isActive) throw new Error("Account is not active");
     this._availableCredits = this._availableCredits.add(amount);
     const discountedAmount = amount * (1 - this.discountPercentage / 100);
     this._availableMoney = this._availableMoney.add(discountedAmount);
